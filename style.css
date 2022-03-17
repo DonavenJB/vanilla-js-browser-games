@@ -39,3 +39,8 @@ p {
     border-radius: 6px;
     background: #181818;
 }
+
+.game {
+    color: inherit;
+    text-decoration: none;
+}
