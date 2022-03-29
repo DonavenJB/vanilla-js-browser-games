@@ -159,14 +159,20 @@ startPauseButton.addEventListener('click', () => {
     if (timerId) {
         clearInterval(timerId)
         clearInterval(outcomeTimerId)
-        outcomeTimerId = null
+
         timerId = null
+        outcomeTimerId = null
+
         document.removeEventListener('keyup', moveFrog)
+
+        startPauseButton.textContent = 'Resume Game'
     } else {
         timerId = setInterval(autoMoveElements, 1000)
         outcomeTimerId = setInterval(checkOutComes, 50)
+
         document.addEventListener('keyup', moveFrog)
+
+        startPauseButton.textContent = 'Pause Game'
     }
 })
-
 console.log('working')
