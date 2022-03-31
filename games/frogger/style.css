@@ -1,39 +1,167 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    padding: 40px 20px;
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: #fff;
+    text-align: center;
+}
+
+/* Main page area */
+main,
+.container,
+.game-container,
+.wrapper {
+    width: min(900px, 100%);
+    margin: 0 auto;
+}
+
+/* Typography */
+h1 {
+    margin: 0 0 10px;
+    font-size: 2rem;
+}
+
+h2,
+h3 {
+    color: #fff;
+}
+
+p {
+    color: #aaa;
+}
+
+/* Frogger board */
 .grid {
-    border: 1px solid black;
-    height: 180px;
-    width: 180px;
+    width: 182px;
+    height: 182px;
+    margin: 30px auto;
+
     display: flex;
     flex-wrap: wrap;
+
+    background: #181818;
+    border: 1px solid #333;
+    border-radius: 6px;
+
+    overflow: hidden;
 }
 
 .grid div {
-    height: 20px;
     width: 20px;
+    height: 20px;
 }
 
+/* Goal */
 .ending-block {
     background-color: red;
 }
 
+/* Starting position */
 .starting-block {
     background-color: blue;
 }
-.l1, .l2, .l3 {
+
+/* Logs / river obstacles */
+.l1,
+.l2,
+.l3 {
     background-color: brown;
 }
 
-.l4, .l5 {
+/* Water */
+.l4,
+.l5 {
     background-color: lightblue;
 }
 
+/* Cars / road */
 .c1 {
     background-color: black;
 }
 
-.c2, .c3 {
+.c2,
+.c3 {
     background-color: lightgrey;
 }
 
+/* Frog */
 .frog {
     background-color: green;
+}
+
+/* Buttons */
+button {
+    padding: 10px 18px;
+    margin: 8px 5px;
+
+    font: inherit;
+    color: #fff;
+
+    background: #181818;
+    border: 1px solid #333;
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+button:hover {
+    background: #222;
+    border-color: #555;
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+/* Score / timer / game messages */
+.score,
+.timer,
+.status,
+.message,
+.result {
+    color: #aaa;
+}
+
+/* Links */
+a {
+    color: #aaa;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #fff;
+}
+
+/* Optional Back to Games link */
+.back-link {
+    display: inline-block;
+    margin-bottom: 25px;
+    color: #aaa;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    color: #fff;
+}
+
+/* Small screens */
+@media (max-width: 600px) {
+    body {
+        padding: 25px 12px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
 }
