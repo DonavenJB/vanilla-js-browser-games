@@ -6,12 +6,14 @@ const logsLeft = document.querySelectorAll('.log-left')
 const logsRight = document.querySelectorAll('.log-right')
 const carsLeft = document.querySelectorAll('.car-left')
 const carsRight = document.querySelectorAll('.car-right')
+const initialSquareClasses = Array.from(squares, square => square.className)
 
 let currentIndex = 76
 const width = 9
 let timerId
 let outcomeTimerId
 let currentTime = 20
+let gameOver = false
 
 function moveFrog(e) {
     squares[currentIndex].classList.remove('frog')
@@ -131,6 +133,46 @@ function moveCarRight(carRight) {
     }
 }
 
+function resetGame() {
+    clearInterval(timerId)
+    clearInterval(outcomeTimerId)
+
+    timerId = null
+    outcomeTimerId = null
+
+    document.removeEventListener('keyup', moveFrog)
+
+    initialSquareClasses.forEach((className, index) => {
+        squares[index].className = className
+    })
+
+    currentIndex = 76
+    currentTime = 20
+    gameOver = false
+
+    timeLeftDisplay.textContent = currentTime
+    resultDisplay.textContent = ''
+    startPauseButton.textContent = 'Start Game'
+}
+
+function finishGame(message, removeFrog = false) {
+    clearInterval(timerId)
+    clearInterval(outcomeTimerId)
+
+    timerId = null
+    outcomeTimerId = null
+    gameOver = true
+
+    document.removeEventListener('keyup', moveFrog)
+
+    if (removeFrog) {
+        squares[currentIndex].classList.remove('frog')
+    }
+
+    resultDisplay.textContent = message
+    startPauseButton.textContent = 'Play Again'
+}
+
 function lose() {
     if (
         squares[currentIndex].classList.contains('c1') ||
@@ -138,41 +180,48 @@ function lose() {
         squares[currentIndex].classList.contains('l5') ||
         currentTime <= 0
     ) {
-        resultDisplay.textContent = 'You lose!'
-        clearInterval(timerId)
-        clearInterval(outcomeTimerId)
-        squares[currentIndex].classList.remove('frog')
-        document.removeEventListener('keyup', moveFrog)
+        finishGame('You lose!', true)
     }
 }
 
 function win() {
     if (squares[currentIndex].classList.contains('ending-block')) {
-        resultDisplay.textContent = 'You Win!'
-        clearInterval(timerId)
-        clearInterval(outcomeTimerId)
-        document.removeEventListener('keyup', moveFrog)
+        finishGame('You Win!')
     }
 }
 
+function startGame() {
+    timerId = setInterval(autoMoveElements, 1000)
+    outcomeTimerId = setInterval(checkOutComes, 50)
+
+    document.addEventListener('keyup', moveFrog)
+
+    startPauseButton.textContent = 'Pause Game'
+}
+
+function pauseGame() {
+    clearInterval(timerId)
+    clearInterval(outcomeTimerId)
+
+    timerId = null
+    outcomeTimerId = null
+
+    document.removeEventListener('keyup', moveFrog)
+
+    startPauseButton.textContent = 'Resume Game'
+}
+
 startPauseButton.addEventListener('click', () => {
+    if (gameOver) {
+        resetGame()
+        startGame()
+        return
+    }
+
     if (timerId) {
-        clearInterval(timerId)
-        clearInterval(outcomeTimerId)
-
-        timerId = null
-        outcomeTimerId = null
-
-        document.removeEventListener('keyup', moveFrog)
-
-        startPauseButton.textContent = 'Resume Game'
+        pauseGame()
     } else {
-        timerId = setInterval(autoMoveElements, 1000)
-        outcomeTimerId = setInterval(checkOutComes, 50)
-
-        document.addEventListener('keyup', moveFrog)
-
-        startPauseButton.textContent = 'Pause Game'
+        startGame()
     }
 })
 console.log('working')
