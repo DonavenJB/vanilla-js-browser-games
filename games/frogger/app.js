@@ -1,6 +1,9 @@
 const timeLeftDisplay = document.querySelector('#time-left')
 const resultDisplay = document.querySelector('#result')
 const startPauseButton = document.querySelector('#start-pause-button')
+const winsDisplay = document.querySelector('#wins')
+const lossesDisplay = document.querySelector('#losses')
+const gamesPlayedDisplay = document.querySelector('#games-played')
 const squares = document.querySelectorAll('.grid div')
 const logsLeft = document.querySelectorAll('.log-left')
 const logsRight = document.querySelectorAll('.log-right')
@@ -14,6 +17,9 @@ let timerId
 let outcomeTimerId
 let currentTime = 20
 let gameOver = false
+let wins = 0
+let losses = 0
+let gamesPlayed = 0
 
 function moveFrog(e) {
     squares[currentIndex].classList.remove('frog')
@@ -155,7 +161,7 @@ function resetGame() {
     startPauseButton.textContent = 'Start Game'
 }
 
-function finishGame(message, removeFrog = false) {
+function finishGame(message, didWin, removeFrog = false) {
     clearInterval(timerId)
     clearInterval(outcomeTimerId)
 
@@ -169,6 +175,18 @@ function finishGame(message, removeFrog = false) {
         squares[currentIndex].classList.remove('frog')
     }
 
+    gamesPlayed++
+
+    if (didWin) {
+        wins++
+    } else {
+        losses++
+    }
+
+    winsDisplay.textContent = wins
+    lossesDisplay.textContent = losses
+    gamesPlayedDisplay.textContent = gamesPlayed
+
     resultDisplay.textContent = message
     startPauseButton.textContent = 'Play Again'
 }
@@ -180,13 +198,13 @@ function lose() {
         squares[currentIndex].classList.contains('l5') ||
         currentTime <= 0
     ) {
-        finishGame('You lose!', true)
+        finishGame('You lose!', false, true)
     }
 }
 
 function win() {
     if (squares[currentIndex].classList.contains('ending-block')) {
-        finishGame('You Win!')
+        finishGame('You Win!', true)
     }
 }
 
