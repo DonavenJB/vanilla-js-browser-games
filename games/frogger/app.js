@@ -4,6 +4,7 @@ const startPauseButton = document.querySelector('#start-pause-button')
 const winsDisplay = document.querySelector('#wins')
 const lossesDisplay = document.querySelector('#losses')
 const gamesPlayedDisplay = document.querySelector('#games-played')
+const gameStatusDisplay = document.querySelector('#game-status')
 const squares = document.querySelectorAll('.grid div')
 const logsLeft = document.querySelectorAll('.log-left')
 const logsRight = document.querySelectorAll('.log-right')
@@ -159,6 +160,7 @@ function resetGame() {
     timeLeftDisplay.textContent = currentTime
     resultDisplay.textContent = ''
     startPauseButton.textContent = 'Start Game'
+    gameStatusDisplay.textContent = 'Ready'
 }
 
 function finishGame(message, didWin, removeFrog = false) {
@@ -188,6 +190,7 @@ function finishGame(message, didWin, removeFrog = false) {
     gamesPlayedDisplay.textContent = gamesPlayed
 
     resultDisplay.textContent = message
+    gameStatusDisplay.textContent = didWin ? 'Won' : 'Lost'
     startPauseButton.textContent = 'Play Again'
 }
 
@@ -215,6 +218,7 @@ function startGame() {
     document.addEventListener('keyup', moveFrog)
 
     startPauseButton.textContent = 'Pause Game'
+    gameStatusDisplay.textContent = 'Running'
 }
 
 function pauseGame() {
@@ -227,6 +231,7 @@ function pauseGame() {
     document.removeEventListener('keyup', moveFrog)
 
     startPauseButton.textContent = 'Resume Game'
+    gameStatusDisplay.textContent = 'Paused'
 }
 
 startPauseButton.addEventListener('click', () => {
