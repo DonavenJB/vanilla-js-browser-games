@@ -1,6 +1,7 @@
 const timeLeftDisplay = document.querySelector('#time-left')
 const resultDisplay = document.querySelector('#result')
 const startPauseButton = document.querySelector('#start-pause-button')
+const resetSessionButton = document.querySelector('#reset-session-button')
 const winsDisplay = document.querySelector('#wins')
 const lossesDisplay = document.querySelector('#losses')
 const gamesPlayedDisplay = document.querySelector('#games-played')
@@ -246,5 +247,19 @@ startPauseButton.addEventListener('click', () => {
     } else {
         startGame()
     }
+})
+resetSessionButton.addEventListener('click', () => {
+    resetGame()
+
+    wins = 0
+    losses = 0
+    gamesPlayed = 0
+
+    winsDisplay.textContent = wins
+    lossesDisplay.textContent = losses
+    gamesPlayedDisplay.textContent = gamesPlayed
+
+    resultDisplay.textContent = ''
+    gameStatusDisplay.textContent = 'Ready'
 })
 console.log('working')
