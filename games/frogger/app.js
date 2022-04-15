@@ -24,6 +24,12 @@ let losses = 0
 let gamesPlayed = 0
 
 function moveFrog(e) {
+    const arrowKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']
+
+    if (!timerId || gameOver || !arrowKeys.includes(e.key)) {
+        return
+    }
+
     squares[currentIndex].classList.remove('frog')
 
     switch(e.key) {
