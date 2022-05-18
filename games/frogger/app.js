@@ -30,6 +30,8 @@ function moveFrog(e) {
         return
     }
 
+    e.preventDefault()
+
     squares[currentIndex].classList.remove('frog')
 
     switch(e.key) {
