@@ -270,4 +270,18 @@ resetSessionButton.addEventListener('click', () => {
     resultDisplay.textContent = ''
     gameStatusDisplay.textContent = 'Ready'
 })
+
+document.querySelectorAll('.move-button').forEach(button => {
+    button.addEventListener('click', () => {
+        if (!timerId || gameOver) {
+            return
+        }
+
+        document.dispatchEvent(
+            new KeyboardEvent('keyup', {
+                key: button.dataset.key
+            })
+        )
+    })
+})
 console.log('working')

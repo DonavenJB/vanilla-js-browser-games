@@ -165,3 +165,32 @@ a:hover {
         font-size: 1.6rem;
     }
 }
+/* Direction controls */
+.direction-controls {
+    width: 150px;
+    margin: 20px auto 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+}
+
+.move-button {
+    margin: 0;
+    padding: 10px;
+}
+
+.move-button.up {
+    grid-column: 2;
+}
+
+.move-button.left {
+    grid-column: 1;
+}
+
+.move-button.down {
+    grid-column: 2;
+}
+
+.move-button.right {
+    grid-column: 3;
+}
