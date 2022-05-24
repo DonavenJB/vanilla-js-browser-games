@@ -17,16 +17,8 @@ body {
     text-align: center;
 }
 
-/* Main page area */
-main,
-.container,
-.game-container,
-.wrapper {
-    width: min(900px, 100%);
-    margin: 0 auto;
-}
-
 /* Typography */
+
 h1 {
     margin: 0 0 10px;
     font-size: 2rem;
@@ -37,70 +29,140 @@ h3 {
     color: #fff;
 }
 
+h3 {
+    margin: 8px 0;
+}
+
 p {
     color: #aaa;
 }
 
-/* Frogger board */
+.score {
+    margin: 12px 0;
+}
+
+/* =========================================================
+   Frogger board
+   Exactly 9 columns x 9 rows
+   ========================================================= */
+
 .grid {
-    width: 182px;
-    height: 182px;
+    display: grid;
+    grid-template-columns: repeat(9, 28px);
+    grid-template-rows: repeat(9, 28px);
+
+    width: max-content;
+    height: max-content;
+
     margin: 30px auto;
 
-    display: flex;
-    flex-wrap: wrap;
-
     background: #181818;
-    border: 1px solid #333;
+    border: 2px solid #333;
     border-radius: 6px;
 
     overflow: hidden;
+
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
 .grid div {
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
+
+    border: 1px solid rgba(255, 255, 255, 0.035);
 }
 
-/* Goal */
-.ending-block {
-    background-color: red;
+/* =========================================================
+   Safe ground
+   ========================================================= */
+
+.grid div:nth-child(-n+18),
+.grid div:nth-child(n+37):nth-child(-n+45),
+.grid div:nth-child(n+64) {
+    background: #203a26;
 }
 
-/* Starting position */
-.starting-block {
-    background-color: blue;
+/* =========================================================
+   River
+   Rows 3 and 4
+   ========================================================= */
+
+.grid div:nth-child(n+19):nth-child(-n+36) {
+    background: #214a63;
 }
 
-/* Logs / river obstacles */
+/* Logs */
+
 .l1,
 .l2,
 .l3 {
-    background-color: brown;
+    background: #704727 !important;
 }
 
-/* Water */
+/* Open water */
+
 .l4,
 .l5 {
-    background-color: lightblue;
+    background: #214a63 !important;
 }
 
-/* Cars / road */
-.c1 {
-    background-color: black;
+/* =========================================================
+   Road
+   Rows 6 and 7
+   ========================================================= */
+
+.grid div:nth-child(n+46):nth-child(-n+63) {
+    background: #292929;
 }
+
+/* Cars */
+
+.c1 {
+    background: #b84f4f !important;
+
+    box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, 0.12);
+}
+
+/* Empty road */
 
 .c2,
 .c3 {
-    background-color: lightgrey;
+    background: #292929 !important;
 }
 
-/* Frog */
+/* =========================================================
+   Start / Goal
+   ========================================================= */
+
+.starting-block {
+    background: #294f73 !important;
+}
+
+.ending-block {
+    background: #d9a441 !important;
+
+    box-shadow:
+        inset 0 0 0 2px #f0c96b;
+}
+
+/* =========================================================
+   Frog
+   ========================================================= */
+
 .frog {
-    background-color: green;
+    background: #55b96b !important;
+    border-radius: 50%;
+
+    box-shadow:
+        inset 0 0 0 2px #8ed99d,
+        0 0 7px rgba(85, 185, 107, 0.65);
 }
 
-/* Buttons */
+/* =========================================================
+   Main buttons
+   ========================================================= */
+
 button {
     padding: 10px 18px;
     margin: 8px 5px;
@@ -124,51 +186,14 @@ button:active {
     transform: translateY(1px);
 }
 
-/* Score / timer / game messages */
-.score,
-.timer,
-.status,
-.message,
-.result {
-    color: #aaa;
-}
+/* =========================================================
+   Direction controls
+   ========================================================= */
 
-/* Links */
-a {
-    color: #aaa;
-    text-decoration: none;
-}
-
-a:hover {
-    color: #fff;
-}
-
-/* Optional Back to Games link */
-.back-link {
-    display: inline-block;
-    margin-bottom: 25px;
-    color: #aaa;
-    text-decoration: none;
-}
-
-.back-link:hover {
-    color: #fff;
-}
-
-/* Small screens */
-@media (max-width: 600px) {
-    body {
-        padding: 25px 12px;
-    }
-
-    h1 {
-        font-size: 1.6rem;
-    }
-}
-/* Direction controls */
 .direction-controls {
     width: 150px;
     margin: 20px auto 0;
+
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 6px;
@@ -193,4 +218,25 @@ a:hover {
 
 .move-button.right {
     grid-column: 3;
+}
+
+/* Links */
+
+a {
+    color: #aaa;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #fff;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 25px 12px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
 }

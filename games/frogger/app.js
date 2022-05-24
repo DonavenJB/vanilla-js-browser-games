@@ -13,7 +13,8 @@ const carsLeft = document.querySelectorAll('.car-left')
 const carsRight = document.querySelectorAll('.car-right')
 const initialSquareClasses = Array.from(squares, square => square.className)
 
-let currentIndex = 76
+const startingIndex = Array.from(squares).findIndex(square => square.classList.contains('starting-block'))
+let currentIndex = startingIndex
 const width = 9
 let timerId
 let outcomeTimerId
@@ -162,7 +163,7 @@ function resetGame() {
         squares[index].className = className
     })
 
-    currentIndex = 76
+    currentIndex = startingIndex
     currentTime = 20
     gameOver = false
 
