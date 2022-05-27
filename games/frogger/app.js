@@ -63,7 +63,10 @@ function autoMoveElements() {
 
 function checkOutComes() {
     lose()
-    win()
+
+    if (!gameOver) {
+        win()
+    }
 }
 
 function moveLogLeft(logLeft) {
@@ -174,6 +177,10 @@ function resetGame() {
 }
 
 function finishGame(message, didWin, removeFrog = false) {
+    if (gameOver) {
+        return
+    }
+
     clearInterval(timerId)
     clearInterval(outcomeTimerId)
 
