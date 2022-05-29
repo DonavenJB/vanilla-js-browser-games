@@ -53,12 +53,59 @@ function moveFrog(e) {
 }
 
 function autoMoveElements() {
+    const currentRow = Math.floor(currentIndex / width)
+
+    const ridingLeftLog =
+        currentRow === 2 &&
+        (
+            squares[currentIndex].classList.contains('l1') ||
+            squares[currentIndex].classList.contains('l2') ||
+            squares[currentIndex].classList.contains('l3')
+        )
+
+    const ridingRightLog =
+        currentRow === 3 &&
+        (
+            squares[currentIndex].classList.contains('l1') ||
+            squares[currentIndex].classList.contains('l2') ||
+            squares[currentIndex].classList.contains('l3')
+        )
+
     currentTime--
     timeLeftDisplay.textContent = currentTime
+
     logsLeft.forEach(logLeft => moveLogLeft(logLeft))
     logsRight.forEach(logRight => moveLogRight(logRight))
     carsLeft.forEach(carLeft => moveCarLeft(carLeft))
     carsRight.forEach(carRight => moveCarRight(carRight))
+
+    if (ridingLeftLog) {
+        rideLog(-1)
+    } else if (ridingRightLog) {
+        rideLog(1)
+    }
+}
+
+function rideLog(offset) {
+    const oldIndex = currentIndex
+    const nextIndex = currentIndex + offset
+
+    const oldRow = Math.floor(oldIndex / width)
+    const nextRow = Math.floor(nextIndex / width)
+
+    squares[oldIndex].classList.remove('frog')
+
+    if (
+        nextIndex < 0 ||
+        nextIndex >= squares.length ||
+        oldRow !== nextRow
+    ) {
+        finishGame('You lose!', false)
+        return
+    }
+
+    currentIndex = nextIndex
+    squares[currentIndex].classList.add('frog')
 }
 
 function checkOutComes() {
