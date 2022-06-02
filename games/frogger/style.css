@@ -240,3 +240,32 @@ a:hover {
         font-size: 1.6rem;
     }
 }
+/* =========================================================
+   Round result feedback
+   ========================================================= */
+
+#result {
+    font-weight: 700;
+}
+
+body.round-won #result {
+    color: #8ed99d;
+}
+
+body.round-lost #result {
+    color: #e58b8b;
+}
+
+body.round-won .grid {
+    border-color: #55b96b;
+    box-shadow:
+        0 0 0 1px #55b96b,
+        0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+body.round-lost .grid {
+    border-color: #b84f4f;
+    box-shadow:
+        0 0 0 1px #b84f4f,
+        0 8px 24px rgba(0, 0, 0, 0.35);
+}

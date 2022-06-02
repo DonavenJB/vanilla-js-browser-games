@@ -217,6 +217,8 @@ function resetGame() {
     currentTime = 20
     gameOver = false
 
+    document.body.classList.remove('round-won', 'round-lost')
+
     timeLeftDisplay.textContent = currentTime
     resultDisplay.textContent = ''
     startPauseButton.textContent = 'Start Game'
@@ -252,6 +254,9 @@ function finishGame(message, didWin, removeFrog = false) {
     winsDisplay.textContent = wins
     lossesDisplay.textContent = losses
     gamesPlayedDisplay.textContent = gamesPlayed
+
+    document.body.classList.remove('round-won', 'round-lost')
+    document.body.classList.add(didWin ? 'round-won' : 'round-lost')
 
     resultDisplay.textContent = message
     gameStatusDisplay.textContent = didWin ? 'Won' : 'Lost'
