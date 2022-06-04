@@ -5,6 +5,7 @@ const resetSessionButton = document.querySelector('#reset-session-button')
 const winsDisplay = document.querySelector('#wins')
 const lossesDisplay = document.querySelector('#losses')
 const gamesPlayedDisplay = document.querySelector('#games-played')
+const bestTimeDisplay = document.querySelector('#best-time')
 const gameStatusDisplay = document.querySelector('#game-status')
 const squares = document.querySelectorAll('.grid div')
 const logsLeft = document.querySelectorAll('.log-left')
@@ -23,6 +24,7 @@ let gameOver = false
 let wins = 0
 let losses = 0
 let gamesPlayed = 0
+let bestTimeRemaining = null
 
 function moveFrog(e) {
     const arrowKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']
@@ -247,6 +249,14 @@ function finishGame(message, didWin, removeFrog = false) {
 
     if (didWin) {
         wins++
+
+        if (
+            bestTimeRemaining === null ||
+            currentTime > bestTimeRemaining
+        ) {
+            bestTimeRemaining = currentTime
+            bestTimeDisplay.textContent = `${bestTimeRemaining}s`
+        }
     } else {
         losses++
     }
@@ -322,10 +332,12 @@ resetSessionButton.addEventListener('click', () => {
     wins = 0
     losses = 0
     gamesPlayed = 0
+    bestTimeRemaining = null
 
     winsDisplay.textContent = wins
     lossesDisplay.textContent = losses
     gamesPlayedDisplay.textContent = gamesPlayed
+    bestTimeDisplay.textContent = '--'
 
     resultDisplay.textContent = ''
     gameStatusDisplay.textContent = 'Ready'
