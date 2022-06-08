@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Frogger</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 
+    <a class="back-link" href="../../index.html">&larr; Back to Games</a>
+    <h1>Frogger</h1>
+
     <h3>Seconds left: <span id="time-left">20</span></h3>
-    <h3>Result: <span id="result"></span></h3>
+    <h3>Result: <span id="result" aria-live="polite"></span></h3>
 
     <p class="score">
         Wins: <span id="wins">0</span> |
@@ -21,16 +25,16 @@
     </p>
 
     <p>Use the arrow keys to reach the goal before time runs out.</p>
-    <p>Status: <span id="game-status">Ready</span></p>
+    <p>Status: <span id="game-status" aria-live="polite">Ready</span></p>
 
     <button id="start-pause-button" type="button">Start Game</button>
     <button id="reset-session-button" type="button">New Session</button>
 
     <div class="direction-controls">
-        <button class="move-button up" data-key="ArrowUp" type="button">↑</button>
-        <button class="move-button left" data-key="ArrowLeft" type="button">←</button>
-        <button class="move-button down" data-key="ArrowDown" type="button">↓</button>
-        <button class="move-button right" data-key="ArrowRight" type="button">→</button>
+        <button class="move-button up" data-key="ArrowUp" type="button" aria-label="Move up">↑</button>
+        <button class="move-button left" data-key="ArrowLeft" type="button" aria-label="Move left">←</button>
+        <button class="move-button down" data-key="ArrowDown" type="button" aria-label="Move down">↓</button>
+        <button class="move-button right" data-key="ArrowRight" type="button" aria-label="Move right">→</button>
     </div>
 
     <div class="grid">

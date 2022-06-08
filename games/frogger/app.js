@@ -356,4 +356,3 @@ document.querySelectorAll('.move-button').forEach(button => {
         )
     })
 })
-console.log('working')
