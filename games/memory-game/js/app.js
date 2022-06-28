@@ -55,11 +55,14 @@ const MATCHED_CARD = 'images/favicon.jpg'
 cardArray.sort(() => 0.5 - Math.random())
 
 const gridDisplay = document.querySelector('#grid')
-const resultDisplay = document.querySelector('#result')
+const matchesDisplay = document.querySelector('#matches')
+const attemptsDisplay = document.querySelector('#attempts')
+const messageDisplay = document.querySelector('#message')
 
 let cardsChosen = []
 let cardsChosenIds = []
 let boardLocked = false
+let attempts = 0
 
 const cardsWon = []
 
@@ -76,7 +79,8 @@ function createBoard() {
         gridDisplay.appendChild(card)
     }
 
-    resultDisplay.textContent = '0'
+    matchesDisplay.textContent = '0'
+    attemptsDisplay.textContent = '0'
 }
 
 function checkMatch() {
@@ -84,6 +88,9 @@ function checkMatch() {
 
     const optionOneId = Number(cardsChosenIds[0])
     const optionTwoId = Number(cardsChosenIds[1])
+
+    attempts++
+    attemptsDisplay.textContent = attempts
 
     if (cardsChosen[0] === cardsChosen[1]) {
         cards[optionOneId].setAttribute('src', MATCHED_CARD)
@@ -98,14 +105,14 @@ function checkMatch() {
         cards[optionTwoId].setAttribute('src', CARD_BACK)
     }
 
-    resultDisplay.textContent = cardsWon.length
+    matchesDisplay.textContent = cardsWon.length
 
     cardsChosen = []
     cardsChosenIds = []
     boardLocked = false
 
     if (cardsWon.length === cardArray.length / 2) {
-        resultDisplay.textContent = 'YOU FOUND THEM ALL'
+        messageDisplay.textContent = 'You found them all!'
     }
 }
 
