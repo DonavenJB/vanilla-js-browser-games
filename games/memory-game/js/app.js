@@ -58,15 +58,43 @@ const gridDisplay = document.querySelector('#grid')
 const matchesDisplay = document.querySelector('#matches')
 const attemptsDisplay = document.querySelector('#attempts')
 const messageDisplay = document.querySelector('#message')
+const newGameButton = document.querySelector('#new-game-button')
 
 let cardsChosen = []
 let cardsChosenIds = []
 let boardLocked = false
 let attempts = 0
+let matchTimerId = null
 
-const cardsWon = []
+let cardsWon = []
 
-function createBoard() {
+function function newGame() {
+    if (matchTimerId) {
+        clearTimeout(matchTimerId)
+        matchTimerId = null
+    }
+
+    gridDisplay.innerHTML = ''
+
+    cardsChosen = []
+    cardsChosenIds = []
+    cardsWon = []
+
+    boardLocked = false
+    attempts = 0
+
+    matchesDisplay.textContent = '0'
+    attemptsDisplay.textContent = '0'
+    messageDisplay.textContent = ''
+
+    cardArray.sort(() => 0.5 - Math.random())
+
+    createBoard()
+}
+
+newGameButton.addEventListener('click', newGame)
+
+createBoard() {
     for (let i = 0; i < cardArray.length; i++) {
         const card = document.createElement('img')
 
@@ -84,6 +112,8 @@ function createBoard() {
 }
 
 function checkMatch() {
+    matchTimerId = null
+
     const cards = document.querySelectorAll('#grid img')
 
     const optionOneId = Number(cardsChosenIds[0])
@@ -134,8 +164,34 @@ function flipCard() {
 
     if (cardsChosen.length === 2) {
         boardLocked = true
-        setTimeout(checkMatch, 650)
+        matchTimerId = setTimeout(checkMatch, 650)
     }
 }
+
+function newGame() {
+    if (matchTimerId) {
+        clearTimeout(matchTimerId)
+        matchTimerId = null
+    }
+
+    gridDisplay.innerHTML = ''
+
+    cardsChosen = []
+    cardsChosenIds = []
+    cardsWon = []
+
+    boardLocked = false
+    attempts = 0
+
+    matchesDisplay.textContent = '0'
+    attemptsDisplay.textContent = '0'
+    messageDisplay.textContent = ''
+
+    cardArray.sort(() => 0.5 - Math.random())
+
+    createBoard()
+}
+
+newGameButton.addEventListener('click', newGame)
 
 createBoard()
