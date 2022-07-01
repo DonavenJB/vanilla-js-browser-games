@@ -62,39 +62,13 @@ const newGameButton = document.querySelector('#new-game-button')
 
 let cardsChosen = []
 let cardsChosenIds = []
+let cardsWon = []
+
 let boardLocked = false
 let attempts = 0
 let matchTimerId = null
 
-let cardsWon = []
-
-function function newGame() {
-    if (matchTimerId) {
-        clearTimeout(matchTimerId)
-        matchTimerId = null
-    }
-
-    gridDisplay.innerHTML = ''
-
-    cardsChosen = []
-    cardsChosenIds = []
-    cardsWon = []
-
-    boardLocked = false
-    attempts = 0
-
-    matchesDisplay.textContent = '0'
-    attemptsDisplay.textContent = '0'
-    messageDisplay.textContent = ''
-
-    cardArray.sort(() => 0.5 - Math.random())
-
-    createBoard()
-}
-
-newGameButton.addEventListener('click', newGame)
-
-createBoard() {
+function createBoard() {
     for (let i = 0; i < cardArray.length; i++) {
         const card = document.createElement('img')
 
