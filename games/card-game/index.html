@@ -1,31 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-    	<meta charset="utf-8">
-    	<meta name="description" content="This is where your description goes">
-    	<meta name="keywords" content="one, two, three">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		<title>Title in the tab</title>
+    <title>Card Game</title>
 
-		<!-- external CSS link -->
-		<link rel="stylesheet" href="css/style.css">
-	</head>
-	<body>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
-        <a class="back-link" href="../../index.html">&larr; Back to Games</a>
+    <main class="game-shell">
 
+        <a class="back-link" href="../../index.html">
+            &larr; Back to Games
+        </a>
 
-		<button type="button" name="button">Draw Cards</button>
+        <h1>Card Game</h1>
 
-        <h2>Player 1</h2>
-        <img id='player1' src="" alt="">
+        <p class="instructions">
+            Draw two cards. The higher card wins the round.
+            Aces are high.
+        </p>
 
-        <h2 >Player 2</h2>
-        <img id='player2' src="" alt="">
+        <p class="status">
+            Status:
+            <span id="game-status" aria-live="polite">
+                Shuffling deck...
+            </span>
+        </p>
 
-        <h3>Who Won?</h3>
+        <button id="draw-button" type="button" disabled>
+            Draw Cards
+        </button>
 
-		<script type="text/javascript" src="js/main.js"></script>
-	</body>
+        <section class="players">
+
+            <article class="player">
+                <h2>Player 1</h2>
+
+                <div class="card-slot">
+                    <img
+                        id="player1"
+                        class="card-image"
+                        alt=""
+                    >
+                </div>
+            </article>
+
+            <article class="player">
+                <h2>Player 2</h2>
+
+                <div class="card-slot">
+                    <img
+                        id="player2"
+                        class="card-image"
+                        alt=""
+                    >
+                </div>
+            </article>
+
+        </section>
+
+        <h3 id="result" aria-live="polite">
+            Waiting for the first draw.
+        </h3>
+
+    </main>
+
+    <script src="js/main.js"></script>
+
+</body>
 </html>

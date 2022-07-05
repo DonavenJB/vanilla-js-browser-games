@@ -11,111 +11,141 @@ body {
 body {
     min-height: 100vh;
     padding: 40px 20px;
+
     font-family: Arial, sans-serif;
+
     background: #111;
     color: #fff;
+
     text-align: center;
 }
 
-/* Main content */
-main,
-.container,
-.game-container,
-.wrapper {
-    width: min(900px, 100%);
+.game-shell {
+    width: min(760px, 100%);
     margin: 0 auto;
 }
 
-/* Typography */
+.back-link {
+    display: block;
+    width: max-content;
+
+    margin: 0 auto 25px;
+
+    color: #aaa;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    color: #fff;
+}
+
 h1 {
     margin: 0 0 10px;
     font-size: 2rem;
 }
 
-h2,
-h3 {
-    color: #fff;
+.instructions {
+    max-width: 520px;
+
+    margin: 0 auto 18px;
+
+    color: #aaa;
+    line-height: 1.5;
 }
 
-p {
+.status {
+    margin: 0 0 15px;
     color: #aaa;
 }
 
-/* Game areas */
-.game,
-.board,
-.game-board,
-.cards,
-.card-container {
-    margin: 30px auto;
-}
-
-/* Individual cards */
-.card {
-    background: #181818;
+#game-status {
     color: #fff;
-    border: 1px solid #333;
-    border-radius: 6px;
 }
 
-/* Buttons */
 button {
     padding: 10px 18px;
     margin: 5px;
+
     font: inherit;
     color: #fff;
+
     background: #181818;
+
     border: 1px solid #333;
     border-radius: 6px;
+
     cursor: pointer;
 }
 
-button:hover {
+button:hover:not(:disabled) {
     background: #222;
     border-color: #555;
 }
 
-button:active {
+button:active:not(:disabled) {
     transform: translateY(1px);
 }
 
-/* Inputs */
-input,
-select {
-    padding: 9px 12px;
-    font: inherit;
-    color: #fff;
+button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.players {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    gap: 60px;
+
+    margin: 30px auto 25px;
+}
+
+.player {
+    width: 200px;
+}
+
+.player h2 {
+    margin: 0 0 15px;
+}
+
+.card-slot {
+    width: 180px;
+    height: 252px;
+
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     background: #181818;
+
     border: 1px solid #333;
-    border-radius: 6px;
+    border-radius: 10px;
 }
 
-/* Scores / status */
-.score,
-.scores,
-.status,
-.message,
-.result {
-    color: #aaa;
+.card-image {
+    display: block;
+
+    width: 176px;
+    max-height: 248px;
+
+    border-radius: 8px;
 }
 
-/* Links */
-a {
-    color: #aaa;
-    text-decoration: none;
+.card-image:not([src]) {
+    visibility: hidden;
 }
 
-a:hover {
+#result {
+    min-height: 30px;
+    margin: 0;
+
     color: #fff;
 }
 
-/* Images */
-img {
-    max-width: 100%;
-}
-
-/* Small-screen cleanup */
-@media (max-width: 600px) {
+@media (max-width: 560px) {
     body {
         padding: 25px 12px;
     }
@@ -123,15 +153,22 @@ img {
     h1 {
         font-size: 1.6rem;
     }
-}
-/* Collection navigation */
-.back-link {
-    display: inline-block;
-    margin-bottom: 20px;
-    color: #aaa;
-    text-decoration: none;
-}
 
-.back-link:hover {
-    color: #fff;
+    .players {
+        gap: 18px;
+    }
+
+    .player {
+        width: 145px;
+    }
+
+    .card-slot {
+        width: 138px;
+        height: 193px;
+    }
+
+    .card-image {
+        width: 134px;
+        max-height: 189px;
+    }
 }
