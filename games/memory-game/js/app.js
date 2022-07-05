@@ -103,10 +103,19 @@ function checkMatch() {
         cards[optionOneId].removeEventListener('click', flipCard)
         cards[optionTwoId].removeEventListener('click', flipCard)
 
+        cards[optionOneId].classList.add('matched')
+        cards[optionTwoId].classList.add('matched')
+
         cardsWon.push(cardsChosen)
+
+        messageDisplay.textContent = 'Match found!'
+        messageDisplay.className = 'match-message'
     } else {
         cards[optionOneId].setAttribute('src', CARD_BACK)
         cards[optionTwoId].setAttribute('src', CARD_BACK)
+
+        messageDisplay.textContent = 'No match - try again.'
+        messageDisplay.className = 'miss-message'
     }
 
     matchesDisplay.textContent = cardsWon.length
@@ -117,6 +126,7 @@ function checkMatch() {
 
     if (cardsWon.length === cardArray.length / 2) {
         messageDisplay.textContent = 'You found them all!'
+        messageDisplay.className = 'match-message'
     }
 }
 
@@ -129,6 +139,11 @@ function flipCard() {
 
     if (cardsChosenIds.includes(cardId)) {
         return
+    }
+
+    if (cardsChosen.length === 0) {
+        messageDisplay.textContent = ''
+        messageDisplay.className = ''
     }
 
     cardsChosen.push(cardArray[cardId].name)
@@ -160,6 +175,7 @@ function newGame() {
     matchesDisplay.textContent = '0'
     attemptsDisplay.textContent = '0'
     messageDisplay.textContent = ''
+    messageDisplay.className = ''
 
     cardArray.sort(() => 0.5 - Math.random())
 

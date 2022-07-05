@@ -144,3 +144,19 @@ h3 {
     margin: 0 0 15px;
     font-weight: bold;
 }
+
+/* Round feedback */
+#grid img.matched {
+    opacity: 0.55;
+    cursor: default;
+    border-color: #55b96b;
+    transform: none;
+}
+
+#message.match-message {
+    color: #8ed99d;
+}
+
+#message.miss-message {
+    color: #e58b8b;
+}
