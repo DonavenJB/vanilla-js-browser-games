@@ -57,6 +57,7 @@ cardArray.sort(() => 0.5 - Math.random())
 const gridDisplay = document.querySelector('#grid')
 const matchesDisplay = document.querySelector('#matches')
 const attemptsDisplay = document.querySelector('#attempts')
+const bestAttemptsDisplay = document.querySelector('#best-attempts')
 const messageDisplay = document.querySelector('#message')
 const newGameButton = document.querySelector('#new-game-button')
 
@@ -66,6 +67,7 @@ let cardsWon = []
 
 let boardLocked = false
 let attempts = 0
+let bestAttempts = null
 let matchTimerId = null
 
 function createBoard() {
@@ -125,6 +127,11 @@ function checkMatch() {
     boardLocked = false
 
     if (cardsWon.length === cardArray.length / 2) {
+        if (bestAttempts === null || attempts < bestAttempts) {
+            bestAttempts = attempts
+            bestAttemptsDisplay.textContent = bestAttempts
+        }
+
         messageDisplay.textContent = 'You found them all!'
         messageDisplay.className = 'match-message'
     }
