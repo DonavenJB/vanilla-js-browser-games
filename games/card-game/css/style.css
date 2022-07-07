@@ -172,3 +172,42 @@ button:disabled {
         max-height: 189px;
     }
 }
+/* Scoreboard */
+.scoreboard {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(90px, 1fr));
+
+    gap: 8px;
+
+    max-width: 520px;
+
+    margin: 22px auto 0;
+}
+
+.score-item {
+    padding: 12px 8px;
+
+    background: #181818;
+
+    border: 1px solid #333;
+    border-radius: 6px;
+}
+
+.score-item span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #aaa;
+    font-size: 0.85rem;
+}
+
+.score-item strong {
+    font-size: 1.15rem;
+}
+
+@media (max-width: 560px) {
+    .scoreboard {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

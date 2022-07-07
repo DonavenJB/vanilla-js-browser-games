@@ -7,6 +7,23 @@ const player2Card = document.querySelector('#player2')
 const resultDisplay = document.querySelector('#result')
 const statusDisplay = document.querySelector('#game-status')
 
+const player1WinsDisplay =
+    document.querySelector('#player1-wins')
+
+const player2WinsDisplay =
+    document.querySelector('#player2-wins')
+
+const warsDisplay =
+    document.querySelector('#wars')
+
+const roundsDisplay =
+    document.querySelector('#rounds')
+
+let player1Wins = 0
+let player2Wins = 0
+let wars = 0
+let rounds = 0
+
 function createDeck() {
     drawing = true
     drawButton.disabled = true
@@ -87,14 +104,29 @@ function drawCards() {
             player2Card.alt =
                 `${player2.value} of ${player2.suit}`
 
+            rounds++
+
             if (val1 > val2) {
-                resultDisplay.textContent = 'Player 1 wins!'
+                player1Wins++
+
+                resultDisplay.textContent =
+                    'Player 1 wins!'
             } else if (val1 < val2) {
-                resultDisplay.textContent = 'Player 2 wins!'
+                player2Wins++
+
+                resultDisplay.textContent =
+                    'Player 2 wins!'
             } else {
+                wars++
+
                 resultDisplay.textContent =
                     'WAR! Same rank - draw again.'
             }
+
+            player1WinsDisplay.textContent = player1Wins
+            player2WinsDisplay.textContent = player2Wins
+            warsDisplay.textContent = wars
+            roundsDisplay.textContent = rounds
 
             statusDisplay.textContent = 'Round complete'
         })
