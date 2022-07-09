@@ -77,14 +77,25 @@ function createBoard() {
         card.setAttribute('src', CARD_BACK)
         card.setAttribute('data-id', i)
         card.setAttribute('alt', 'Hidden memory card')
+        card.setAttribute('aria-label', 'Hidden memory card')
+        card.setAttribute('role', 'button')
+        card.setAttribute('tabindex', '0')
 
         card.addEventListener('click', flipCard)
+        card.addEventListener('keydown', handleCardKey)
 
         gridDisplay.appendChild(card)
     }
 
     matchesDisplay.textContent = '0'
     attemptsDisplay.textContent = '0'
+}
+
+function handleCardKey(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        flipCard.call(this)
+    }
 }
 
 function checkMatch() {
@@ -102,8 +113,19 @@ function checkMatch() {
         cards[optionOneId].setAttribute('src', MATCHED_CARD)
         cards[optionTwoId].setAttribute('src', MATCHED_CARD)
 
+        cards[optionOneId].setAttribute('alt', `Matched ${cardsChosen[0]} card`)
+        cards[optionTwoId].setAttribute('alt', `Matched ${cardsChosen[1]} card`)
+        cards[optionOneId].setAttribute('aria-label', `Matched ${cardsChosen[0]} card`)
+        cards[optionTwoId].setAttribute('aria-label', `Matched ${cardsChosen[1]} card`)
+        cards[optionOneId].setAttribute('aria-disabled', 'true')
+        cards[optionTwoId].setAttribute('aria-disabled', 'true')
+        cards[optionOneId].setAttribute('tabindex', '-1')
+        cards[optionTwoId].setAttribute('tabindex', '-1')
+
         cards[optionOneId].removeEventListener('click', flipCard)
         cards[optionTwoId].removeEventListener('click', flipCard)
+        cards[optionOneId].removeEventListener('keydown', handleCardKey)
+        cards[optionTwoId].removeEventListener('keydown', handleCardKey)
 
         cards[optionOneId].classList.add('matched')
         cards[optionTwoId].classList.add('matched')
@@ -115,6 +137,10 @@ function checkMatch() {
     } else {
         cards[optionOneId].setAttribute('src', CARD_BACK)
         cards[optionTwoId].setAttribute('src', CARD_BACK)
+        cards[optionOneId].setAttribute('alt', 'Hidden memory card')
+        cards[optionTwoId].setAttribute('alt', 'Hidden memory card')
+        cards[optionOneId].setAttribute('aria-label', 'Hidden memory card')
+        cards[optionTwoId].setAttribute('aria-label', 'Hidden memory card')
 
         messageDisplay.textContent = 'No match - try again.'
         messageDisplay.className = 'miss-message'
@@ -131,6 +157,8 @@ function checkMatch() {
             bestAttempts = attempts
             bestAttemptsDisplay.textContent = bestAttempts
         }
+
+        document.body.classList.add('game-complete')
 
         messageDisplay.textContent = 'You found them all!'
         messageDisplay.className = 'match-message'
@@ -157,6 +185,8 @@ function flipCard() {
     cardsChosenIds.push(cardId)
 
     this.setAttribute('src', cardArray[cardId].img)
+    this.setAttribute('alt', `${cardArray[cardId].name} card`)
+    this.setAttribute('aria-label', `${cardArray[cardId].name} card`)
 
     if (cardsChosen.length === 2) {
         boardLocked = true
@@ -169,6 +199,8 @@ function newGame() {
         clearTimeout(matchTimerId)
         matchTimerId = null
     }
+
+    document.body.classList.remove('game-complete')
 
     gridDisplay.innerHTML = ''
 

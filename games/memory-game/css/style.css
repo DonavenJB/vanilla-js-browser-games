@@ -160,3 +160,34 @@ h3 {
 #message.miss-message {
     color: #e58b8b;
 }
+
+/* Final interface cleanup */
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.stats h3 {
+    margin: 0;
+}
+
+#grid img[aria-disabled="true"] {
+    pointer-events: none;
+}
+
+.back-link:focus-visible,
+#new-game-button:focus-visible,
+#grid img:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+}
+
+body.game-complete #grid {
+    border-color: #55b96b;
+    box-shadow:
+        0 0 0 1px #55b96b,
+        0 8px 24px rgba(0, 0, 0, 0.35);
+}
