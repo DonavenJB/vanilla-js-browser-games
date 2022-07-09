@@ -1,11 +1,33 @@
 let deckId = ''
+let remainingCards = 0
+
+let player1Wins = 0
+let player2Wins = 0
+let wars = 0
+let rounds = 0
+
 let drawing = false
 
-const drawButton = document.querySelector('#draw-button')
-const player1Card = document.querySelector('#player1')
-const player2Card = document.querySelector('#player2')
-const resultDisplay = document.querySelector('#result')
-const statusDisplay = document.querySelector('#game-status')
+const drawButton =
+    document.querySelector('#draw-button')
+
+const newGameButton =
+    document.querySelector('#new-game-button')
+
+const player1Card =
+    document.querySelector('#player1')
+
+const player2Card =
+    document.querySelector('#player2')
+
+const resultDisplay =
+    document.querySelector('#result')
+
+const statusDisplay =
+    document.querySelector('#game-status')
+
+const remainingDisplay =
+    document.querySelector('#remaining-cards')
 
 const player1WinsDisplay =
     document.querySelector('#player1-wins')
@@ -19,16 +41,50 @@ const warsDisplay =
 const roundsDisplay =
     document.querySelector('#rounds')
 
-let player1Wins = 0
-let player2Wins = 0
-let wars = 0
-let rounds = 0
+function updateScoreboard() {
+    player1WinsDisplay.textContent = player1Wins
+    player2WinsDisplay.textContent = player2Wins
+    warsDisplay.textContent = wars
+    roundsDisplay.textContent = rounds
 
-function createDeck() {
+    remainingDisplay.textContent = remainingCards
+}
+
+function resetSessionDisplay() {
+    player1Card.removeAttribute('src')
+    player2Card.removeAttribute('src')
+
+    player1Card.alt = ''
+    player2Card.alt = ''
+
+    resultDisplay.textContent =
+        'Waiting for the first draw.'
+}
+
+function createDeck(resetScores = false) {
     drawing = true
+    deckId = ''
+
     drawButton.disabled = true
+    newGameButton.disabled = true
 
     statusDisplay.textContent = 'Shuffling deck...'
+    remainingDisplay.textContent = '--'
+
+    if (resetScores) {
+        player1Wins = 0
+        player2Wins = 0
+        wars = 0
+        rounds = 0
+        remainingCards = 0
+
+        player1WinsDisplay.textContent = '0'
+        player2WinsDisplay.textContent = '0'
+        warsDisplay.textContent = '0'
+        roundsDisplay.textContent = '0'
+
+        resetSessionDisplay()
+    }
 
     fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
         .then(res => {
@@ -44,9 +100,11 @@ function createDeck() {
             }
 
             deckId = data.deck_id
+            remainingCards = data.remaining
+
+            updateScoreboard()
 
             statusDisplay.textContent = 'Ready'
-            resultDisplay.textContent = 'Waiting for the first draw.'
 
             drawButton.disabled = false
         })
@@ -55,21 +113,31 @@ function createDeck() {
 
             deckId = ''
 
-            statusDisplay.textContent = 'Unable to load deck'
-            resultDisplay.textContent = 'Please refresh and try again.'
+            statusDisplay.textContent =
+                'Unable to load deck'
+
+            resultDisplay.textContent =
+                'Use New Game to try again.'
         })
         .finally(() => {
             drawing = false
+            newGameButton.disabled = false
         })
 }
 
 function drawCards() {
-    if (drawing || !deckId) {
+    if (
+        drawing ||
+        !deckId ||
+        remainingCards < 2
+    ) {
         return
     }
 
     drawing = true
+
     drawButton.disabled = true
+    newGameButton.disabled = true
 
     statusDisplay.textContent = 'Drawing...'
 
@@ -85,15 +153,23 @@ function drawCards() {
             return res.json()
         })
         .then(data => {
-            if (!data.success || data.cards.length < 2) {
-                throw new Error('Unable to draw two cards.')
+            if (
+                !data.success ||
+                data.cards.length < 2
+            ) {
+                throw new Error(
+                    'Unable to draw two cards.'
+                )
             }
 
             const player1 = data.cards[0]
             const player2 = data.cards[1]
 
-            const val1 = cardValue(player1.value)
-            const val2 = cardValue(player2.value)
+            const val1 =
+                cardValue(player1.value)
+
+            const val2 =
+                cardValue(player2.value)
 
             player1Card.src = player1.image
             player2Card.src = player2.image
@@ -105,6 +181,7 @@ function drawCards() {
                 `${player2.value} of ${player2.suit}`
 
             rounds++
+            remainingCards = data.remaining
 
             if (val1 > val2) {
                 player1Wins++
@@ -123,17 +200,21 @@ function drawCards() {
                     'WAR! Same rank - draw again.'
             }
 
-            player1WinsDisplay.textContent = player1Wins
-            player2WinsDisplay.textContent = player2Wins
-            warsDisplay.textContent = wars
-            roundsDisplay.textContent = rounds
+            updateScoreboard()
 
-            statusDisplay.textContent = 'Round complete'
+            if (remainingCards < 2) {
+                statusDisplay.textContent =
+                    'Deck complete - start a New Game.'
+            } else {
+                statusDisplay.textContent =
+                    'Round complete'
+            }
         })
         .catch(err => {
             console.error(err)
 
-            statusDisplay.textContent = 'Draw failed'
+            statusDisplay.textContent =
+                'Draw failed'
 
             resultDisplay.textContent =
                 'Something went wrong. Try again.'
@@ -141,10 +222,20 @@ function drawCards() {
         .finally(() => {
             drawing = false
 
-            if (deckId) {
-                drawButton.disabled = false
-            }
+            newGameButton.disabled = false
+
+            drawButton.disabled =
+                !deckId ||
+                remainingCards < 2
         })
+}
+
+function newGame() {
+    if (drawing) {
+        return
+    }
+
+    createDeck(true)
 }
 
 function cardValue(value) {
@@ -158,6 +249,14 @@ function cardValue(value) {
     return faceValues[value.toUpperCase()] || Number(value)
 }
 
-drawButton.addEventListener('click', drawCards)
+drawButton.addEventListener(
+    'click',
+    drawCards
+)
 
-createDeck()
+newGameButton.addEventListener(
+    'click',
+    newGame
+)
+
+createDeck(true)

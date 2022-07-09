@@ -211,3 +211,21 @@ button:disabled {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+/* Session controls */
+.controls {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    gap: 5px;
+}
+
+.deck-status {
+    margin: 10px 0 0;
+
+    color: #aaa;
+}
+
+#remaining-cards {
+    color: #fff;
+}
