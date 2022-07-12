@@ -229,3 +229,61 @@ button:disabled {
 #remaining-cards {
     color: #fff;
 }
+/* Round result feedback */
+.result-panel {
+    max-width: 420px;
+
+    margin: 0 auto;
+    padding: 15px;
+
+    background: #181818;
+
+    border: 1px solid #333;
+    border-radius: 6px;
+}
+
+.result-label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #777;
+    font-size: 0.8rem;
+
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.result-panel #result {
+    margin: 0;
+}
+
+body.player-one-win .result-panel {
+    border-color: #55b96b;
+}
+
+body.player-two-win .result-panel {
+    border-color: #5f87c9;
+}
+
+body.war-round .result-panel {
+    border-color: #d9a441;
+}
+
+body.player-one-win #result {
+    color: #8ed99d;
+}
+
+body.player-two-win #result {
+    color: #8eb4e8;
+}
+
+body.war-round #result {
+    color: #f0c96b;
+}
+
+.back-link:focus-visible,
+button:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+}

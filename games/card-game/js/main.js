@@ -41,6 +41,14 @@ const warsDisplay =
 const roundsDisplay =
     document.querySelector('#rounds')
 
+function clearRoundState() {
+    document.body.classList.remove(
+        'player-one-win',
+        'player-two-win',
+        'war-round'
+    )
+}
+
 function updateScoreboard() {
     player1WinsDisplay.textContent = player1Wins
     player2WinsDisplay.textContent = player2Wins
@@ -51,6 +59,10 @@ function updateScoreboard() {
 }
 
 function resetSessionDisplay() {
+    clearRoundState()
+
+    drawButton.textContent = 'Draw Cards'
+
     player1Card.removeAttribute('src')
     player2Card.removeAttribute('src')
 
@@ -183,28 +195,57 @@ function drawCards() {
             rounds++
             remainingCards = data.remaining
 
+            clearRoundState()
+            drawButton.textContent = 'Draw Cards'
+
             if (val1 > val2) {
                 player1Wins++
 
+                document.body.classList.add(
+                    'player-one-win'
+                )
+
                 resultDisplay.textContent =
-                    'Player 1 wins!'
+                    'Player 1 wins the round!'
             } else if (val1 < val2) {
                 player2Wins++
 
+                document.body.classList.add(
+                    'player-two-win'
+                )
+
                 resultDisplay.textContent =
-                    'Player 2 wins!'
+                    'Player 2 wins the round!'
             } else {
                 wars++
 
+                document.body.classList.add(
+                    'war-round'
+                )
+
                 resultDisplay.textContent =
                     'WAR! Same rank - draw again.'
+
+                drawButton.textContent =
+                    'Draw Again'
             }
 
             updateScoreboard()
 
             if (remainingCards < 2) {
-                statusDisplay.textContent =
-                    'Deck complete - start a New Game.'
+                drawButton.textContent =
+                    'Deck Complete'
+
+                if (player1Wins > player2Wins) {
+                    statusDisplay.textContent =
+                        `Session complete: Player 1 wins ${player1Wins}-${player2Wins}.`
+                } else if (player2Wins > player1Wins) {
+                    statusDisplay.textContent =
+                        `Session complete: Player 2 wins ${player2Wins}-${player1Wins}.`
+                } else {
+                    statusDisplay.textContent =
+                        'Session complete: overall tie.'
+                }
             } else {
                 statusDisplay.textContent =
                     'Round complete'
