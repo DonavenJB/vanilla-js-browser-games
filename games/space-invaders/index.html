@@ -1,16 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Space Invaders</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        
-        <h1 class="result">test</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Space Invaders</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="game-shell">
+
+        <a class="back-link" href="../../index.html">
+            &larr; Back to Games
+        </a>
+
+        <h1>Space Invaders</h1>
+
+        <p class="instructions">
+            Use the left and right arrow keys to move.
+            Press the up arrow to fire.
+        </p>
+
+        <p class="score">
+            Score:
+            <span class="results">0</span>
+        </p>
+
         <div class="grid"></div>
 
-        <script type="text/javascript" src="app.js"></script>
-    </body>
+    </main>
+
+    <script src="app.js"></script>
+
+</body>
 </html>
