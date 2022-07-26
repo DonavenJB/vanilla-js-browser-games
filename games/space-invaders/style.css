@@ -67,13 +67,14 @@ h1 {
 
 /* Game board */
 .grid {
-    width: 302px;
-    height: 302px;
+    display: grid;
+    grid-template-columns: repeat(15, 20px);
+    grid-template-rows: repeat(15, 20px);
+
+    width: max-content;
+    height: max-content;
 
     margin: 0 auto;
-
-    display: flex;
-    flex-wrap: wrap;
 
     background: #181818;
 
