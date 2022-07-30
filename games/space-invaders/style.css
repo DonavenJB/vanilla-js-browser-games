@@ -118,3 +118,55 @@ h1 {
         font-size: 1.6rem;
     }
 }
+
+/* Game controls */
+.game-info {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+
+    margin-bottom: 15px;
+}
+
+.game-info p {
+    margin: 0;
+}
+
+.status {
+    color: #aaa;
+}
+
+#game-status {
+    color: #fff;
+    font-weight: bold;
+}
+
+#start-pause-button {
+    margin: 0 0 20px;
+    padding: 10px 18px;
+
+    font: inherit;
+    color: #fff;
+
+    background: #181818;
+
+    border: 1px solid #444;
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+#start-pause-button:hover:not(:disabled) {
+    background: #222;
+    border-color: #666;
+}
+
+#start-pause-button:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+#start-pause-button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}

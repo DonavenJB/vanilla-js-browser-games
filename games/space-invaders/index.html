@@ -23,10 +23,21 @@
             Press the up arrow to fire.
         </p>
 
-        <p class="score">
-            Score:
-            <span class="results">0</span>
-        </p>
+        <div class="game-info">
+            <p class="score">
+                Score:
+                <span class="results">0</span>
+            </p>
+
+            <p class="status">
+                Status:
+                <span id="game-status" aria-live="polite">Ready</span>
+            </p>
+        </div>
+
+        <button id="start-pause-button" type="button">
+            Start Game
+        </button>
 
         <div class="grid"></div>
 
