@@ -1,6 +1,8 @@
 const grid = document.querySelector('.grid')
 const resultsDisplay = document.querySelector('.results')
+const invadersLeftDisplay = document.querySelector('#invaders-left')
 const gameStatusDisplay = document.querySelector('#game-status')
+const gameMessageDisplay = document.querySelector('#game-message')
 const startPauseButton = document.querySelector('#start-pause-button')
 
 let currentShooterIndex = 202
@@ -63,6 +65,7 @@ function startGame() {
   )
 
   gameStatusDisplay.textContent = 'Running'
+  gameMessageDisplay.textContent = 'Destroy all 30 invaders!'
   startPauseButton.textContent = 'Pause Game'
 }
 
@@ -77,6 +80,7 @@ function pauseGame() {
   isRunning = false
 
   gameStatusDisplay.textContent = 'Paused'
+  gameMessageDisplay.textContent = 'Game paused.'
   startPauseButton.textContent = 'Resume Game'
 }
 
@@ -91,14 +95,21 @@ function endGame(message) {
   clearInterval(invadersId)
   invadersId = null
 
-  resultsDisplay.textContent = message
-
   gameStatusDisplay.textContent =
     message === 'YOU WIN'
       ? 'Won'
       : 'Game Over'
 
-  startPauseButton.textContent = 'Game Over'
+  gameMessageDisplay.textContent =
+    message === 'YOU WIN'
+      ? 'YOU WIN!'
+      : 'GAME OVER'
+
+  startPauseButton.textContent =
+    message === 'YOU WIN'
+      ? 'You Win'
+      : 'Game Over'
+
   startPauseButton.disabled = true
 }
 
@@ -292,6 +303,12 @@ function shoot(e) {
 
         resultsDisplay.textContent =
           results
+
+        invadersLeftDisplay.textContent =
+          alienInvaders.length - aliensRemoved.length
+
+        gameMessageDisplay.textContent =
+          'Nice shot!'
       }
 
       if (
