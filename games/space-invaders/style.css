@@ -192,3 +192,41 @@ h1 {
 body:has(#game-status:not(:empty)) .game-message {
     transition: color 0.15s ease;
 }
+
+/* Replay controls */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    margin-bottom: 20px;
+}
+
+.controls #start-pause-button,
+.controls #new-game-button {
+    margin: 0;
+}
+
+#new-game-button {
+    padding: 10px 18px;
+
+    font: inherit;
+    color: #fff;
+
+    background: #181818;
+
+    border: 1px solid #444;
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+#new-game-button:hover {
+    background: #222;
+    border-color: #666;
+}
+
+#new-game-button:active {
+    transform: translateY(1px);
+}
