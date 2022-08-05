@@ -18,6 +18,11 @@ const startPauseButton =
 const newGameButton =
   document.querySelector('#new-game-button')
 
+const directionButtons =
+  document.querySelectorAll(
+    '.direction-controls button'
+  )
+
 const width = 15
 const startingShooterIndex = 202
 
@@ -55,6 +60,14 @@ for (let i = 0; i < 225; i++) {
 const squares = Array.from(
   document.querySelectorAll('.grid div')
 )
+
+function updateControlButtons() {
+  directionButtons.forEach(button => {
+    button.disabled =
+      !isRunning ||
+      gameOver
+  })
+}
 
 function draw() {
   for (
@@ -133,6 +146,8 @@ function startGame() {
 
   startPauseButton.textContent =
     'Pause Game'
+
+  updateControlButtons()
 }
 
 function pauseGame() {
@@ -153,6 +168,8 @@ function pauseGame() {
 
   startPauseButton.textContent =
     'Resume Game'
+
+  updateControlButtons()
 }
 
 function endGame(message) {
@@ -184,6 +201,8 @@ function endGame(message) {
       : 'Game Over'
 
   startPauseButton.disabled = true
+
+  updateControlButtons()
 }
 
 function resetGame() {
@@ -223,6 +242,8 @@ function resetGame() {
     'Start Game'
 
   startPauseButton.disabled = false
+
+  updateControlButtons()
 
   draw()
 
@@ -480,6 +501,23 @@ newGameButton.addEventListener(
   'click',
   resetGame
 )
+
+directionButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    if (!isRunning || gameOver) {
+      return
+    }
+
+    document.dispatchEvent(
+      new KeyboardEvent(
+        'keydown',
+        {
+          key: button.dataset.key
+        }
+      )
+    )
+  })
+})
 
 document.addEventListener(
   'keydown',

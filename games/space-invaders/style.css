@@ -230,3 +230,55 @@ body:has(#game-status:not(:empty)) .game-message {
 #new-game-button:active {
     transform: translateY(1px);
 }
+
+/* Direction and fire controls */
+.direction-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 90px);
+    justify-content: center;
+    gap: 8px;
+
+    margin: 20px auto 0;
+}
+
+.direction-controls button {
+    min-height: 44px;
+    padding: 10px 14px;
+
+    font: inherit;
+    font-weight: bold;
+
+    color: #fff;
+    background: #181818;
+
+    border: 1px solid #444;
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    user-select: none;
+}
+
+.direction-controls button:hover:not(:disabled) {
+    background: #222;
+    border-color: #666;
+}
+
+.direction-controls button:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.fire-button {
+    color: #f0c96b !important;
+}
+
+.direction-controls button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+@media (max-width: 420px) {
+    .direction-controls {
+        grid-template-columns: repeat(3, 80px);
+    }
+}
