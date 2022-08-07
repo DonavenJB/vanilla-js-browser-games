@@ -282,3 +282,96 @@ body:has(#game-status:not(:empty)) .game-message {
         grid-template-columns: repeat(3, 80px);
     }
 }
+
+/* =========================================================
+   Gameplay polish
+   ========================================================= */
+
+/* Alien appearance */
+.invader {
+    background: #8c5ac7;
+
+    border-radius: 7px 7px 5px 5px;
+
+    box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, 0.12),
+        0 0 5px rgba(140, 90, 199, 0.45);
+}
+
+/* Player ship */
+.shooter {
+    background: #55b96b;
+
+    clip-path: polygon(
+        50% 10%,
+        65% 40%,
+        88% 40%,
+        100% 88%,
+        0 88%,
+        12% 40%,
+        35% 40%
+    );
+
+    box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, 0.16);
+}
+
+/* Narrow laser instead of a full square */
+.laser {
+    background:
+        linear-gradient(
+            to right,
+            transparent 40%,
+            #f0c96b 40%,
+            #f0c96b 60%,
+            transparent 60%
+        );
+
+    box-shadow:
+        0 0 6px rgba(240, 201, 107, 0.75);
+}
+
+/* Explosion */
+.boom {
+    background: #b84f4f;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 4px #b84f4f,
+        0 0 9px rgba(184, 79, 79, 0.8);
+}
+
+/* Win / loss board feedback */
+body.game-won .grid {
+    border-color: #55b96b;
+
+    box-shadow:
+        0 0 0 1px #55b96b,
+        0 0 18px rgba(85, 185, 107, 0.22);
+}
+
+body.game-lost .grid {
+    border-color: #b84f4f;
+
+    box-shadow:
+        0 0 0 1px #b84f4f,
+        0 0 18px rgba(184, 79, 79, 0.22);
+}
+
+body.game-won #game-message {
+    color: #8ed99d;
+}
+
+body.game-lost #game-message {
+    color: #e58b8b;
+}
+
+/* Keyboard accessibility */
+.back-link:focus-visible,
+#start-pause-button:focus-visible,
+#new-game-button:focus-visible,
+.direction-controls button:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+}

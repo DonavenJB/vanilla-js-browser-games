@@ -185,6 +185,17 @@ function endGame(message) {
 
   clearActiveLasers()
 
+  document.body.classList.remove(
+    'game-won',
+    'game-lost'
+  )
+
+  document.body.classList.add(
+    message === 'YOU WIN'
+      ? 'game-won'
+      : 'game-lost'
+  )
+
   gameStatusDisplay.textContent =
     message === 'YOU WIN'
       ? 'Won'
@@ -206,6 +217,11 @@ function endGame(message) {
 }
 
 function resetGame() {
+  document.body.classList.remove(
+    'game-won',
+    'game-lost'
+  )
+
   clearInterval(invadersId)
   invadersId = null
 
