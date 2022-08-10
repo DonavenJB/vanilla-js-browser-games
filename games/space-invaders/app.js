@@ -48,6 +48,9 @@ let results = 0
 let gameOver = false
 let isRunning = false
 
+let canShoot = true
+let shootCooldownId = null
+
 const activeLaserIds = new Set()
 
 for (let i = 0; i < 225; i++) {
@@ -96,6 +99,15 @@ function remove() {
         .classList.remove('invader')
     }
   }
+}
+
+function resetShootCooldown() {
+  if (shootCooldownId) {
+    clearTimeout(shootCooldownId)
+    shootCooldownId = null
+  }
+
+  canShoot = true
 }
 
 function clearActiveLasers() {
@@ -226,6 +238,7 @@ function resetGame() {
   invadersId = null
 
   clearActiveLasers()
+  resetShootCooldown()
   clearBoard()
 
   currentShooterIndex =
@@ -395,15 +408,29 @@ function moveInvaders() {
 }
 
 function shoot(e) {
+  const fireKeys = [
+    'ArrowUp',
+    ' ',
+    'Spacebar'
+  ]
+
   if (
     gameOver ||
     !isRunning ||
-    e.key !== 'ArrowUp'
+    !fireKeys.includes(e.key) ||
+    !canShoot
   ) {
     return
   }
 
   e.preventDefault()
+
+  canShoot = false
+
+  shootCooldownId = setTimeout(() => {
+    canShoot = true
+    shootCooldownId = null
+  }, 250)
 
   let currentLaserIndex =
     currentShooterIndex
@@ -415,11 +442,22 @@ function shoot(e) {
 
   function stopLaser() {
     clearInterval(laserId)
-
     activeLaserIds.delete(laserId)
+
+    if (squares[currentLaserIndex]) {
+      squares[currentLaserIndex]
+        .classList.remove('laser')
+    }
   }
 
   function moveLaser() {
+    if (
+      gameOver ||
+      !isRunning
+    ) {
+      return
+    }
+
     squares[currentLaserIndex]
       .classList.remove('laser')
 
