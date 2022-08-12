@@ -196,6 +196,7 @@ function endGame(message) {
   invadersId = null
 
   clearActiveLasers()
+  resetShootCooldown()
 
   document.body.classList.remove(
     'game-won',
