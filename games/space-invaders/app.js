@@ -26,6 +26,11 @@ const directionButtons =
 const width = 15
 const startingShooterIndex = 202
 
+const startingInvaderSpeed = 600
+const minimumInvaderSpeed = 250
+const invaderSpeedStep = 70
+const killsPerSpeedLevel = 5
+
 const initialAlienInvaders = [
   0,1,2,3,4,5,6,7,8,9,
   15,16,17,18,19,20,21,22,23,24,
@@ -41,6 +46,9 @@ let alienInvaders =
 let direction = 1
 let invadersId = null
 let goingRight = true
+
+let currentInvaderSpeed =
+  startingInvaderSpeed
 
 let aliensRemoved = []
 let results = 0
@@ -133,6 +141,53 @@ function clearBoard() {
   })
 }
 
+function calculateInvaderSpeed() {
+  const speedLevel =
+    Math.floor(
+      aliensRemoved.length /
+      killsPerSpeedLevel
+    )
+
+  return Math.max(
+    minimumInvaderSpeed,
+    startingInvaderSpeed -
+      speedLevel * invaderSpeedStep
+  )
+}
+
+function restartInvaderMovement() {
+  clearInterval(invadersId)
+
+  invadersId = setInterval(
+    moveInvaders,
+    currentInvaderSpeed
+  )
+}
+
+function updateInvaderSpeed() {
+  const nextSpeed =
+    calculateInvaderSpeed()
+
+  if (
+    nextSpeed ===
+    currentInvaderSpeed
+  ) {
+    return false
+  }
+
+  currentInvaderSpeed =
+    nextSpeed
+
+  if (
+    isRunning &&
+    !gameOver
+  ) {
+    restartInvaderMovement()
+  }
+
+  return true
+}
+
 function startGame() {
   if (gameOver || isRunning) {
     return
@@ -142,7 +197,7 @@ function startGame() {
 
   invadersId = setInterval(
     moveInvaders,
-    600
+    currentInvaderSpeed
   )
 
   gameStatusDisplay.textContent =
@@ -250,6 +305,9 @@ function resetGame() {
 
   direction = 1
   goingRight = true
+
+  currentInvaderSpeed =
+    startingInvaderSpeed
 
   aliensRemoved = []
   results = 0
@@ -523,8 +581,13 @@ function shoot(e) {
           alienInvaders.length -
           aliensRemoved.length
 
+        const speedIncreased =
+          updateInvaderSpeed()
+
         gameMessageDisplay.textContent =
-          'Nice shot!'
+          speedIncreased
+            ? 'The invaders are getting faster!'
+            : 'Nice shot!'
       }
 
       if (
