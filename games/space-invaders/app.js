@@ -387,17 +387,31 @@ function moveInvaders() {
     return
   }
 
+  const activeInvaders =
+    alienInvaders.filter(
+      (position, alienIndex) =>
+        !aliensRemoved.includes(
+          alienIndex
+        )
+    )
+
+  if (activeInvaders.length === 0) {
+    endGame('YOU WIN')
+    return
+  }
+
   const leftEdge =
-    alienInvaders[0] %
-      width ===
-    0
+    activeInvaders.some(
+      position =>
+        position % width === 0
+    )
 
   const rightEdge =
-    alienInvaders[
-      alienInvaders.length - 1
-    ] %
-      width ===
-    width - 1
+    activeInvaders.some(
+      position =>
+        position % width ===
+        width - 1
+    )
 
   remove()
 
@@ -413,9 +427,10 @@ function moveInvaders() {
 
     direction = -1
     goingRight = false
-  }
-
-  if (leftEdge && !goingRight) {
+  } else if (
+    leftEdge &&
+    !goingRight
+  ) {
     for (
       let i = 0;
       i < alienInvaders.length;
@@ -437,10 +452,18 @@ function moveInvaders() {
     alienInvaders[i] += direction
   }
 
+  const updatedActiveInvaders =
+    alienInvaders.filter(
+      (position, alienIndex) =>
+        !aliensRemoved.includes(
+          alienIndex
+        )
+    )
+
   const invadersReachedBottom =
-    alienInvaders.some(
-      index =>
-        index >= squares.length
+    updatedActiveInvaders.some(
+      position =>
+        position >= squares.length
     )
 
   if (invadersReachedBottom) {
@@ -448,15 +471,18 @@ function moveInvaders() {
     return
   }
 
-  draw()
+  const shooterWasHit =
+    updatedActiveInvaders.includes(
+      currentShooterIndex
+    )
 
-  if (
-    squares[currentShooterIndex]
-      .classList.contains('invader')
-  ) {
+  if (shooterWasHit) {
+    draw()
     endGame('GAME OVER')
     return
   }
+
+  draw()
 
   if (
     aliensRemoved.length ===
