@@ -24,6 +24,7 @@ const directionButtons =
   )
 
 const width = 15
+const boardSize = width * width
 const startingShooterIndex = 202
 
 const startingInvaderSpeed = 600
@@ -36,6 +37,9 @@ const initialAlienInvaders = [
   15,16,17,18,19,20,21,22,23,24,
   30,31,32,33,34,35,36,37,38,39
 ]
+
+const initialInvaderCount =
+  initialAlienInvaders.length
 
 let currentShooterIndex =
   startingShooterIndex
@@ -61,7 +65,7 @@ let shootCooldownId = null
 
 const activeLaserIds = new Set()
 
-for (let i = 0; i < 225; i++) {
+for (let i = 0; i < boardSize; i++) {
   const square =
     document.createElement('div')
 
@@ -205,7 +209,7 @@ function startGame() {
 
   if (results === 0) {
     gameMessageDisplay.textContent =
-      'Destroy all 30 invaders!'
+      `Destroy all ${initialInvaderCount} invaders!`
   } else {
     gameMessageDisplay.textContent =
       'Game resumed.'
@@ -318,7 +322,7 @@ function resetGame() {
   resultsDisplay.textContent = '0'
 
   invadersLeftDisplay.textContent =
-    initialAlienInvaders.length
+    initialInvaderCount
 
   gameStatusDisplay.textContent =
     'Ready'
@@ -671,6 +675,18 @@ document.addEventListener(
 document.addEventListener(
   'keydown',
   shoot
+)
+
+window.addEventListener(
+  'blur',
+  () => {
+    if (
+      isRunning &&
+      !gameOver
+    ) {
+      pauseGame()
+    }
+  }
 )
 
 resetGame()
