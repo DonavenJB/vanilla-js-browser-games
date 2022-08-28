@@ -1,19 +1,27 @@
 const squares = document.querySelectorAll('.square')
-const mole = document.querySelector('.mole')
 const timeLeft = document.querySelector('#time-left')
 const score = document.querySelector('#score')
+const startPauseButton =
+  document.querySelector('#start-pause-button')
 
 let result = 0
-let hitPosition
+let hitPosition = null
 let currentTime = 60
-let timerId = null
+
+let moleTimerId = null
+let countDownTimerId = null
+
+let isRunning = false
+let gameFinished = false
 
 function randomSquare() {
   squares.forEach(square => {
     square.classList.remove('mole')
   })
 
-  let randomSquare = squares[Math.floor(Math.random() * 9)]
+  const randomSquare =
+    squares[Math.floor(Math.random() * squares.length)]
+
   randomSquare.classList.add('mole')
 
   hitPosition = randomSquare.id
@@ -21,30 +29,132 @@ function randomSquare() {
 
 squares.forEach(square => {
   square.addEventListener('mousedown', () => {
-    if (square.id == hitPosition) {
+    if (
+      !isRunning ||
+      gameFinished
+    ) {
+      return
+    }
+
+    if (square.id === hitPosition) {
       result++
+
       score.textContent = result
+
       hitPosition = null
     }
   })
 })
 
-function moveMole() {
-  timerId = setInterval(randomSquare, 500)
+function startTimers() {
+  moleTimerId = setInterval(
+    randomSquare,
+    500
+  )
+
+  countDownTimerId = setInterval(
+    countDown,
+    1000
+  )
 }
 
-moveMole()
+function stopTimers() {
+  clearInterval(moleTimerId)
+  clearInterval(countDownTimerId)
+
+  moleTimerId = null
+  countDownTimerId = null
+}
+
+function startGame() {
+  if (
+    isRunning ||
+    gameFinished
+  ) {
+    return
+  }
+
+  isRunning = true
+
+  startTimers()
+
+  startPauseButton.textContent =
+    'Pause Game'
+}
+
+function pauseGame() {
+  if (
+    !isRunning ||
+    gameFinished
+  ) {
+    return
+  }
+
+  isRunning = false
+
+  stopTimers()
+
+  startPauseButton.textContent =
+    'Resume Game'
+}
+
+function endGame() {
+  if (gameFinished) {
+    return
+  }
+
+  gameFinished = true
+  isRunning = false
+
+  stopTimers()
+
+  squares.forEach(square => {
+    square.classList.remove('mole')
+  })
+
+  hitPosition = null
+
+  startPauseButton.textContent =
+    'Game Over'
+
+  startPauseButton.disabled = true
+
+  alert(
+    'GAME OVER! Your final score is ' +
+    result
+  )
+}
 
 function countDown() {
- currentTime--
- timeLeft.textContent = currentTime
+  if (!isRunning) {
+    return
+  }
 
- if (currentTime == 0) {
-   clearInterval(countDownTimerId)
-   clearInterval(timerId)
-   alert('GAME OVER! Your final score is ' + result)
- }
+  currentTime--
 
+  timeLeft.textContent =
+    currentTime
+
+  if (currentTime <= 0) {
+    currentTime = 0
+
+    timeLeft.textContent = currentTime
+
+    endGame()
+  }
 }
 
-let countDownTimerId = setInterval(countDown, 1000)
+startPauseButton.addEventListener(
+  'click',
+  () => {
+    if (gameFinished) {
+      return
+    }
+
+    if (isRunning) {
+      pauseGame()
+    } else {
+      startGame()
+    }
+  }
+)
