@@ -27,23 +27,34 @@ function randomSquare() {
   hitPosition = randomSquare.id
 }
 
+function registerHit(square) {
+  if (
+    !isRunning ||
+    gameFinished ||
+    square.id !== hitPosition
+  ) {
+    return
+  }
+
+  result++
+
+  score.textContent = result
+
+  hitPosition = null
+
+  square.classList.remove('mole')
+  square.classList.add('hit')
+
+  setTimeout(() => {
+    square.classList.remove('hit')
+  }, 150)
+}
+
 squares.forEach(square => {
-  square.addEventListener('mousedown', () => {
-    if (
-      !isRunning ||
-      gameFinished
-    ) {
-      return
-    }
-
-    if (square.id === hitPosition) {
-      result++
-
-      score.textContent = result
-
-      hitPosition = null
-    }
-  })
+  square.addEventListener(
+    'click',
+    () => registerHit(square)
+  )
 })
 
 function startTimers() {
@@ -109,7 +120,10 @@ function endGame() {
   stopTimers()
 
   squares.forEach(square => {
-    square.classList.remove('mole')
+    square.classList.remove(
+      'mole',
+      'hit'
+    )
   })
 
   hitPosition = null
