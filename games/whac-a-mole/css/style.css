@@ -206,3 +206,23 @@ h1 {
 
     pointer-events: none;
 }
+
+/* Game status */
+#game-status {
+    color: #fff;
+    font-weight: bold;
+}
+
+.game-message {
+    min-height: 24px;
+
+    margin: 0 0 14px;
+
+    color: #aaa;
+
+    font-weight: bold;
+}
+
+body.game-over .game-message {
+    color: #e58b8b;
+}

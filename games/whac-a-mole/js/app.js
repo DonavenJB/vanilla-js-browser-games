@@ -1,6 +1,13 @@
 const squares = document.querySelectorAll('.square')
 const timeLeft = document.querySelector('#time-left')
 const score = document.querySelector('#score')
+
+const gameStatusDisplay =
+  document.querySelector('#game-status')
+
+const gameMessageDisplay =
+  document.querySelector('#game-message')
+
 const startPauseButton =
   document.querySelector('#start-pause-button')
 
@@ -39,6 +46,9 @@ function registerHit(square) {
   result++
 
   score.textContent = result
+
+  gameMessageDisplay.textContent =
+    'Nice hit!'
 
   hitPosition = null
 
@@ -89,6 +99,14 @@ function startGame() {
 
   startTimers()
 
+  gameStatusDisplay.textContent =
+    'Running'
+
+  gameMessageDisplay.textContent =
+    result === 0 && currentTime === 60
+      ? 'Whack the mole before it moves!'
+      : 'Game resumed.'
+
   startPauseButton.textContent =
     'Pause Game'
 }
@@ -105,6 +123,12 @@ function pauseGame() {
 
   stopTimers()
 
+  gameStatusDisplay.textContent =
+    'Paused'
+
+  gameMessageDisplay.textContent =
+    'Game paused.'
+
   startPauseButton.textContent =
     'Resume Game'
 }
@@ -117,6 +141,10 @@ function endGame() {
   gameFinished = true
   isRunning = false
 
+  document.body.classList.add(
+    'game-over'
+  )
+
   stopTimers()
 
   squares.forEach(square => {
@@ -128,15 +156,16 @@ function endGame() {
 
   hitPosition = null
 
+  gameStatusDisplay.textContent =
+    'Game Over'
+
+  gameMessageDisplay.textContent =
+    `GAME OVER! Final score: ${result}`
+
   startPauseButton.textContent =
     'Game Over'
 
   startPauseButton.disabled = true
-
-  alert(
-    'GAME OVER! Your final score is ' +
-    result
-  )
 }
 
 function countDown() {
