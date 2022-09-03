@@ -11,9 +11,14 @@ const gameMessageDisplay =
 const startPauseButton =
   document.querySelector('#start-pause-button')
 
+const newGameButton =
+  document.querySelector('#new-game-button')
+
+const startingTime = 60
+
 let result = 0
 let hitPosition = null
-let currentTime = 60
+let currentTime = startingTime
 
 let moleTimerId = null
 let countDownTimerId = null
@@ -103,7 +108,7 @@ function startGame() {
     'Running'
 
   gameMessageDisplay.textContent =
-    result === 0 && currentTime === 60
+    result === 0 && currentTime === startingTime
       ? 'Whack the mole before it moves!'
       : 'Game resumed.'
 
@@ -168,6 +173,44 @@ function endGame() {
   startPauseButton.disabled = true
 }
 
+function resetGame() {
+  stopTimers()
+
+  isRunning = false
+  gameFinished = false
+
+  result = 0
+  currentTime = startingTime
+  hitPosition = null
+
+  document.body.classList.remove(
+    'game-over'
+  )
+
+  squares.forEach(square => {
+    square.classList.remove(
+      'mole',
+      'hit'
+    )
+  })
+
+  score.textContent = result
+
+  timeLeft.textContent =
+    currentTime
+
+  gameStatusDisplay.textContent =
+    'Ready'
+
+  gameMessageDisplay.textContent =
+    'Press Start Game to begin.'
+
+  startPauseButton.textContent =
+    'Start Game'
+
+  startPauseButton.disabled = false
+}
+
 function countDown() {
   if (!isRunning) {
     return
@@ -201,3 +244,10 @@ startPauseButton.addEventListener(
     }
   }
 )
+
+newGameButton.addEventListener(
+  'click',
+  resetGame
+)
+
+resetGame()

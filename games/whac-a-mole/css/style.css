@@ -151,6 +151,7 @@ h1 {
 .game-controls {
     display: flex;
     justify-content: center;
+    gap: 8px;
 
     margin: 0 0 18px;
 }
@@ -225,4 +226,34 @@ h1 {
 
 body.game-over .game-message {
     color: #e58b8b;
+}
+
+/* Replay control */
+#new-game-button {
+    padding: 10px 18px;
+
+    font: inherit;
+    font-weight: bold;
+
+    color: #fff;
+    background: #181818;
+
+    border: 1px solid #444;
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+#new-game-button:hover {
+    background: #222;
+    border-color: #666;
+}
+
+#new-game-button:active {
+    transform: translateY(1px);
+}
+
+#new-game-button:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
 }
