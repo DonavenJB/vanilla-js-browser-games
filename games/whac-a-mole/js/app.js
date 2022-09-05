@@ -1,6 +1,8 @@
 const squares = document.querySelectorAll('.square')
 const timeLeft = document.querySelector('#time-left')
 const score = document.querySelector('#score')
+const bestScoreDisplay =
+  document.querySelector('#best-score')
 
 const gameStatusDisplay =
   document.querySelector('#game-status')
@@ -15,6 +17,13 @@ const newGameButton =
   document.querySelector('#new-game-button')
 
 const startingTime = 60
+
+let bestScore =
+  Number(
+    sessionStorage.getItem(
+      'whacAMoleBestScore'
+    )
+  ) || 0
 
 let result = 0
 let hitPosition = null
@@ -52,8 +61,23 @@ function registerHit(square) {
 
   score.textContent = result
 
-  gameMessageDisplay.textContent =
-    'Nice hit!'
+  if (result > bestScore) {
+    bestScore = result
+
+    bestScoreDisplay.textContent =
+      bestScore
+
+    sessionStorage.setItem(
+      'whacAMoleBestScore',
+      bestScore
+    )
+
+    gameMessageDisplay.textContent =
+      'New best score!'
+  } else {
+    gameMessageDisplay.textContent =
+      'Nice hit!'
+  }
 
   hitPosition = null
 
@@ -195,6 +219,9 @@ function resetGame() {
   })
 
   score.textContent = result
+
+  bestScoreDisplay.textContent =
+    bestScore
 
   timeLeft.textContent =
     currentTime
