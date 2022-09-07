@@ -257,3 +257,159 @@ body.game-over .game-message {
     outline: 2px solid #fff;
     outline-offset: 3px;
 }
+
+/* =========================================================
+   Final interface polish
+   ========================================================= */
+
+.game-shell {
+    padding-bottom: 30px;
+}
+
+h1 {
+    letter-spacing: 0.02em;
+}
+
+.instructions {
+    max-width: 460px;
+}
+
+/* Scoreboard panel */
+.game-info {
+    width: min(520px, 100%);
+
+    margin: 0 auto 14px;
+    padding: 12px 18px;
+
+    align-items: center;
+    flex-wrap: wrap;
+
+    background: #181818;
+
+    border: 1px solid #333;
+    border-radius: 8px;
+}
+
+.game-info p {
+    min-width: 90px;
+}
+
+#score,
+#best-score,
+#time-left,
+#game-status {
+    display: inline-block;
+
+    min-width: 24px;
+}
+
+/* Message area */
+.game-message {
+    width: min(520px, 100%);
+
+    margin: 0 auto 14px;
+    padding: 8px 12px;
+
+    border-radius: 6px;
+
+    transition:
+        color 0.15s ease,
+        background-color 0.15s ease;
+}
+
+/* Board depth */
+.grid {
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.28);
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.square {
+    transition:
+        background-color 0.12s ease,
+        border-color 0.12s ease,
+        transform 0.08s ease;
+}
+
+.square:active {
+    transform: scale(0.985);
+}
+
+.mole {
+    cursor: crosshair;
+}
+
+/* Running state */
+body.game-running #game-status {
+    color: #8ed99d;
+}
+
+body.game-running .grid {
+    border-color: #3f5f47;
+
+    box-shadow:
+        0 0 0 1px rgba(85, 185, 107, 0.25),
+        0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
+/* Paused state */
+body.game-paused #game-status {
+    color: #e1bd68;
+}
+
+body.game-paused .game-message {
+    color: #e1bd68;
+    background: rgba(217, 164, 65, 0.06);
+}
+
+body.game-paused .grid {
+    border-color: #6c5a31;
+}
+
+/* Game-over state */
+body.game-over #game-status {
+    color: #e58b8b;
+}
+
+body.game-over .game-message {
+    color: #e58b8b;
+    background: rgba(184, 79, 79, 0.08);
+}
+
+body.game-over .grid {
+    border-color: #7d4141;
+
+    box-shadow:
+        0 0 0 1px rgba(184, 79, 79, 0.35),
+        0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
+/* Button consistency */
+#start-pause-button,
+#new-game-button {
+    min-width: 115px;
+
+    transition:
+        background-color 0.12s ease,
+        border-color 0.12s ease,
+        opacity 0.12s ease;
+}
+
+@media (max-width: 480px) {
+    .game-info {
+        gap: 12px;
+        padding: 10px;
+    }
+
+    .game-info p {
+        min-width: 72px;
+    }
+
+    #start-pause-button,
+    #new-game-button {
+        min-width: 105px;
+    }
+}

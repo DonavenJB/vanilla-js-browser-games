@@ -126,6 +126,15 @@ function startGame() {
 
   isRunning = true
 
+  document.body.classList.remove(
+    'game-paused',
+    'game-over'
+  )
+
+  document.body.classList.add(
+    'game-running'
+  )
+
   startTimers()
 
   gameStatusDisplay.textContent =
@@ -150,6 +159,14 @@ function pauseGame() {
 
   isRunning = false
 
+  document.body.classList.remove(
+    'game-running'
+  )
+
+  document.body.classList.add(
+    'game-paused'
+  )
+
   stopTimers()
 
   gameStatusDisplay.textContent =
@@ -169,6 +186,11 @@ function endGame() {
 
   gameFinished = true
   isRunning = false
+
+  document.body.classList.remove(
+    'game-running',
+    'game-paused'
+  )
 
   document.body.classList.add(
     'game-over'
@@ -208,6 +230,8 @@ function resetGame() {
   hitPosition = null
 
   document.body.classList.remove(
+    'game-running',
+    'game-paused',
     'game-over'
   )
 
