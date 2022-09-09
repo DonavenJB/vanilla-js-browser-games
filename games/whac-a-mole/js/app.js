@@ -18,6 +18,10 @@ const newGameButton =
 
 const startingTime = 60
 
+const moleMoveInterval = 500
+const countDownInterval = 1000
+const hitFeedbackDuration = 150
+
 let bestScore =
   Number(
     sessionStorage.getItem(
@@ -86,25 +90,56 @@ function registerHit(square) {
 
   setTimeout(() => {
     square.classList.remove('hit')
-  }, 150)
+  }, hitFeedbackDuration)
 }
 
-squares.forEach(square => {
+squares.forEach((square, index) => {
+  square.setAttribute(
+    'role',
+    'button'
+  )
+
+  square.setAttribute(
+    'tabindex',
+    '0'
+  )
+
+  square.setAttribute(
+    'aria-label',
+    `Target ${index + 1}`
+  )
+
   square.addEventListener(
     'click',
     () => registerHit(square)
+  )
+
+  square.addEventListener(
+    'keydown',
+    event => {
+      if (
+        event.key !== 'Enter' &&
+        event.key !== ' '
+      ) {
+        return
+      }
+
+      event.preventDefault()
+
+      registerHit(square)
+    }
   )
 })
 
 function startTimers() {
   moleTimerId = setInterval(
     randomSquare,
-    500
+    moleMoveInterval
   )
 
   countDownTimerId = setInterval(
     countDown,
-    1000
+    countDownInterval
   )
 }
 
@@ -299,6 +334,18 @@ startPauseButton.addEventListener(
 newGameButton.addEventListener(
   'click',
   resetGame
+)
+
+window.addEventListener(
+  'blur',
+  () => {
+    if (
+      isRunning &&
+      !gameFinished
+    ) {
+      pauseGame()
+    }
+  }
 )
 
 resetGame()

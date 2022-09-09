@@ -413,3 +413,23 @@ body.game-over .grid {
         min-width: 105px;
     }
 }
+
+/* Final interaction cleanup */
+.square:focus-visible {
+    z-index: 1;
+
+    outline: 2px solid #fff;
+    outline-offset: -4px;
+}
+
+body:not(.game-running) .square {
+    cursor: default;
+}
+
+body.game-running .square {
+    cursor: pointer;
+}
+
+body.game-running .square.mole {
+    cursor: crosshair;
+}
