@@ -1,66 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Connect Four</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="app.js" charset="utf-8"></script>
-</head>
-<body>
-  <h3>The current Player is: Player <span id="current-player">1</span></h3>
-  <h3 id="result"></h3>
+    <meta charset="UTF-8">
 
-  <div class="grid">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div class="taken"></div>
-    <div class="taken"></div>
-    <div class="taken"></div>
-    <div class="taken"></div>
-    <div class="taken"></div>
-    <div class="taken"></div>
-    <div class="taken"></div>
-  </div>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Connect Four</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script
+        src="app.js"
+        charset="utf-8"
+        defer
+    ></script>
+</head>
+
+<body>
+
+    <main class="game-shell">
+
+        <a class="back-link" href="../../index.html">
+            &larr; Back to Games
+        </a>
+
+        <h1>Connect Four</h1>
+
+        <p class="instructions">
+            Take turns dropping pieces. Connect four in a row to win.
+        </p>
+
+        <div class="game-info">
+            <p>
+                Current Player:
+                <strong>
+                    Player
+                    <span id="current-player">1</span>
+                </strong>
+            </p>
+        </div>
+
+        <p
+            id="result"
+            class="result"
+            aria-live="polite"
+        ></p>
+
+        <div class="grid">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+
+            <div class="taken"></div>
+            <div class="taken"></div>
+            <div class="taken"></div>
+            <div class="taken"></div>
+            <div class="taken"></div>
+            <div class="taken"></div>
+            <div class="taken"></div>
+        </div>
+
+    </main>
 
 </body>
 </html>
