@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const playableSquareCount = 42
 
   let currentPlayer = 1
+  let gameOver = false
 
   const winningArrays = [
     [0, 1, 2, 3],
@@ -91,38 +92,42 @@ document.addEventListener('DOMContentLoaded', () => {
       i < winningArrays.length;
       i++
     ) {
-      const [
-        first,
-        second,
-        third,
-        fourth
-      ] = winningArrays[i]
+      const winningArray =
+        winningArrays[i]
 
-      const square1 = squares[first]
-      const square2 = squares[second]
-      const square3 = squares[third]
-      const square4 = squares[fourth]
+      const playerOneWins =
+        winningArray.every(index =>
+          squares[index]
+            .classList.contains(
+              'player-one'
+            )
+        )
 
-      if (
-        square1.classList.contains('player-one') &&
-        square2.classList.contains('player-one') &&
-        square3.classList.contains('player-one') &&
-        square4.classList.contains('player-one')
-      ) {
-        result.textContent =
-          'Player One Wins!'
+      if (playerOneWins) {
+        return 1
       }
 
-      if (
-        square1.classList.contains('player-two') &&
-        square2.classList.contains('player-two') &&
-        square3.classList.contains('player-two') &&
-        square4.classList.contains('player-two')
-      ) {
-        result.textContent =
-          'Player Two Wins!'
+      const playerTwoWins =
+        winningArray.every(index =>
+          squares[index]
+            .classList.contains(
+              'player-two'
+            )
+        )
+
+      if (playerTwoWins) {
+        return 2
       }
     }
+
+    return null
+  }
+
+  function endGame(player) {
+    gameOver = true
+
+    result.textContent =
+      `Player ${player} Wins!`
   }
 
   function findOpenSquare(column) {
@@ -142,6 +147,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function dropPiece(column) {
+    if (gameOver) {
+      return
+    }
+
     const targetIndex =
       findOpenSquare(column)
 
@@ -152,28 +161,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const targetSquare =
       squares[targetIndex]
 
+    const playedBy =
+      currentPlayer
+
     targetSquare.classList.add(
       'taken'
     )
 
-    if (currentPlayer === 1) {
-      targetSquare.classList.add(
-        'player-one'
-      )
+    targetSquare.classList.add(
+      playedBy === 1
+        ? 'player-one'
+        : 'player-two'
+    )
 
-      currentPlayer = 2
-    } else {
-      targetSquare.classList.add(
-        'player-two'
-      )
+    const winner =
+      checkBoard()
 
-      currentPlayer = 1
+    if (winner !== null) {
+      endGame(winner)
+      return
     }
+
+    currentPlayer =
+      playedBy === 1
+        ? 2
+        : 1
 
     displayCurrentPlayer.textContent =
       currentPlayer
-
-    checkBoard()
   }
 
   for (
