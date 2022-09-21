@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const result =
     document.querySelector('#result')
 
+  const gameMessage =
+    document.querySelector('#game-message')
+
   const displayCurrentPlayer =
     document.querySelector('#current-player')
 
@@ -128,6 +131,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     result.textContent =
       `Player ${player} Wins!`
+
+    gameMessage.textContent =
+      `Player ${player} connected four.`
+  }
+
+  function updateTurnDisplay() {
+    displayCurrentPlayer.textContent =
+      currentPlayer
+
+    displayCurrentPlayer.classList.toggle(
+      'player-one-turn',
+      currentPlayer === 1
+    )
+
+    displayCurrentPlayer.classList.toggle(
+      'player-two-turn',
+      currentPlayer === 2
+    )
+
+    gameMessage.textContent =
+      `Player ${currentPlayer}'s turn.`
   }
 
   function findOpenSquare(column) {
@@ -155,6 +179,9 @@ document.addEventListener('DOMContentLoaded', () => {
       findOpenSquare(column)
 
     if (targetIndex === null) {
+      gameMessage.textContent =
+        `Column ${column + 1} is full.`
+
       return
     }
 
@@ -187,9 +214,10 @@ document.addEventListener('DOMContentLoaded', () => {
         ? 2
         : 1
 
-    displayCurrentPlayer.textContent =
-      currentPlayer
+    updateTurnDisplay()
   }
+
+  updateTurnDisplay()
 
   for (
     let i = 0;

@@ -173,3 +173,30 @@ h1 {
         border-width: 1px;
     }
 }
+
+/* Turn feedback */
+.game-message {
+    min-height: 24px;
+
+    margin: 0 0 10px;
+
+    color: #aaa;
+
+    font-weight: bold;
+}
+
+#current-player {
+    display: inline-block;
+
+    min-width: 20px;
+
+    transition: color 0.15s ease;
+}
+
+#current-player.player-one-turn {
+    color: #e37777;
+}
+
+#current-player.player-two-turn {
+    color: #7897df;
+}
