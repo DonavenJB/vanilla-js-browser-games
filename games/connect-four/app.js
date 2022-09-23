@@ -107,7 +107,10 @@ document.addEventListener('DOMContentLoaded', () => {
         )
 
       if (playerOneWins) {
-        return 1
+        return {
+          player: 1,
+          winningArray
+        }
       }
 
       const playerTwoWins =
@@ -119,15 +122,33 @@ document.addEventListener('DOMContentLoaded', () => {
         )
 
       if (playerTwoWins) {
-        return 2
+        return {
+          player: 2,
+          winningArray
+        }
       }
     }
 
     return null
   }
 
-  function endGame(player) {
+  function endGame(
+    player,
+    winningArray
+  ) {
     gameOver = true
+
+    winningArray.forEach(index => {
+      squares[index].classList.add(
+        'winning-piece'
+      )
+    })
+
+    document.body.classList.add(
+      player === 1
+        ? 'player-one-won'
+        : 'player-two-won'
+    )
 
     result.textContent =
       `Player ${player} Wins!`
@@ -205,7 +226,11 @@ document.addEventListener('DOMContentLoaded', () => {
       checkBoard()
 
     if (winner !== null) {
-      endGame(winner)
+      endGame(
+        winner.player,
+        winner.winningArray
+      )
+
       return
     }
 

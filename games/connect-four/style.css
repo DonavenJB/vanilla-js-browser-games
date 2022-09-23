@@ -200,3 +200,48 @@ h1 {
 #current-player.player-two-turn {
     color: #7897df;
 }
+
+/* Winning state */
+.grid .winning-piece {
+    position: relative;
+
+    transform: scale(0.9);
+
+    box-shadow:
+        inset 0 0 0 4px rgba(255, 255, 255, 0.35),
+        0 0 12px rgba(255, 255, 255, 0.4);
+
+    border-color: #fff;
+}
+
+body.player-one-won .result {
+    color: #e37777;
+}
+
+body.player-one-won .grid {
+    border-color: #c95555;
+
+    box-shadow:
+        0 0 0 2px rgba(201, 85, 85, 0.35),
+        0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+body.player-two-won .result {
+    color: #7897df;
+}
+
+body.player-two-won .grid {
+    border-color: #5578c9;
+
+    box-shadow:
+        0 0 0 2px rgba(85, 120, 201, 0.35),
+        0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+body.player-one-won .game-message {
+    color: #e37777;
+}
+
+body.player-two-won .game-message {
+    color: #7897df;
+}
