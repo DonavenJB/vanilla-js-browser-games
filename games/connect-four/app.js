@@ -132,6 +132,23 @@ document.addEventListener('DOMContentLoaded', () => {
     return null
   }
 
+  function isBoardFull() {
+    for (
+      let i = 0;
+      i < playableSquareCount;
+      i++
+    ) {
+      if (
+        !squares[i]
+          .classList.contains('taken')
+      ) {
+        return false
+      }
+    }
+
+    return true
+  }
+
   function endGame(
     player,
     winningArray
@@ -155,6 +172,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     gameMessage.textContent =
       `Player ${player} connected four.`
+  }
+
+  function endDraw() {
+    gameOver = true
+
+    document.body.classList.add(
+      'game-draw'
+    )
+
+    result.textContent =
+      "It's a Draw!"
+
+    gameMessage.textContent =
+      'Board is full with no winner.'
   }
 
   function updateTurnDisplay() {
@@ -231,6 +262,11 @@ document.addEventListener('DOMContentLoaded', () => {
         winner.winningArray
       )
 
+      return
+    }
+
+    if (isBoardFull()) {
+      endDraw()
       return
     }
 

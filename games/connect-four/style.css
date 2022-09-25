@@ -245,3 +245,20 @@ body.player-one-won .game-message {
 body.player-two-won .game-message {
     color: #7897df;
 }
+
+/* Draw state */
+body.game-draw .result {
+    color: #d9b867;
+}
+
+body.game-draw .game-message {
+    color: #d9b867;
+}
+
+body.game-draw .grid {
+    border-color: #9c8448;
+
+    box-shadow:
+        0 0 0 2px rgba(217, 184, 103, 0.3),
+        0 8px 24px rgba(0, 0, 0, 0.3);
+}
