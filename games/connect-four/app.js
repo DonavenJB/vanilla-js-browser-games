@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const displayCurrentPlayer =
     document.querySelector('#current-player')
 
+  const newGameButton =
+    document.querySelector('#new-game-button')
+
   const width = 7
   const playableSquareCount = 42
 
@@ -206,6 +209,50 @@ document.addEventListener('DOMContentLoaded', () => {
       `Player ${currentPlayer}'s turn.`
   }
 
+  function resetGame() {
+    currentPlayer = 1
+    gameOver = false
+
+    document.body.classList.remove(
+      'player-one-won',
+      'player-two-won',
+      'game-draw'
+    )
+
+    for (
+      let i = 0;
+      i < playableSquareCount;
+      i++
+    ) {
+      squares[i].classList.remove(
+        'taken',
+        'player-one',
+        'player-two',
+        'winning-piece'
+      )
+    }
+
+    for (
+      let i = playableSquareCount;
+      i < squares.length;
+      i++
+    ) {
+      squares[i].classList.remove(
+        'player-one',
+        'player-two',
+        'winning-piece'
+      )
+
+      squares[i].classList.add(
+        'taken'
+      )
+    }
+
+    result.textContent = ''
+
+    updateTurnDisplay()
+  }
+
   function findOpenSquare(column) {
     for (let row = 5; row >= 0; row--) {
       const index =
@@ -277,6 +324,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateTurnDisplay()
   }
+
+  newGameButton.addEventListener(
+    'click',
+    resetGame
+  )
 
   updateTurnDisplay()
 
