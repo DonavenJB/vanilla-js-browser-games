@@ -14,11 +14,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const newGameButton =
     document.querySelector('#new-game-button')
 
+  const playerOneWinsDisplay =
+    document.querySelector('#player-one-wins')
+
+  const playerTwoWinsDisplay =
+    document.querySelector('#player-two-wins')
+
+  const drawsDisplay =
+    document.querySelector('#draws')
+
   const width = 7
   const playableSquareCount = 42
 
   let currentPlayer = 1
   let gameOver = false
+
+  let playerOneWins = 0
+  let playerTwoWins = 0
+  let draws = 0
 
   const winningArrays = [
     [0, 1, 2, 3],
@@ -92,6 +105,17 @@ document.addEventListener('DOMContentLoaded', () => {
     [13, 20, 27, 34]
   ]
 
+  function updateSessionScores() {
+    playerOneWinsDisplay.textContent =
+      playerOneWins
+
+    playerTwoWinsDisplay.textContent =
+      playerTwoWins
+
+    drawsDisplay.textContent =
+      draws
+  }
+
   function checkBoard() {
     for (
       let i = 0;
@@ -158,6 +182,14 @@ document.addEventListener('DOMContentLoaded', () => {
   ) {
     gameOver = true
 
+    if (player === 1) {
+      playerOneWins++
+    } else {
+      playerTwoWins++
+    }
+
+    updateSessionScores()
+
     winningArray.forEach(index => {
       squares[index].classList.add(
         'winning-piece'
@@ -179,6 +211,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function endDraw() {
     gameOver = true
+
+    draws++
+
+    updateSessionScores()
 
     document.body.classList.add(
       'game-draw'
@@ -330,6 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
     resetGame
   )
 
+  updateSessionScores()
   updateTurnDisplay()
 
   for (

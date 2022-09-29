@@ -306,3 +306,49 @@ body.game-draw .grid {
     outline: 2px solid #fff;
     outline-offset: 3px;
 }
+
+/* Session scoring */
+.session-score {
+    width: min(520px, 100%);
+
+    margin: 0 auto 16px;
+    padding: 10px 16px;
+
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+
+    background: #181818;
+
+    border: 1px solid #333;
+    border-radius: 8px;
+}
+
+.session-score p {
+    margin: 0;
+
+    color: #aaa;
+}
+
+#player-one-wins,
+#player-two-wins,
+#draws {
+    color: #fff;
+    font-weight: bold;
+}
+
+#player-one-wins {
+    color: #e37777;
+}
+
+#player-two-wins {
+    color: #7897df;
+}
+
+@media (max-width: 480px) {
+    .session-score {
+        gap: 12px;
+        padding: 10px;
+    }
+}
