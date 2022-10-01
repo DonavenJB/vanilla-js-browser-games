@@ -128,14 +128,6 @@ h1 {
     transform: scale(0.96);
 }
 
-/*
-    Cells 43–49 form the invisible support row used by
-    the original JavaScript to determine whether a piece
-    can be placed in the bottom playable row.
-*/
-.grid div:nth-child(n + 43) {
-    display: none;
-}
 
 .grid .player-one {
     background: #c95555;
@@ -351,4 +343,25 @@ body.game-draw .grid {
         gap: 12px;
         padding: 10px;
     }
+}
+
+/* Final interaction cleanup */
+.grid div:focus-visible {
+    position: relative;
+    z-index: 1;
+
+    outline: 3px solid #fff;
+    outline-offset: -5px;
+}
+
+body.player-one-won .grid div,
+body.player-two-won .grid div,
+body.game-draw .grid div {
+    cursor: default;
+}
+
+.back-link:focus-visible,
+#new-game-button:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
 }

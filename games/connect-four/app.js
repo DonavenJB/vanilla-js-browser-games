@@ -24,7 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#draws')
 
   const width = 7
-  const playableSquareCount = 42
+  const height = 6
+
+  const playableSquareCount =
+    width * height
 
   let currentPlayer = 1
   let gameOver = false
@@ -255,34 +258,14 @@ document.addEventListener('DOMContentLoaded', () => {
       'game-draw'
     )
 
-    for (
-      let i = 0;
-      i < playableSquareCount;
-      i++
-    ) {
-      squares[i].classList.remove(
+    squares.forEach(square => {
+      square.classList.remove(
         'taken',
         'player-one',
         'player-two',
         'winning-piece'
       )
-    }
-
-    for (
-      let i = playableSquareCount;
-      i < squares.length;
-      i++
-    ) {
-      squares[i].classList.remove(
-        'player-one',
-        'player-two',
-        'winning-piece'
-      )
-
-      squares[i].classList.add(
-        'taken'
-      )
-    }
+    })
 
     result.textContent = ''
 
@@ -374,11 +357,45 @@ document.addEventListener('DOMContentLoaded', () => {
     i < playableSquareCount;
     i++
   ) {
-    squares[i].addEventListener(
+    const square =
+      squares[i]
+
+    const column =
+      i % width
+
+    square.setAttribute(
+      'role',
+      'button'
+    )
+
+    square.setAttribute(
+      'tabindex',
+      '0'
+    )
+
+    square.setAttribute(
+      'aria-label',
+      `Drop piece in column ${column + 1}`
+    )
+
+    square.addEventListener(
       'click',
       () => {
-        const column =
-          i % width
+        dropPiece(column)
+      }
+    )
+
+    square.addEventListener(
+      'keydown',
+      event => {
+        if (
+          event.key !== 'Enter' &&
+          event.key !== ' '
+        ) {
+          return
+        }
+
+        event.preventDefault()
 
         dropPiece(column)
       }
