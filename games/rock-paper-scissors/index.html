@@ -1,21 +1,67 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Rock Paper Scissors</title>
-    </head>
-    <body>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
 
-        <h2>Computer Choice: <span id="computer-choice"></span></h2>
-        <h2>Your Choice: <span id="user-choice"></span></h2>
-        <h2>Results: <span id="result"></span></h2>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-        <button id="rock">rock</button>
-        <button id="paper">paper</button>
-        <button id="scissors">scissors</button>
+    <title>Rock Paper Scissors</title>
+</head>
 
+<body>
 
-        <script src="js/app.js" charset="utf-8"></script>
-    </body>
+    <main class="game-shell">
+
+        <a class="back-link" href="../../index.html">
+            &larr; Back to Games
+        </a>
+
+        <h1>Rock Paper Scissors</h1>
+
+        <p class="instructions">
+            Choose rock, paper, or scissors and play against the computer.
+        </p>
+
+        <section class="game-status">
+            <h2>
+                Computer Choice:
+                <span id="computer-choice"></span>
+            </h2>
+
+            <h2>
+                Your Choice:
+                <span id="user-choice"></span>
+            </h2>
+
+            <h2>
+                Results:
+                <span id="result"></span>
+            </h2>
+        </section>
+
+        <div class="choices">
+            <button id="rock" type="button">
+                rock
+            </button>
+
+            <button id="paper" type="button">
+                paper
+            </button>
+
+            <button id="scissors" type="button">
+                scissors
+            </button>
+        </div>
+
+    </main>
+
+    <script
+        src="js/app.js"
+        charset="utf-8"
+    ></script>
+
+</body>
 </html>
