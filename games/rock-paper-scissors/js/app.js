@@ -28,26 +28,28 @@ function generateComputerChoice() {
 }
 
 function getResult() {
+    let result
+
     if (computerChoice === userChoice) {
         result = "it's a draw!"
-    }
-    if (computerChoice === 'rock' && userChoice === "papr") {
+    } else if (
+        userChoice === 'rock' &&
+        computerChoice === 'scissors'
+    ) {
         result = 'you win!'
-    }
-    if (computerChoice === 'rock' && userChoice === "scissors") {
-        result = 'you lost!'
-    }
-    if (computerChoice === 'paper' && userChoice === "scissors") {
+    } else if (
+        userChoice === 'paper' &&
+        computerChoice === 'rock'
+    ) {
         result = 'you win!'
-    }
-    if (computerChoice === 'paper' && userChoice === "rock") {
+    } else if (
+        userChoice === 'scissors' &&
+        computerChoice === 'paper'
+    ) {
+        result = 'you win!'
+    } else {
         result = 'you lose!'
     }
-    if (computerChoice === 'scissors' && userChoice === "rock") {
-        result = 'you win!'
-    }
-    if (computerChoice === 'scissors' && userChoice === "paper") {
-        result = 'you lose!'
-    }
+
     resultDisplay.innerHTML = result
 }
