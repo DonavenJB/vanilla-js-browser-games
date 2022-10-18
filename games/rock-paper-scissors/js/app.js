@@ -7,9 +7,19 @@ const computerChoices = ['rock', 'paper', 'scissors']
 let userChoice
 let computerChoice
 
+function formatChoice(choice) {
+    return (
+        choice.charAt(0).toUpperCase() +
+        choice.slice(1)
+    )
+}
+
 possibleChoices.forEach(possibleChoice => possibleChoice.addEventListener('click', (e) => {
     userChoice = e.target.id
-    userChoiceDisplay.innerHTML = userChoice
+
+    userChoiceDisplay.textContent =
+        formatChoice(userChoice)
+
     generateComputerChoice()
     getResult()
 }))
@@ -23,33 +33,45 @@ function generateComputerChoice() {
     computerChoice =
         computerChoices[randomIndex]
 
-    computerChoiceDisplay.innerHTML =
-        computerChoice
+    computerChoiceDisplay.textContent =
+        formatChoice(computerChoice)
 }
 
 function getResult() {
     let result
 
+    const formattedUserChoice =
+        formatChoice(userChoice)
+
+    const formattedComputerChoice =
+        formatChoice(computerChoice)
+
     if (computerChoice === userChoice) {
-        result = "it's a draw!"
+        result =
+            `${formattedUserChoice} meets ${formattedComputerChoice} — it's a draw!`
     } else if (
         userChoice === 'rock' &&
         computerChoice === 'scissors'
     ) {
-        result = 'you win!'
+        result =
+            `${formattedUserChoice} beats ${formattedComputerChoice} — you win!`
     } else if (
         userChoice === 'paper' &&
         computerChoice === 'rock'
     ) {
-        result = 'you win!'
+        result =
+            `${formattedUserChoice} beats ${formattedComputerChoice} — you win!`
     } else if (
         userChoice === 'scissors' &&
         computerChoice === 'paper'
     ) {
-        result = 'you win!'
+        result =
+            `${formattedUserChoice} beats ${formattedComputerChoice} — you win!`
     } else {
-        result = 'you lose!'
+        result =
+            `${formattedComputerChoice} beats ${formattedUserChoice} — you lose!`
     }
 
-    resultDisplay.innerHTML = result
+    resultDisplay.textContent =
+        result
 }
