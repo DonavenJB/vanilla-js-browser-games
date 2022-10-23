@@ -202,3 +202,75 @@ h1 {
         min-height: 58px;
     }
 }
+
+/* Session scoring */
+.session-score {
+    width: min(560px, 100%);
+
+    margin: 0 auto 24px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    background: #181818;
+
+    border: 1px solid #333;
+    border-radius: 8px;
+
+    overflow: hidden;
+}
+
+.score-item {
+    padding: 14px 10px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
+    border-right: 1px solid #333;
+}
+
+.score-item:last-child {
+    border-right: 0;
+}
+
+.score-label {
+    color: #aaa;
+
+    font-size: 0.85rem;
+}
+
+.score-item strong {
+    font-size: 1.35rem;
+}
+
+#user-wins {
+    color: #8acb88;
+}
+
+#computer-wins {
+    color: #e37777;
+}
+
+#draws {
+    color: #d9b867;
+}
+
+@media (max-width: 520px) {
+    .session-score {
+        grid-template-columns: 1fr;
+    }
+
+    .score-item {
+        flex-direction: row;
+        justify-content: space-between;
+
+        border-right: 0;
+        border-bottom: 1px solid #333;
+    }
+
+    .score-item:last-child {
+        border-bottom: 0;
+    }
+}
