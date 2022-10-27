@@ -210,7 +210,7 @@ h1 {
     margin: 0 auto 24px;
 
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
 
     background: #181818;
 
@@ -255,6 +255,56 @@ h1 {
 
 #draws {
     color: #d9b867;
+}
+
+#rounds {
+    color: #fff;
+}
+
+/* Session controls */
+.session-controls {
+    width: min(560px, 100%);
+
+    margin: 18px auto 0;
+
+    display: flex;
+    justify-content: center;
+}
+
+#reset-session {
+    padding: 10px 18px;
+
+    font: inherit;
+    font-weight: bold;
+
+    color: #aaa;
+    background: transparent;
+
+    border: 1px solid #444;
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.12s ease,
+        background-color 0.12s ease,
+        border-color 0.12s ease,
+        transform 0.08s ease;
+}
+
+#reset-session:hover {
+    color: #fff;
+    background: #181818;
+    border-color: #666;
+}
+
+#reset-session:active {
+    transform: translateY(1px);
+}
+
+#reset-session:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
 }
 
 @media (max-width: 520px) {

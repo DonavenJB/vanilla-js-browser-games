@@ -11,7 +11,15 @@ const computerWinsDisplay =
 const drawsDisplay =
     document.getElementById('draws')
 
-const possibleChoices = document.querySelectorAll('button')
+const roundsDisplay =
+    document.getElementById('rounds')
+
+const resetSessionButton =
+    document.getElementById('reset-session')
+
+const possibleChoices =
+    document.querySelectorAll('.choices button')
+
 const computerChoices = ['rock', 'paper', 'scissors']
 
 let userChoice
@@ -20,6 +28,7 @@ let computerChoice
 let userWins = 0
 let computerWins = 0
 let draws = 0
+let rounds = 0
 
 function formatChoice(choice) {
     return (
@@ -37,6 +46,9 @@ function updateSessionScore() {
 
     drawsDisplay.textContent =
         draws
+
+    roundsDisplay.textContent =
+        rounds
 }
 
 possibleChoices.forEach(possibleChoice => possibleChoice.addEventListener('click', (e) => {
@@ -45,9 +57,27 @@ possibleChoices.forEach(possibleChoice => possibleChoice.addEventListener('click
     userChoiceDisplay.textContent =
         formatChoice(userChoice)
 
+    rounds++
+
     generateComputerChoice()
     getResult()
 }))
+
+function resetSession() {
+    userChoice = undefined
+    computerChoice = undefined
+
+    userWins = 0
+    computerWins = 0
+    draws = 0
+    rounds = 0
+
+    userChoiceDisplay.textContent = ''
+    computerChoiceDisplay.textContent = ''
+    resultDisplay.textContent = ''
+
+    updateSessionScore()
+}
 
 function generateComputerChoice() {
     const randomIndex =
@@ -112,5 +142,10 @@ function getResult() {
 
     updateSessionScore()
 }
+
+resetSessionButton.addEventListener(
+    'click',
+    resetSession
+)
 
 updateSessionScore()
