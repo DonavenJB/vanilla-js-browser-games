@@ -25,6 +25,7 @@
 
         <p class="instructions">
             Choose rock, paper, or scissors and play against the computer.
+            You can also use the R, P, or S keys.
         </p>
 
         <section class="game-status">
@@ -40,7 +41,11 @@
 
             <h2>
                 Results:
-                <span id="result"></span>
+                <span
+                    id="result"
+                    aria-live="polite"
+                    aria-atomic="true"
+                ></span>
             </h2>
         </section>
 
@@ -70,15 +75,27 @@
         </section>
 
         <div class="choices">
-            <button id="rock" type="button">
+            <button
+                id="rock"
+                type="button"
+                aria-keyshortcuts="R"
+            >
                 rock
             </button>
 
-            <button id="paper" type="button">
+            <button
+                id="paper"
+                type="button"
+                aria-keyshortcuts="P"
+            >
                 paper
             </button>
 
-            <button id="scissors" type="button">
+            <button
+                id="scissors"
+                type="button"
+                aria-keyshortcuts="S"
+            >
                 scissors
             </button>
         </div>

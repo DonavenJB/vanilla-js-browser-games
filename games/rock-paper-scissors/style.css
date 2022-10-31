@@ -324,3 +324,33 @@ h1 {
         border-bottom: 0;
     }
 }
+
+/* Final game-state polish */
+.choices button.selected-choice {
+    background: #252525;
+
+    border-color: #fff;
+
+    box-shadow:
+        0 0 0 2px rgba(255, 255, 255, 0.12);
+}
+
+#result {
+    transition: color 0.15s ease;
+}
+
+#result.result-win {
+    color: #8acb88;
+}
+
+#result.result-loss {
+    color: #e37777;
+}
+
+#result.result-draw {
+    color: #d9b867;
+}
+
+.instructions {
+    text-wrap: balance;
+}
