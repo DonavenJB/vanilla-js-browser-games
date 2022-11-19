@@ -1,29 +1,177 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+
+    padding: 40px 20px;
+
+    font-family: Arial, sans-serif;
+
+    color: #fff;
+    background: #111;
+
+    text-align: center;
+}
+
+.game-shell {
+    width: min(720px, 100%);
+
+    margin: 0 auto;
+}
+
+.back-link {
+    display: block;
+
+    width: max-content;
+
+    margin: 0 auto 28px;
+
+    color: #aaa;
+
+    text-decoration: none;
+
+    transition: color 0.12s ease;
+}
+
+.back-link:hover {
+    color: #fff;
+}
+
+.back-link:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 4px;
+}
+
+h1 {
+    margin: 0 0 10px;
+
+    font-size: 2rem;
+}
+
+.instructions {
+    max-width: 560px;
+
+    margin: 0 auto 22px;
+
+    color: #aaa;
+
+    line-height: 1.5;
+}
+
+.score-panel {
+    width: max-content;
+
+    min-width: 120px;
+
+    margin: 0 auto 18px;
+    padding: 10px 18px;
+
+    color: #aaa;
+    background: #181818;
+
+    border: 1px solid #333;
+    border-radius: 6px;
+}
+
+#score {
+    color: #fff;
+
+    font-weight: bold;
+}
+
+/*
+    Keep the original 560 x 300 play field.
+    JavaScript collision positions depend on these dimensions.
+*/
 .grid {
-    position: absolute;
+    position: relative;
+
     width: 560px;
     height: 300px;
-    border: 1px solid black;
-    margin-top: 80px;
+
+    margin: 0 auto;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #181818,
+            #141414
+        );
+
+    border: 1px solid #3a3a3a;
+    border-radius: 8px;
+
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.35);
 }
 
 .block {
     position: absolute;
+
     width: 100px;
     height: 20px;
-    background-color: blue;
+
+    background: #5578c9;
+
+    border: 1px solid #7897df;
+    border-radius: 3px;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
 .user {
     position: absolute;
+
     width: 100px;
     height: 20px;
-    background-color: purple;
+
+    background: #8a63b8;
+
+    border: 1px solid #ab82d5;
+    border-radius: 4px;
+
+    box-shadow:
+        0 0 8px rgba(138, 99, 184, 0.3);
 }
 
 .ball {
     position: absolute;
+
     width: 20px;
     height: 20px;
-    border-radius: 10px;
-    background-color: red;
+
+    background: #d35f5f;
+
+    border: 1px solid #ef8585;
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 8px rgba(211, 95, 95, 0.4);
+}
+
+@media (max-width: 620px) {
+    body {
+        padding: 25px 10px;
+
+        overflow-x: auto;
+    }
+
+    .game-shell {
+        min-width: 580px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
 }
