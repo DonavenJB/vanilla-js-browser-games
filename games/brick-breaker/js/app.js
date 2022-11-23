@@ -1,5 +1,6 @@
 const grid = document.querySelector('.grid')
 const scoreDisplay = document.querySelector('#score')
+const gameControl = document.querySelector('#game-control')
 
 const blockWidth = 100
 const blockHeight = 20
@@ -17,8 +18,11 @@ let currentPosition = userStart
 const ballStart = [270, 40]
 let ballCurrentPosition = ballStart
 
-let timerId
+let timerId = null
 let score = 0
+
+let gameRunning = false
+let gameOver = false
 
 //my block
 class Block {
@@ -90,6 +94,10 @@ drawBall()
 
 //move user
 function moveUser(e) {
+  if (!gameRunning) {
+    return
+  }
+
   switch (e.key) {
     case 'ArrowLeft':
       if (currentPosition[0] > 0) {
@@ -157,9 +165,37 @@ function moveBall() {
   checkForCollisions()
 }
 
-timerId = setInterval(
-  moveBall,
-  30
+function toggleGame() {
+  if (gameOver) {
+    return
+  }
+
+  if (gameRunning) {
+    clearInterval(timerId)
+
+    timerId = null
+    gameRunning = false
+
+    gameControl.textContent =
+      'Resume'
+
+    return
+  }
+
+  timerId = setInterval(
+    moveBall,
+    30
+  )
+
+  gameRunning = true
+
+  gameControl.textContent =
+    'Pause'
+}
+
+gameControl.addEventListener(
+  'click',
+  toggleGame
 )
 
 //check for collisions
@@ -213,10 +249,15 @@ function checkForCollisions() {
 
         clearInterval(timerId)
 
-        document.removeEventListener(
-          'keydown',
-          moveUser
-        )
+        timerId = null
+        gameRunning = false
+        gameOver = true
+
+        gameControl.textContent =
+          'Finished'
+
+        gameControl.disabled =
+          true
       }
     }
   }
@@ -258,13 +299,18 @@ function checkForCollisions() {
   ) {
     clearInterval(timerId)
 
+    timerId = null
+    gameRunning = false
+    gameOver = true
+
     scoreDisplay.innerHTML =
       'You lose!'
 
-    document.removeEventListener(
-      'keydown',
-      moveUser
-    )
+    gameControl.textContent =
+      'Finished'
+
+    gameControl.disabled =
+      true
   }
 }
 
