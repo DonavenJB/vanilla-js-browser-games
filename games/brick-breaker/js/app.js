@@ -9,6 +9,8 @@ const ballDiameter = 20
 const boardWidth = 560
 const boardHeight = 300
 
+const paddleSpeed = 10
+
 let xDirection = -2
 let yDirection = 2
 
@@ -69,8 +71,6 @@ function addBlocks() {
       blocks[i].bottomLeft[1] + 'px'
 
     grid.appendChild(block)
-
-    console.log(blocks[i].bottomLeft)
   }
 }
 
@@ -94,40 +94,41 @@ drawBall()
 
 //move user
 function moveUser(e) {
+  if (
+    e.key !== 'ArrowLeft' &&
+    e.key !== 'ArrowRight'
+  ) {
+    return
+  }
+
   if (!gameRunning) {
     return
   }
 
-  switch (e.key) {
-    case 'ArrowLeft':
-      if (currentPosition[0] > 0) {
-        currentPosition[0] -= 10
+  e.preventDefault()
 
-        console.log(
-          currentPosition[0] > 0
-        )
+  const maximumPosition =
+    boardWidth - blockWidth
 
-        drawUser()
-      }
-
-      break
-
-    case 'ArrowRight':
-      if (
-        currentPosition[0] <
-        (boardWidth - blockWidth)
-      ) {
-        currentPosition[0] += 10
-
-        console.log(
-          currentPosition[0]
-        )
-
-        drawUser()
-      }
-
-      break
+  if (e.key === 'ArrowLeft') {
+    currentPosition[0] =
+      Math.max(
+        0,
+        currentPosition[0] -
+          paddleSpeed
+      )
   }
+
+  if (e.key === 'ArrowRight') {
+    currentPosition[0] =
+      Math.min(
+        maximumPosition,
+        currentPosition[0] +
+          paddleSpeed
+      )
+  }
+
+  drawUser()
 }
 
 document.addEventListener(
