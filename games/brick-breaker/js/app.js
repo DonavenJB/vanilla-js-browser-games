@@ -162,8 +162,8 @@ function moveBall() {
   ballCurrentPosition[1] +=
     yDirection
 
-  drawBall()
   checkForCollisions()
+  drawBall()
 }
 
 function toggleGame() {
@@ -199,112 +199,227 @@ gameControl.addEventListener(
   toggleGame
 )
 
+//collision helpers
+function isColliding(
+  objectLeft,
+  objectBottom,
+  objectWidth,
+  objectHeight
+) {
+  const ballLeft =
+    ballCurrentPosition[0]
+
+  const ballRight =
+    ballCurrentPosition[0] +
+    ballDiameter
+
+  const ballBottom =
+    ballCurrentPosition[1]
+
+  const ballTop =
+    ballCurrentPosition[1] +
+    ballDiameter
+
+  const objectRight =
+    objectLeft + objectWidth
+
+  const objectTop =
+    objectBottom + objectHeight
+
+  return (
+    ballRight >= objectLeft &&
+    ballLeft <= objectRight &&
+    ballTop >= objectBottom &&
+    ballBottom <= objectTop
+  )
+}
+
+function bounceOffBlock(block) {
+  const ballCenterX =
+    ballCurrentPosition[0] +
+    ballDiameter / 2
+
+  const ballCenterY =
+    ballCurrentPosition[1] +
+    ballDiameter / 2
+
+  const blockCenterX =
+    block.bottomLeft[0] +
+    blockWidth / 2
+
+  const blockCenterY =
+    block.bottomLeft[1] +
+    blockHeight / 2
+
+  const overlapX =
+    ballDiameter / 2 +
+    blockWidth / 2 -
+    Math.abs(
+      ballCenterX - blockCenterX
+    )
+
+  const overlapY =
+    ballDiameter / 2 +
+    blockHeight / 2 -
+    Math.abs(
+      ballCenterY - blockCenterY
+    )
+
+  if (overlapX < overlapY) {
+    xDirection *= -1
+  } else {
+    yDirection *= -1
+  }
+}
+
 //check for collisions
 function checkForCollisions() {
-  //check for block collision
+  //brick collision
   for (
-    let i = 0;
-    i < blocks.length;
-    i++
+    let i = blocks.length - 1;
+    i >= 0;
+    i--
   ) {
+    const block =
+      blocks[i]
+
     if (
-      (
-        ballCurrentPosition[0] >
-          blocks[i].bottomLeft[0] &&
-        ballCurrentPosition[0] <
-          blocks[i].bottomRight[0]
-      ) &&
-      (
-        (
-          ballCurrentPosition[1] +
-          ballDiameter
-        ) >
-          blocks[i].bottomLeft[1] &&
-        ballCurrentPosition[1] <
-          blocks[i].topLeft[1]
+      !isColliding(
+        block.bottomLeft[0],
+        block.bottomLeft[1],
+        blockWidth,
+        blockHeight
       )
     ) {
-      const allBlocks =
-        Array.from(
-          document.querySelectorAll(
-            '.block'
-          )
-        )
+      continue
+    }
 
-      allBlocks[i].classList.remove(
-        'block'
+    bounceOffBlock(block)
+
+    const allBlocks =
+      document.querySelectorAll(
+        '.block'
       )
 
-      blocks.splice(i, 1)
+    allBlocks[i].remove()
 
-      changeDirection()
+    blocks.splice(i, 1)
 
-      score++
+    score++
 
-      scoreDisplay.innerHTML =
-        score
+    scoreDisplay.textContent =
+      score
 
-      if (blocks.length == 0) {
-        scoreDisplay.innerHTML =
-          'You Win!'
+    if (blocks.length === 0) {
+      clearInterval(timerId)
 
-        clearInterval(timerId)
+      timerId = null
+      gameRunning = false
+      gameOver = true
 
-        timerId = null
-        gameRunning = false
-        gameOver = true
+      scoreDisplay.textContent =
+        'You Win!'
 
-        gameControl.textContent =
-          'Finished'
+      gameControl.textContent =
+        'Finished'
 
-        gameControl.disabled =
-          true
-      }
+      gameControl.disabled =
+        true
+    }
+
+    //Only one brick may be removed per frame.
+    break
+  }
+
+  if (gameOver) {
+    return
+  }
+
+  //left wall
+  if (ballCurrentPosition[0] <= 0) {
+    ballCurrentPosition[0] = 0
+
+    xDirection =
+      Math.abs(xDirection)
+  }
+
+  //right wall
+  if (
+    ballCurrentPosition[0] >=
+    boardWidth - ballDiameter
+  ) {
+    ballCurrentPosition[0] =
+      boardWidth - ballDiameter
+
+    xDirection =
+      -Math.abs(xDirection)
+  }
+
+  //top wall
+  if (
+    ballCurrentPosition[1] >=
+    boardHeight - ballDiameter
+  ) {
+    ballCurrentPosition[1] =
+      boardHeight - ballDiameter
+
+    yDirection =
+      -Math.abs(yDirection)
+  }
+
+  //paddle collision
+  if (
+    yDirection < 0 &&
+    isColliding(
+      currentPosition[0],
+      currentPosition[1],
+      blockWidth,
+      blockHeight
+    )
+  ) {
+    ballCurrentPosition[1] =
+      currentPosition[1] +
+      blockHeight
+
+    yDirection =
+      Math.abs(yDirection)
+
+    const paddleCenter =
+      currentPosition[0] +
+      blockWidth / 2
+
+    const ballCenter =
+      ballCurrentPosition[0] +
+      ballDiameter / 2
+
+    if (
+      ballCenter <
+      paddleCenter - 10
+    ) {
+      xDirection =
+        -Math.abs(xDirection)
+    }
+
+    if (
+      ballCenter >
+      paddleCenter + 10
+    ) {
+      xDirection =
+        Math.abs(xDirection)
     }
   }
 
-  //check for wall hits
-  if (
-    ballCurrentPosition[0] >=
-      (boardWidth - ballDiameter) ||
-    ballCurrentPosition[0] <= 0 ||
-    ballCurrentPosition[1] >=
-      (boardHeight - ballDiameter)
-  ) {
-    changeDirection()
-  }
-
-  //check for user collision
-  if (
-    (
-      ballCurrentPosition[0] >
-        currentPosition[0] &&
-      ballCurrentPosition[0] <
-        currentPosition[0] +
-        blockWidth
-    ) &&
-    (
-      ballCurrentPosition[1] >
-        currentPosition[1] &&
-      ballCurrentPosition[1] <
-        currentPosition[1] +
-        blockHeight
-    )
-  ) {
-    changeDirection()
-  }
-
   //game over
-  if (
-    ballCurrentPosition[1] <= 0
-  ) {
+  if (ballCurrentPosition[1] <= 0) {
     clearInterval(timerId)
 
     timerId = null
     gameRunning = false
     gameOver = true
 
-    scoreDisplay.innerHTML =
+    ballCurrentPosition[1] = 0
+
+    scoreDisplay.textContent =
       'You lose!'
 
     gameControl.textContent =
@@ -312,39 +427,5 @@ function checkForCollisions() {
 
     gameControl.disabled =
       true
-  }
-}
-
-function changeDirection() {
-  if (
-    xDirection === 2 &&
-    yDirection === 2
-  ) {
-    yDirection = -2
-    return
-  }
-
-  if (
-    xDirection === 2 &&
-    yDirection === -2
-  ) {
-    xDirection = -2
-    return
-  }
-
-  if (
-    xDirection === -2 &&
-    yDirection === -2
-  ) {
-    yDirection = 2
-    return
-  }
-
-  if (
-    xDirection === -2 &&
-    yDirection === 2
-  ) {
-    xDirection = 2
-    return
   }
 }
