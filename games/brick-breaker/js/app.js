@@ -15,10 +15,10 @@ let xDirection = -2
 let yDirection = 2
 
 const userStart = [230, 10]
-let currentPosition = userStart
+let currentPosition = [...userStart]
 
 const ballStart = [270, 40]
-let ballCurrentPosition = ballStart
+let ballCurrentPosition = [...ballStart]
 
 let timerId = null
 let score = 0
@@ -156,6 +156,13 @@ function drawBall() {
 
 //move ball
 function moveBall() {
+  if (
+    !gameRunning ||
+    gameOver
+  ) {
+    return
+  }
+
   ballCurrentPosition[0] +=
     xDirection
 
@@ -166,20 +173,49 @@ function moveBall() {
   drawBall()
 }
 
+function stopGameTimer() {
+  if (timerId !== null) {
+    clearInterval(timerId)
+    timerId = null
+  }
+
+  gameRunning = false
+}
+
+function finishGame(message) {
+  if (gameOver) {
+    return
+  }
+
+  stopGameTimer()
+
+  gameOver = true
+
+  scoreDisplay.textContent =
+    message
+
+  gameControl.textContent =
+    'Finished'
+
+  gameControl.disabled =
+    true
+}
+
 function toggleGame() {
   if (gameOver) {
     return
   }
 
   if (gameRunning) {
-    clearInterval(timerId)
-
-    timerId = null
-    gameRunning = false
+    stopGameTimer()
 
     gameControl.textContent =
       'Resume'
 
+    return
+  }
+
+  if (timerId !== null) {
     return
   }
 
@@ -274,6 +310,10 @@ function bounceOffBlock(block) {
 
 //check for collisions
 function checkForCollisions() {
+  if (gameOver) {
+    return
+  }
+
   //brick collision
   for (
     let i = blocks.length - 1;
@@ -311,20 +351,7 @@ function checkForCollisions() {
       score
 
     if (blocks.length === 0) {
-      clearInterval(timerId)
-
-      timerId = null
-      gameRunning = false
-      gameOver = true
-
-      scoreDisplay.textContent =
-        'You Win!'
-
-      gameControl.textContent =
-        'Finished'
-
-      gameControl.disabled =
-        true
+      finishGame('You Win!')
     }
 
     //Only one brick may be removed per frame.
@@ -411,21 +438,8 @@ function checkForCollisions() {
 
   //game over
   if (ballCurrentPosition[1] <= 0) {
-    clearInterval(timerId)
-
-    timerId = null
-    gameRunning = false
-    gameOver = true
-
     ballCurrentPosition[1] = 0
 
-    scoreDisplay.textContent =
-      'You lose!'
-
-    gameControl.textContent =
-      'Finished'
-
-    gameControl.disabled =
-      true
+    finishGame('You lose!')
   }
 }
