@@ -1,6 +1,14 @@
-const grid = document.querySelector('.grid')
-const scoreDisplay = document.querySelector('#score')
-const gameControl = document.querySelector('#game-control')
+const grid =
+  document.querySelector('.grid')
+
+const scoreDisplay =
+  document.querySelector('#score')
+
+const gameControl =
+  document.querySelector('#game-control')
+
+const newGameButton =
+  document.querySelector('#new-game')
 
 const blockWidth = 100
 const blockHeight = 20
@@ -10,15 +18,19 @@ const boardWidth = 560
 const boardHeight = 300
 
 const paddleSpeed = 10
-
-let xDirection = -2
-let yDirection = 2
+const ballSpeed = 2
 
 const userStart = [230, 10]
-let currentPosition = [...userStart]
-
 const ballStart = [270, 40]
-let ballCurrentPosition = [...ballStart]
+
+let currentPosition =
+  [...userStart]
+
+let ballCurrentPosition =
+  [...ballStart]
+
+let xDirection = -ballSpeed
+let yDirection = ballSpeed
 
 let timerId = null
 let score = 0
@@ -26,73 +38,130 @@ let score = 0
 let gameRunning = false
 let gameOver = false
 
-//my block
 class Block {
   constructor(xAxis, yAxis) {
-    this.bottomLeft = [xAxis, yAxis]
-    this.bottomRight = [xAxis + blockWidth, yAxis]
-    this.topRight = [xAxis + blockWidth, yAxis + blockHeight]
-    this.topLeft = [xAxis, yAxis + blockHeight]
+    this.bottomLeft = [
+      xAxis,
+      yAxis
+    ]
+
+    this.bottomRight = [
+      xAxis + blockWidth,
+      yAxis
+    ]
+
+    this.topRight = [
+      xAxis + blockWidth,
+      yAxis + blockHeight
+    ]
+
+    this.topLeft = [
+      xAxis,
+      yAxis + blockHeight
+    ]
   }
 }
 
-//all my blocks
-const blocks = [
-  new Block(10, 270),
-  new Block(120, 270),
-  new Block(230, 270),
-  new Block(340, 270),
-  new Block(450, 270),
+const blockPositions = [
+  [10, 270],
+  [120, 270],
+  [230, 270],
+  [340, 270],
+  [450, 270],
 
-  new Block(10, 240),
-  new Block(120, 240),
-  new Block(230, 240),
-  new Block(340, 240),
-  new Block(450, 240),
+  [10, 240],
+  [120, 240],
+  [230, 240],
+  [340, 240],
+  [450, 240],
 
-  new Block(10, 210),
-  new Block(120, 210),
-  new Block(230, 210),
-  new Block(340, 210),
-  new Block(450, 210),
+  [10, 210],
+  [120, 210],
+  [230, 210],
+  [340, 210],
+  [450, 210]
 ]
 
-//draw my blocks
-function addBlocks() {
-  for (let i = 0; i < blocks.length; i++) {
-    const block = document.createElement('div')
+let blocks = []
+
+function createBlocks() {
+  blocks =
+    blockPositions.map(
+      ([xAxis, yAxis]) =>
+        new Block(
+          xAxis,
+          yAxis
+        )
+    )
+}
+
+function drawBlocks() {
+  blocks.forEach(blockData => {
+    const block =
+      document.createElement('div')
 
     block.classList.add('block')
 
     block.style.left =
-      blocks[i].bottomLeft[0] + 'px'
+      blockData.bottomLeft[0] +
+      'px'
 
     block.style.bottom =
-      blocks[i].bottomLeft[1] + 'px'
+      blockData.bottomLeft[1] +
+      'px'
 
     grid.appendChild(block)
-  }
+  })
 }
 
-addBlocks()
+function removeBlocks() {
+  document
+    .querySelectorAll('.block')
+    .forEach(block => {
+      block.remove()
+    })
+}
+
+createBlocks()
+drawBlocks()
 
 //add user
-const user = document.createElement('div')
+const user =
+  document.createElement('div')
 
 user.classList.add('user')
 grid.appendChild(user)
 
-drawUser()
-
 //add ball
-const ball = document.createElement('div')
+const ball =
+  document.createElement('div')
 
 ball.classList.add('ball')
 grid.appendChild(ball)
 
+function drawUser() {
+  user.style.left =
+    currentPosition[0] +
+    'px'
+
+  user.style.bottom =
+    currentPosition[1] +
+    'px'
+}
+
+function drawBall() {
+  ball.style.left =
+    ballCurrentPosition[0] +
+    'px'
+
+  ball.style.bottom =
+    ballCurrentPosition[1] +
+    'px'
+}
+
+drawUser()
 drawBall()
 
-//move user
 function moveUser(e) {
   if (
     e.key !== 'ArrowLeft' &&
@@ -136,25 +205,6 @@ document.addEventListener(
   moveUser
 )
 
-//draw User
-function drawUser() {
-  user.style.left =
-    currentPosition[0] + 'px'
-
-  user.style.bottom =
-    currentPosition[1] + 'px'
-}
-
-//draw Ball
-function drawBall() {
-  ball.style.left =
-    ballCurrentPosition[0] + 'px'
-
-  ball.style.bottom =
-    ballCurrentPosition[1] + 'px'
-}
-
-//move ball
 function moveBall() {
   if (
     !gameRunning ||
@@ -230,12 +280,52 @@ function toggleGame() {
     'Pause'
 }
 
+function resetGame() {
+  stopGameTimer()
+
+  score = 0
+  gameOver = false
+
+  xDirection =
+    -ballSpeed
+
+  yDirection =
+    ballSpeed
+
+  currentPosition =
+    [...userStart]
+
+  ballCurrentPosition =
+    [...ballStart]
+
+  removeBlocks()
+
+  createBlocks()
+  drawBlocks()
+
+  scoreDisplay.textContent =
+    score
+
+  gameControl.disabled =
+    false
+
+  gameControl.textContent =
+    'Start'
+
+  drawUser()
+  drawBall()
+}
+
 gameControl.addEventListener(
   'click',
   toggleGame
 )
 
-//collision helpers
+newGameButton.addEventListener(
+  'click',
+  resetGame
+)
+
 function isColliding(
   objectLeft,
   objectBottom,
@@ -260,7 +350,8 @@ function isColliding(
     objectLeft + objectWidth
 
   const objectTop =
-    objectBottom + objectHeight
+    objectBottom +
+    objectHeight
 
   return (
     ballRight >= objectLeft &&
@@ -291,14 +382,16 @@ function bounceOffBlock(block) {
     ballDiameter / 2 +
     blockWidth / 2 -
     Math.abs(
-      ballCenterX - blockCenterX
+      ballCenterX -
+      blockCenterX
     )
 
   const overlapY =
     ballDiameter / 2 +
     blockHeight / 2 -
     Math.abs(
-      ballCenterY - blockCenterY
+      ballCenterY -
+      blockCenterY
     )
 
   if (overlapX < overlapY) {
@@ -308,7 +401,6 @@ function bounceOffBlock(block) {
   }
 }
 
-//check for collisions
 function checkForCollisions() {
   if (gameOver) {
     return
@@ -354,7 +446,6 @@ function checkForCollisions() {
       finishGame('You Win!')
     }
 
-    //Only one brick may be removed per frame.
     break
   }
 
@@ -363,7 +454,9 @@ function checkForCollisions() {
   }
 
   //left wall
-  if (ballCurrentPosition[0] <= 0) {
+  if (
+    ballCurrentPosition[0] <= 0
+  ) {
     ballCurrentPosition[0] = 0
 
     xDirection =
@@ -437,7 +530,9 @@ function checkForCollisions() {
   }
 
   //game over
-  if (ballCurrentPosition[1] <= 0) {
+  if (
+    ballCurrentPosition[1] <= 0
+  ) {
     ballCurrentPosition[1] = 0
 
     finishGame('You lose!')
