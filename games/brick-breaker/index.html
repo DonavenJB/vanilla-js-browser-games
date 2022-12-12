@@ -34,9 +34,22 @@
             and clear every block.
         </p>
 
-        <div class="score-panel">
-            Score:
-            <span id="score">0</span>
+        <div class="game-info">
+            <div class="score-panel">
+                Score:
+                <span id="score">0</span>
+            </div>
+
+            <div class="status-panel">
+                Status:
+                <span
+                    id="game-status"
+                    aria-live="polite"
+                    aria-atomic="true"
+                >
+                    Ready
+                </span>
+            </div>
         </div>
 
         <div class="game-controls">

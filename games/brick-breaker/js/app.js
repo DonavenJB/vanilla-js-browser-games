@@ -4,6 +4,9 @@ const grid =
 const scoreDisplay =
   document.querySelector('#score')
 
+const statusDisplay =
+  document.querySelector('#game-status')
+
 const gameControl =
   document.querySelector('#game-control')
 
@@ -223,6 +226,11 @@ function moveBall() {
   drawBall()
 }
 
+function updateGameStatus(status) {
+  statusDisplay.textContent =
+    status
+}
+
 function stopGameTimer() {
   if (timerId !== null) {
     clearInterval(timerId)
@@ -232,7 +240,7 @@ function stopGameTimer() {
   gameRunning = false
 }
 
-function finishGame(message) {
+function finishGame(status) {
   if (gameOver) {
     return
   }
@@ -241,8 +249,18 @@ function finishGame(message) {
 
   gameOver = true
 
-  scoreDisplay.textContent =
-    message
+  updateGameStatus(status)
+
+  document.body.classList.remove(
+    'game-won',
+    'game-lost'
+  )
+
+  document.body.classList.add(
+    status === 'Won'
+      ? 'game-won'
+      : 'game-lost'
+  )
 
   gameControl.textContent =
     'Finished'
@@ -262,6 +280,10 @@ function toggleGame() {
     gameControl.textContent =
       'Resume'
 
+    updateGameStatus(
+      'Paused'
+    )
+
     return
   }
 
@@ -278,6 +300,10 @@ function toggleGame() {
 
   gameControl.textContent =
     'Pause'
+
+  updateGameStatus(
+    'Running'
+  )
 }
 
 function resetGame() {
@@ -285,6 +311,15 @@ function resetGame() {
 
   score = 0
   gameOver = false
+
+  document.body.classList.remove(
+    'game-won',
+    'game-lost'
+  )
+
+  updateGameStatus(
+    'Ready'
+  )
 
   xDirection =
     -ballSpeed
@@ -324,6 +359,10 @@ gameControl.addEventListener(
 newGameButton.addEventListener(
   'click',
   resetGame
+)
+
+updateGameStatus(
+  'Ready'
 )
 
 function isColliding(
@@ -443,7 +482,7 @@ function checkForCollisions() {
       score
 
     if (blocks.length === 0) {
-      finishGame('You Win!')
+      finishGame('Won')
     }
 
     break
@@ -535,6 +574,6 @@ function checkForCollisions() {
   ) {
     ballCurrentPosition[1] = 0
 
-    finishGame('You lose!')
+    finishGame('Game Over')
   }
 }
