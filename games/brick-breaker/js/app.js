@@ -13,6 +13,12 @@ const gameControl =
 const newGameButton =
   document.querySelector('#new-game')
 
+const paddleLeftButton =
+  document.querySelector('#paddle-left')
+
+const paddleRightButton =
+  document.querySelector('#paddle-right')
+
 const blockWidth = 100
 const blockHeight = 20
 const ballDiameter = 20
@@ -22,6 +28,7 @@ const boardHeight = 300
 
 const paddleSpeed = 10
 const ballSpeed = 2
+const frameInterval = 30
 
 const userStart = [230, 10]
 const ballStart = [270, 40]
@@ -128,14 +135,12 @@ function removeBlocks() {
 createBlocks()
 drawBlocks()
 
-//add user
 const user =
   document.createElement('div')
 
 user.classList.add('user')
 grid.appendChild(user)
 
-//add ball
 const ball =
   document.createElement('div')
 
@@ -165,24 +170,15 @@ function drawBall() {
 drawUser()
 drawBall()
 
-function moveUser(e) {
-  if (
-    e.key !== 'ArrowLeft' &&
-    e.key !== 'ArrowRight'
-  ) {
-    return
-  }
-
+function movePaddle(direction) {
   if (!gameRunning) {
     return
   }
 
-  e.preventDefault()
-
   const maximumPosition =
     boardWidth - blockWidth
 
-  if (e.key === 'ArrowLeft') {
+  if (direction === 'left') {
     currentPosition[0] =
       Math.max(
         0,
@@ -191,7 +187,7 @@ function moveUser(e) {
       )
   }
 
-  if (e.key === 'ArrowRight') {
+  if (direction === 'right') {
     currentPosition[0] =
       Math.min(
         maximumPosition,
@@ -203,9 +199,50 @@ function moveUser(e) {
   drawUser()
 }
 
+function handleKeyboard(event) {
+  if (
+    event.key === 'ArrowLeft' ||
+    event.key === 'ArrowRight'
+  ) {
+    if (!gameRunning) {
+      return
+    }
+
+    event.preventDefault()
+
+    movePaddle(
+      event.key === 'ArrowLeft'
+        ? 'left'
+        : 'right'
+    )
+
+    return
+  }
+
+  if (
+    event.code === 'Space' &&
+    event.target.tagName !== 'BUTTON'
+  ) {
+    event.preventDefault()
+
+    toggleGame()
+
+    return
+  }
+
+  if (
+    event.key.toLowerCase() === 'n' &&
+    event.target.tagName !== 'BUTTON'
+  ) {
+    event.preventDefault()
+
+    resetGame()
+  }
+}
+
 document.addEventListener(
   'keydown',
-  moveUser
+  handleKeyboard
 )
 
 function moveBall() {
@@ -238,6 +275,24 @@ function stopGameTimer() {
   }
 
   gameRunning = false
+}
+
+function pauseGame() {
+  if (
+    !gameRunning ||
+    gameOver
+  ) {
+    return
+  }
+
+  stopGameTimer()
+
+  gameControl.textContent =
+    'Resume'
+
+  updateGameStatus(
+    'Paused'
+  )
 }
 
 function finishGame(status) {
@@ -275,15 +330,7 @@ function toggleGame() {
   }
 
   if (gameRunning) {
-    stopGameTimer()
-
-    gameControl.textContent =
-      'Resume'
-
-    updateGameStatus(
-      'Paused'
-    )
-
+    pauseGame()
     return
   }
 
@@ -293,7 +340,7 @@ function toggleGame() {
 
   timerId = setInterval(
     moveBall,
-    30
+    frameInterval
   )
 
   gameRunning = true
@@ -359,6 +406,34 @@ gameControl.addEventListener(
 newGameButton.addEventListener(
   'click',
   resetGame
+)
+
+paddleLeftButton.addEventListener(
+  'click',
+  () => {
+    movePaddle('left')
+  }
+)
+
+paddleRightButton.addEventListener(
+  'click',
+  () => {
+    movePaddle('right')
+  }
+)
+
+window.addEventListener(
+  'blur',
+  pauseGame
+)
+
+document.addEventListener(
+  'visibilitychange',
+  () => {
+    if (document.hidden) {
+      pauseGame()
+    }
+  }
 )
 
 updateGameStatus(
@@ -445,7 +520,6 @@ function checkForCollisions() {
     return
   }
 
-  //brick collision
   for (
     let i = blocks.length - 1;
     i >= 0;
@@ -492,7 +566,6 @@ function checkForCollisions() {
     return
   }
 
-  //left wall
   if (
     ballCurrentPosition[0] <= 0
   ) {
@@ -502,7 +575,6 @@ function checkForCollisions() {
       Math.abs(xDirection)
   }
 
-  //right wall
   if (
     ballCurrentPosition[0] >=
     boardWidth - ballDiameter
@@ -514,7 +586,6 @@ function checkForCollisions() {
       -Math.abs(xDirection)
   }
 
-  //top wall
   if (
     ballCurrentPosition[1] >=
     boardHeight - ballDiameter
@@ -526,7 +597,6 @@ function checkForCollisions() {
       -Math.abs(yDirection)
   }
 
-  //paddle collision
   if (
     yDirection < 0 &&
     isColliding(
@@ -568,12 +638,13 @@ function checkForCollisions() {
     }
   }
 
-  //game over
   if (
     ballCurrentPosition[1] <= 0
   ) {
     ballCurrentPosition[1] = 0
 
-    finishGame('Game Over')
+    finishGame(
+      'Game Over'
+    )
   }
 }

@@ -30,8 +30,8 @@
         <h1>Brick Breaker</h1>
 
         <p class="instructions">
-            Use the left and right arrow keys to move the paddle
-            and clear every block.
+            Use Left and Right to move the paddle.
+            Press Space to start or pause, and N for a new game.
         </p>
 
         <div class="game-info">
@@ -56,6 +56,7 @@
             <button
                 id="game-control"
                 type="button"
+                aria-keyshortcuts="Space"
             >
                 Start
             </button>
@@ -63,12 +64,39 @@
             <button
                 id="new-game"
                 type="button"
+                aria-keyshortcuts="N"
             >
                 New Game
             </button>
         </div>
 
-        <div class="grid"></div>
+        <div
+            class="grid"
+            aria-label="Brick Breaker play field"
+        ></div>
+
+        <div
+            class="paddle-controls"
+            aria-label="Paddle controls"
+        >
+            <button
+                id="paddle-left"
+                type="button"
+                aria-label="Move paddle left"
+                aria-keyshortcuts="ArrowLeft"
+            >
+                &larr; Left
+            </button>
+
+            <button
+                id="paddle-right"
+                type="button"
+                aria-label="Move paddle right"
+                aria-keyshortcuts="ArrowRight"
+            >
+                Right &rarr;
+            </button>
+        </div>
 
     </main>
 
