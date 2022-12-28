@@ -1,0 +1,72 @@
+@import url("./base.css");
+
+.game-shell {
+    width: min(760px, 100%);
+    margin: 0 auto;
+}
+
+.back-link {
+    display: block;
+    width: max-content;
+
+    margin: 0 auto 25px;
+
+    color: var(--color-text-muted);
+    text-decoration: none;
+}
+
+.back-link:hover {
+    color: var(--color-text);
+}
+
+.instructions {
+    max-width: 520px;
+    margin: 0 auto 20px;
+
+    color: var(--color-text-muted);
+    line-height: 1.5;
+}
+
+.game-controls,
+.controls {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+button {
+    padding: 10px 18px;
+
+    color: var(--color-text);
+    background: var(--color-surface);
+
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+
+    cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-hover);
+}
+
+button:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.back-link:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: 3px;
+}
+
+.game-message {
+    min-height: 24px;
+}
