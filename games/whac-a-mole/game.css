@@ -120,7 +120,7 @@ h1 {
 }
 
 .mole {
-    background-image: url('../mole.jpeg');
+    background-image: url('./mole.jpeg');
 
     background-repeat: no-repeat;
 
