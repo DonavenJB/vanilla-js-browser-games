@@ -1,13 +1,16 @@
-﻿* {
+@import url("./shared/css/components.css");
+
+* {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
+    padding: 0;
     min-height: 100vh;
     font-family: Arial, sans-serif;
-    background: #111;
-    color: #fff;
+    background: var(--color-bg);
+    color: var(--color-text);
     display: flex;
     justify-content: center;
 }
@@ -24,7 +27,7 @@ h1 {
 
 p {
     margin-bottom: 40px;
-    color: #aaa;
+    color: var(--color-text-muted);
 }
 
 .games {
@@ -35,9 +38,9 @@ p {
 
 .game {
     padding: 30px 15px;
-    border: 1px solid #333;
+    border: 1px solid var(--color-border);
     border-radius: 6px;
-    background: #181818;
+    background: var(--color-surface);
 }
 
 .game {

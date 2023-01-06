@@ -1,3 +1,5 @@
+@import url("../../shared/css/components.css");
+
 * {
     box-sizing: border-box;
 }
@@ -15,8 +17,8 @@ body {
 
     font-family: Arial, sans-serif;
 
-    color: #fff;
-    background: #111;
+    color: var(--color-text);
+    background: var(--color-bg);
 
     text-align: center;
 }
@@ -34,7 +36,7 @@ body {
 
     margin: 0 auto 28px;
 
-    color: #aaa;
+    color: var(--color-text-muted);
 
     text-decoration: none;
 
@@ -42,11 +44,11 @@ body {
 }
 
 .back-link:hover {
-    color: #fff;
+    color: var(--color-text);
 }
 
 .back-link:focus-visible {
-    outline: 2px solid #fff;
+    outline: 2px solid var(--color-text);
     outline-offset: 4px;
 }
 
@@ -61,7 +63,7 @@ h1 {
 
     margin: 0 auto 22px;
 
-    color: #aaa;
+    color: var(--color-text-muted);
 
     line-height: 1.5;
 }
@@ -74,15 +76,15 @@ h1 {
     margin: 0 auto 18px;
     padding: 10px 18px;
 
-    color: #aaa;
-    background: #181818;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
 
-    border: 1px solid #333;
+    border: 1px solid var(--color-border);
     border-radius: 6px;
 }
 
 #score {
-    color: #fff;
+    color: var(--color-text);
 
     font-weight: bold;
 }
@@ -104,7 +106,7 @@ h1 {
     background:
         linear-gradient(
             to bottom,
-            #181818,
+            var(--color-surface),
             #141414
         );
 
@@ -194,10 +196,10 @@ h1 {
     font: inherit;
     font-weight: bold;
 
-    color: #fff;
-    background: #181818;
+    color: var(--color-text);
+    background: var(--color-surface);
 
-    border: 1px solid #444;
+    border: 1px solid var(--color-border-strong);
     border-radius: 6px;
 
     cursor: pointer;
@@ -209,8 +211,8 @@ h1 {
 }
 
 #game-control:hover:not(:disabled) {
-    background: #222;
-    border-color: #666;
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-hover);
 }
 
 #game-control:active:not(:disabled) {
@@ -218,12 +220,12 @@ h1 {
 }
 
 #game-control:focus-visible {
-    outline: 2px solid #fff;
+    outline: 2px solid var(--color-text);
     outline-offset: 3px;
 }
 
 #game-control:disabled {
-    color: #777;
+    color: var(--color-text-subtle);
     background: #151515;
 
     border-color: #2d2d2d;
@@ -244,10 +246,10 @@ h1 {
     font: inherit;
     font-weight: bold;
 
-    color: #aaa;
-    background: #181818;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
 
-    border: 1px solid #444;
+    border: 1px solid var(--color-border-strong);
     border-radius: 6px;
 
     cursor: pointer;
@@ -260,9 +262,9 @@ h1 {
 }
 
 #new-game:hover {
-    color: #fff;
-    background: #222;
-    border-color: #666;
+    color: var(--color-text);
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-hover);
 }
 
 #new-game:active {
@@ -270,7 +272,7 @@ h1 {
 }
 
 #new-game:focus-visible {
-    outline: 2px solid #fff;
+    outline: 2px solid var(--color-text);
     outline-offset: 3px;
 }
 
@@ -294,15 +296,15 @@ h1 {
 
     padding: 10px 18px;
 
-    color: #aaa;
-    background: #181818;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
 
-    border: 1px solid #333;
+    border: 1px solid var(--color-border);
     border-radius: 6px;
 }
 
 #game-status {
-    color: #fff;
+    color: var(--color-text);
 
     font-weight: bold;
 
@@ -359,8 +361,8 @@ body.game-lost .grid {
     font: inherit;
     font-weight: bold;
 
-    color: #aaa;
-    background: #181818;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
 
     border: 1px solid #3a3a3a;
     border-radius: 6px;
@@ -375,9 +377,9 @@ body.game-lost .grid {
 }
 
 .paddle-controls button:hover {
-    color: #fff;
-    background: #222;
-    border-color: #666;
+    color: var(--color-text);
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-hover);
 }
 
 .paddle-controls button:active {
@@ -385,7 +387,7 @@ body.game-lost .grid {
 }
 
 .paddle-controls button:focus-visible {
-    outline: 2px solid #fff;
+    outline: 2px solid var(--color-text);
     outline-offset: 3px;
 }
 

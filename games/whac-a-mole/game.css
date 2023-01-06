@@ -1,3 +1,5 @@
+@import url("../../shared/css/components.css");
+
 * {
     box-sizing: border-box;
 }
@@ -14,8 +16,8 @@ body {
 
     font-family: Arial, sans-serif;
 
-    color: #fff;
-    background: #111;
+    color: var(--color-text);
+    background: var(--color-bg);
 
     text-align: center;
 }
@@ -32,13 +34,13 @@ body {
 
     margin: 0 auto 25px;
 
-    color: #aaa;
+    color: var(--color-text-muted);
 
     text-decoration: none;
 }
 
 .back-link:hover {
-    color: #fff;
+    color: var(--color-text);
 }
 
 h1 {
@@ -52,7 +54,7 @@ h1 {
 
     margin: 0 auto 20px;
 
-    color: #aaa;
+    color: var(--color-text-muted);
 
     line-height: 1.5;
 }
@@ -70,12 +72,12 @@ h1 {
 .game-info p {
     margin: 0;
 
-    color: #aaa;
+    color: var(--color-text-muted);
 }
 
 #score,
 #time-left {
-    color: #fff;
+    color: var(--color-text);
 
     font-weight: bold;
 }
@@ -90,9 +92,9 @@ h1 {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
 
-    background: #181818;
+    background: var(--color-surface);
 
-    border: 1px solid #333;
+    border: 1px solid var(--color-border);
     border-radius: 8px;
 
     overflow: hidden;
@@ -103,9 +105,9 @@ h1 {
 
     aspect-ratio: 1;
 
-    border: 1px solid #333;
+    border: 1px solid var(--color-border);
 
-    background-color: #181818;
+    background-color: var(--color-surface);
 
     cursor: pointer;
 
@@ -116,7 +118,7 @@ h1 {
 
 .square:hover {
     background-color: #1e1e1e;
-    border-color: #444;
+    border-color: var(--color-border-strong);
 }
 
 .mole {
@@ -162,18 +164,18 @@ h1 {
     font: inherit;
     font-weight: bold;
 
-    color: #fff;
-    background: #181818;
+    color: var(--color-text);
+    background: var(--color-surface);
 
-    border: 1px solid #444;
+    border: 1px solid var(--color-border-strong);
     border-radius: 6px;
 
     cursor: pointer;
 }
 
 #start-pause-button:hover:not(:disabled) {
-    background: #222;
-    border-color: #666;
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-hover);
 }
 
 #start-pause-button:active:not(:disabled) {
@@ -181,7 +183,7 @@ h1 {
 }
 
 #start-pause-button:focus-visible {
-    outline: 2px solid #fff;
+    outline: 2px solid var(--color-text);
     outline-offset: 3px;
 }
 
@@ -193,7 +195,7 @@ h1 {
 /* Successful whack feedback */
 .square.hit {
     background-color: #243326;
-    border-color: #55b96b;
+    border-color: var(--color-success-strong);
 }
 
 .square.hit::after {
@@ -210,7 +212,7 @@ h1 {
 
 /* Game status */
 #game-status {
-    color: #fff;
+    color: var(--color-text);
     font-weight: bold;
 }
 
@@ -219,13 +221,13 @@ h1 {
 
     margin: 0 0 14px;
 
-    color: #aaa;
+    color: var(--color-text-muted);
 
     font-weight: bold;
 }
 
 body.game-over .game-message {
-    color: #e58b8b;
+    color: var(--color-danger);
 }
 
 /* Replay control */
@@ -235,18 +237,18 @@ body.game-over .game-message {
     font: inherit;
     font-weight: bold;
 
-    color: #fff;
-    background: #181818;
+    color: var(--color-text);
+    background: var(--color-surface);
 
-    border: 1px solid #444;
+    border: 1px solid var(--color-border-strong);
     border-radius: 6px;
 
     cursor: pointer;
 }
 
 #new-game-button:hover {
-    background: #222;
-    border-color: #666;
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-hover);
 }
 
 #new-game-button:active {
@@ -254,7 +256,7 @@ body.game-over .game-message {
 }
 
 #new-game-button:focus-visible {
-    outline: 2px solid #fff;
+    outline: 2px solid var(--color-text);
     outline-offset: 3px;
 }
 
@@ -284,9 +286,9 @@ h1 {
     align-items: center;
     flex-wrap: wrap;
 
-    background: #181818;
+    background: var(--color-surface);
 
-    border: 1px solid #333;
+    border: 1px solid var(--color-border);
     border-radius: 8px;
 }
 
@@ -344,7 +346,7 @@ h1 {
 
 /* Running state */
 body.game-running #game-status {
-    color: #8ed99d;
+    color: var(--color-success);
 }
 
 body.game-running .grid {
@@ -357,11 +359,11 @@ body.game-running .grid {
 
 /* Paused state */
 body.game-paused #game-status {
-    color: #e1bd68;
+    color: var(--color-warning);
 }
 
 body.game-paused .game-message {
-    color: #e1bd68;
+    color: var(--color-warning);
     background: rgba(217, 164, 65, 0.06);
 }
 
@@ -371,11 +373,11 @@ body.game-paused .grid {
 
 /* Game-over state */
 body.game-over #game-status {
-    color: #e58b8b;
+    color: var(--color-danger);
 }
 
 body.game-over .game-message {
-    color: #e58b8b;
+    color: var(--color-danger);
     background: rgba(184, 79, 79, 0.08);
 }
 
@@ -418,7 +420,7 @@ body.game-over .grid {
 .square:focus-visible {
     z-index: 1;
 
-    outline: 2px solid #fff;
+    outline: 2px solid var(--color-text);
     outline-offset: -4px;
 }
 

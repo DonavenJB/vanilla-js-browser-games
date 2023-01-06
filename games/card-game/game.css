@@ -1,3 +1,5 @@
+@import url("../../shared/css/components.css");
+
 * {
     box-sizing: border-box;
 }
@@ -14,8 +16,8 @@ body {
 
     font-family: Arial, sans-serif;
 
-    background: #111;
-    color: #fff;
+    background: var(--color-bg);
+    color: var(--color-text);
 
     text-align: center;
 }
@@ -31,12 +33,12 @@ body {
 
     margin: 0 auto 25px;
 
-    color: #aaa;
+    color: var(--color-text-muted);
     text-decoration: none;
 }
 
 .back-link:hover {
-    color: #fff;
+    color: var(--color-text);
 }
 
 h1 {
@@ -49,17 +51,17 @@ h1 {
 
     margin: 0 auto 18px;
 
-    color: #aaa;
+    color: var(--color-text-muted);
     line-height: 1.5;
 }
 
 .status {
     margin: 0 0 15px;
-    color: #aaa;
+    color: var(--color-text-muted);
 }
 
 #game-status {
-    color: #fff;
+    color: var(--color-text);
 }
 
 button {
@@ -67,18 +69,18 @@ button {
     margin: 5px;
 
     font: inherit;
-    color: #fff;
+    color: var(--color-text);
 
-    background: #181818;
+    background: var(--color-surface);
 
-    border: 1px solid #333;
+    border: 1px solid var(--color-border);
     border-radius: 6px;
 
     cursor: pointer;
 }
 
 button:hover:not(:disabled) {
-    background: #222;
+    background: var(--color-surface-hover);
     border-color: #555;
 }
 
@@ -119,9 +121,9 @@ button:disabled {
     align-items: center;
     justify-content: center;
 
-    background: #181818;
+    background: var(--color-surface);
 
-    border: 1px solid #333;
+    border: 1px solid var(--color-border);
     border-radius: 10px;
 }
 
@@ -142,7 +144,7 @@ button:disabled {
     min-height: 30px;
     margin: 0;
 
-    color: #fff;
+    color: var(--color-text);
 }
 
 @media (max-width: 560px) {
@@ -187,9 +189,9 @@ button:disabled {
 .score-item {
     padding: 12px 8px;
 
-    background: #181818;
+    background: var(--color-surface);
 
-    border: 1px solid #333;
+    border: 1px solid var(--color-border);
     border-radius: 6px;
 }
 
@@ -198,7 +200,7 @@ button:disabled {
 
     margin-bottom: 5px;
 
-    color: #aaa;
+    color: var(--color-text-muted);
     font-size: 0.85rem;
 }
 
@@ -223,11 +225,11 @@ button:disabled {
 .deck-status {
     margin: 10px 0 0;
 
-    color: #aaa;
+    color: var(--color-text-muted);
 }
 
 #remaining-cards {
-    color: #fff;
+    color: var(--color-text);
 }
 /* Round result feedback */
 .result-panel {
@@ -236,9 +238,9 @@ button:disabled {
     margin: 0 auto;
     padding: 15px;
 
-    background: #181818;
+    background: var(--color-surface);
 
-    border: 1px solid #333;
+    border: 1px solid var(--color-border);
     border-radius: 6px;
 }
 
@@ -247,7 +249,7 @@ button:disabled {
 
     margin-bottom: 6px;
 
-    color: #777;
+    color: var(--color-text-subtle);
     font-size: 0.8rem;
 
     text-transform: uppercase;
@@ -259,7 +261,7 @@ button:disabled {
 }
 
 body.player-one-win .result-panel {
-    border-color: #55b96b;
+    border-color: var(--color-success-strong);
 }
 
 body.player-two-win .result-panel {
@@ -267,11 +269,11 @@ body.player-two-win .result-panel {
 }
 
 body.war-round .result-panel {
-    border-color: #d9a441;
+    border-color: var(--color-warning-strong);
 }
 
 body.player-one-win #result {
-    color: #8ed99d;
+    color: var(--color-success);
 }
 
 body.player-two-win #result {
@@ -279,11 +281,11 @@ body.player-two-win #result {
 }
 
 body.war-round #result {
-    color: #f0c96b;
+    color: var(--color-warning-bright);
 }
 
 .back-link:focus-visible,
 button:focus-visible {
-    outline: 2px solid #fff;
+    outline: 2px solid var(--color-text);
     outline-offset: 3px;
 }
