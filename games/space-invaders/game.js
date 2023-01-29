@@ -54,7 +54,7 @@ let goingRight = true
 let currentInvaderSpeed =
   startingInvaderSpeed
 
-let aliensRemoved = []
+let aliensRemoved = new Set()
 let results = 0
 
 let gameOver = false
@@ -91,7 +91,7 @@ function draw() {
     i++
   ) {
     if (
-      !aliensRemoved.includes(i) &&
+      !aliensRemoved.has(i) &&
       squares[alienInvaders[i]]
     ) {
       squares[alienInvaders[i]]
@@ -148,7 +148,7 @@ function clearBoard() {
 function calculateInvaderSpeed() {
   const speedLevel =
     Math.floor(
-      aliensRemoved.length /
+      aliensRemoved.size /
       killsPerSpeedLevel
     )
 
@@ -313,7 +313,7 @@ function resetGame() {
   currentInvaderSpeed =
     startingInvaderSpeed
 
-  aliensRemoved = []
+  aliensRemoved = new Set()
   results = 0
 
   gameOver = false
@@ -394,7 +394,7 @@ function moveInvaders() {
   const activeInvaders =
     alienInvaders.filter(
       (position, alienIndex) =>
-        !aliensRemoved.includes(
+        !aliensRemoved.has(
           alienIndex
         )
     )
@@ -459,7 +459,7 @@ function moveInvaders() {
   const updatedActiveInvaders =
     alienInvaders.filter(
       (position, alienIndex) =>
-        !aliensRemoved.includes(
+        !aliensRemoved.has(
           alienIndex
         )
     )
@@ -489,7 +489,7 @@ function moveInvaders() {
   draw()
 
   if (
-    aliensRemoved.length ===
+    aliensRemoved.size ===
     alienInvaders.length
   ) {
     endGame('YOU WIN')
@@ -594,11 +594,11 @@ function shoot(e) {
 
       if (
         alienRemoved !== -1 &&
-        !aliensRemoved.includes(
+        !aliensRemoved.has(
           alienRemoved
         )
       ) {
-        aliensRemoved.push(
+        aliensRemoved.add(
           alienRemoved
         )
 
@@ -609,7 +609,7 @@ function shoot(e) {
 
         invadersLeftDisplay.textContent =
           alienInvaders.length -
-          aliensRemoved.length
+          aliensRemoved.size
 
         const speedIncreased =
           updateInvaderSpeed()
@@ -621,7 +621,7 @@ function shoot(e) {
       }
 
       if (
-        aliensRemoved.length ===
+        aliensRemoved.size ===
         alienInvaders.length
       ) {
         endGame('YOU WIN')
@@ -650,19 +650,24 @@ newGameButton.addEventListener(
   resetGame
 )
 
+function runGameInput(key) {
+  const input = {
+    key,
+    preventDefault() {}
+  }
+
+  moveShooter(input)
+  shoot(input)
+}
+
 directionButtons.forEach(button => {
   button.addEventListener('click', () => {
     if (!isRunning || gameOver) {
       return
     }
 
-    document.dispatchEvent(
-      new KeyboardEvent(
-        'keydown',
-        {
-          key: button.dataset.key
-        }
-      )
+    runGameInput(
+      button.dataset.key
     )
   })
 })

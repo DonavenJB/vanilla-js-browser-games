@@ -1,6 +1,20 @@
-const squares = document.querySelectorAll('.square')
-const timeLeft = document.querySelector('#time-left')
-const score = document.querySelector('#score')
+import {
+  GameState
+} from '../../shared/js/game-state.js'
+
+import {
+  createTimerRegistry
+} from '../../shared/js/timers.js'
+
+const squares =
+  document.querySelectorAll('.square')
+
+const timeLeftDisplay =
+  document.querySelector('#time-left')
+
+const scoreDisplay =
+  document.querySelector('#score')
+
 const bestScoreDisplay =
   document.querySelector('#best-score')
 
@@ -17,10 +31,12 @@ const newGameButton =
   document.querySelector('#new-game-button')
 
 const startingTime = 60
-
 const moleMoveInterval = 500
 const countDownInterval = 1000
 const hitFeedbackDuration = 150
+
+const timers =
+  createTimerRegistry()
 
 let bestScore =
   Number(
@@ -31,39 +47,100 @@ let bestScore =
 
 let result = 0
 let hitPosition = null
-let currentTime = startingTime
+let currentTime =
+  startingTime
 
-let moleTimerId = null
-let countDownTimerId = null
+let gameState =
+  GameState.READY
 
-let isRunning = false
-let gameFinished = false
+function isRunning() {
+  return (
+    gameState ===
+    GameState.RUNNING
+  )
+}
+
+function setGameState(state) {
+  gameState = state
+
+  document.body.classList.remove(
+    'game-running',
+    'game-paused',
+    'game-over'
+  )
+
+  if (state === GameState.RUNNING) {
+    document.body.classList.add(
+      'game-running'
+    )
+
+    gameStatusDisplay.textContent =
+      'Running'
+  }
+
+  if (state === GameState.PAUSED) {
+    document.body.classList.add(
+      'game-paused'
+    )
+
+    gameStatusDisplay.textContent =
+      'Paused'
+  }
+
+  if (state === GameState.FINISHED) {
+    document.body.classList.add(
+      'game-over'
+    )
+
+    gameStatusDisplay.textContent =
+      'Game Over'
+  }
+
+  if (state === GameState.READY) {
+    gameStatusDisplay.textContent =
+      'Ready'
+  }
+}
+
+function clearTargets() {
+  squares.forEach(square => {
+    square.classList.remove(
+      'mole',
+      'hit'
+    )
+  })
+
+  hitPosition = null
+}
 
 function randomSquare() {
   squares.forEach(square => {
     square.classList.remove('mole')
   })
 
-  const randomSquare =
-    squares[Math.floor(Math.random() * squares.length)]
+  const target =
+    squares[
+      Math.floor(
+        Math.random() *
+        squares.length
+      )
+    ]
 
-  randomSquare.classList.add('mole')
-
-  hitPosition = randomSquare.id
+  target.classList.add('mole')
+  hitPosition = target.id
 }
 
 function registerHit(square) {
   if (
-    !isRunning ||
-    gameFinished ||
+    !isRunning() ||
     square.id !== hitPosition
   ) {
     return
   }
 
   result++
-
-  score.textContent = result
+  scoreDisplay.textContent =
+    result
 
   if (result > bestScore) {
     bestScore = result
@@ -88,9 +165,12 @@ function registerHit(square) {
   square.classList.remove('mole')
   square.classList.add('hit')
 
-  setTimeout(() => {
-    square.classList.remove('hit')
-  }, hitFeedbackDuration)
+  timers.timeout(
+    () => {
+      square.classList.remove('hit')
+    },
+    hitFeedbackDuration
+  )
 }
 
 squares.forEach((square, index) => {
@@ -111,7 +191,9 @@ squares.forEach((square, index) => {
 
   square.addEventListener(
     'click',
-    () => registerHit(square)
+    () => {
+      registerHit(square)
+    }
   )
 
   square.addEventListener(
@@ -125,58 +207,41 @@ squares.forEach((square, index) => {
       }
 
       event.preventDefault()
-
       registerHit(square)
     }
   )
 })
 
 function startTimers() {
-  moleTimerId = setInterval(
+  timers.interval(
     randomSquare,
     moleMoveInterval
   )
 
-  countDownTimerId = setInterval(
+  timers.interval(
     countDown,
     countDownInterval
   )
 }
 
-function stopTimers() {
-  clearInterval(moleTimerId)
-  clearInterval(countDownTimerId)
-
-  moleTimerId = null
-  countDownTimerId = null
-}
-
 function startGame() {
   if (
-    isRunning ||
-    gameFinished
+    isRunning() ||
+    gameState ===
+      GameState.FINISHED
   ) {
     return
   }
 
-  isRunning = true
-
-  document.body.classList.remove(
-    'game-paused',
-    'game-over'
-  )
-
-  document.body.classList.add(
-    'game-running'
+  setGameState(
+    GameState.RUNNING
   )
 
   startTimers()
 
-  gameStatusDisplay.textContent =
-    'Running'
-
   gameMessageDisplay.textContent =
-    result === 0 && currentTime === startingTime
+    result === 0 &&
+    currentTime === startingTime
       ? 'Whack the mole before it moves!'
       : 'Game resumed.'
 
@@ -185,27 +250,19 @@ function startGame() {
 }
 
 function pauseGame() {
-  if (
-    !isRunning ||
-    gameFinished
-  ) {
+  if (!isRunning()) {
     return
   }
 
-  isRunning = false
+  timers.clearAll()
 
-  document.body.classList.remove(
-    'game-running'
+  squares.forEach(square => {
+    square.classList.remove('hit')
+  })
+
+  setGameState(
+    GameState.PAUSED
   )
-
-  document.body.classList.add(
-    'game-paused'
-  )
-
-  stopTimers()
-
-  gameStatusDisplay.textContent =
-    'Paused'
 
   gameMessageDisplay.textContent =
     'Game paused.'
@@ -215,35 +272,19 @@ function pauseGame() {
 }
 
 function endGame() {
-  if (gameFinished) {
+  if (
+    gameState ===
+    GameState.FINISHED
+  ) {
     return
   }
 
-  gameFinished = true
-  isRunning = false
+  timers.clearAll()
+  clearTargets()
 
-  document.body.classList.remove(
-    'game-running',
-    'game-paused'
+  setGameState(
+    GameState.FINISHED
   )
-
-  document.body.classList.add(
-    'game-over'
-  )
-
-  stopTimers()
-
-  squares.forEach(square => {
-    square.classList.remove(
-      'mole',
-      'hit'
-    )
-  })
-
-  hitPosition = null
-
-  gameStatusDisplay.textContent =
-    'Game Over'
 
   gameMessageDisplay.textContent =
     `GAME OVER! Final score: ${result}`
@@ -251,42 +292,26 @@ function endGame() {
   startPauseButton.textContent =
     'Game Over'
 
-  startPauseButton.disabled = true
+  startPauseButton.disabled =
+    true
 }
 
 function resetGame() {
-  stopTimers()
-
-  isRunning = false
-  gameFinished = false
+  timers.clearAll()
 
   result = 0
   currentTime = startingTime
-  hitPosition = null
 
-  document.body.classList.remove(
-    'game-running',
-    'game-paused',
-    'game-over'
-  )
+  clearTargets()
 
-  squares.forEach(square => {
-    square.classList.remove(
-      'mole',
-      'hit'
-    )
-  })
-
-  score.textContent = result
+  scoreDisplay.textContent =
+    result
 
   bestScoreDisplay.textContent =
     bestScore
 
-  timeLeft.textContent =
+  timeLeftDisplay.textContent =
     currentTime
-
-  gameStatusDisplay.textContent =
-    'Ready'
 
   gameMessageDisplay.textContent =
     'Press Start Game to begin.'
@@ -294,24 +319,29 @@ function resetGame() {
   startPauseButton.textContent =
     'Start Game'
 
-  startPauseButton.disabled = false
+  startPauseButton.disabled =
+    false
+
+  setGameState(
+    GameState.READY
+  )
 }
 
 function countDown() {
-  if (!isRunning) {
+  if (!isRunning()) {
     return
   }
 
   currentTime--
 
-  timeLeft.textContent =
-    currentTime
-
   if (currentTime <= 0) {
     currentTime = 0
+  }
 
-    timeLeft.textContent = currentTime
+  timeLeftDisplay.textContent =
+    currentTime
 
+  if (currentTime === 0) {
     endGame()
   }
 }
@@ -319,11 +349,14 @@ function countDown() {
 startPauseButton.addEventListener(
   'click',
   () => {
-    if (gameFinished) {
+    if (
+      gameState ===
+      GameState.FINISHED
+    ) {
       return
     }
 
-    if (isRunning) {
+    if (isRunning()) {
       pauseGame()
     } else {
       startGame()
@@ -339,10 +372,7 @@ newGameButton.addEventListener(
 window.addEventListener(
   'blur',
   () => {
-    if (
-      isRunning &&
-      !gameFinished
-    ) {
+    if (isRunning()) {
       pauseGame()
     }
   }
