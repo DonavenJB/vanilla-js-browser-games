@@ -30,6 +30,12 @@ const paddleSpeed = 10
 const ballSpeed = 2
 const frameInterval = 30
 
+const blockColumns = 5
+const blockRows = 3
+const blockGap = 10
+const blockStartX = 10
+const blockStartY = 270
+
 const userStart = [230, 10]
 const ballStart = [270, 40]
 
@@ -72,25 +78,27 @@ class Block {
   }
 }
 
-const blockPositions = [
-  [10, 270],
-  [120, 270],
-  [230, 270],
-  [340, 270],
-  [450, 270],
+const blockPositions =
+  Array.from(
+    {
+      length: blockRows
+    },
+    (_, row) =>
+      Array.from(
+        {
+          length: blockColumns
+        },
+        (_, column) => [
+          blockStartX +
+            column *
+            (blockWidth + blockGap),
 
-  [10, 240],
-  [120, 240],
-  [230, 240],
-  [340, 240],
-  [450, 240],
-
-  [10, 210],
-  [120, 210],
-  [230, 210],
-  [340, 210],
-  [450, 210]
-]
+          blockStartY -
+            row *
+            (blockHeight + blockGap)
+        ]
+      )
+  ).flat()
 
 let blocks = []
 
