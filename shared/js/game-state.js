@@ -4,10 +4,3 @@ export const GameState = Object.freeze({
   PAUSED: 'paused',
   FINISHED: 'finished'
 })
-
-export function isActiveState(state) {
-  return (
-    state === GameState.RUNNING ||
-    state === GameState.PAUSED
-  )
-}
