@@ -1,58 +1,16 @@
 @import url("../../shared/css/components.css");
 
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
-    margin: 0;
-    min-height: 100%;
-}
-
-body {
-    min-height: 100vh;
-    padding: 40px 20px;
-
-    font-family: Arial, sans-serif;
-
-    background: var(--color-bg);
-    color: var(--color-text);
-
-    text-align: center;
-}
-
-.game-shell {
-    width: min(760px, 100%);
-    margin: 0 auto;
-}
-
-.back-link {
-    display: block;
-    width: max-content;
-
-    margin: 0 auto 25px;
-
-    color: var(--color-text-muted);
-    text-decoration: none;
-}
-
-.back-link:hover {
-    color: var(--color-text);
-}
-
-h1 {
-    margin: 0 0 10px;
-    font-size: 2rem;
-}
-
 .instructions {
-    max-width: 520px;
+    margin-bottom: 18px;
+}
 
-    margin: 0 auto 18px;
+button {
+    margin: 5px;
+    border-color: var(--color-border);
+}
 
-    color: var(--color-text-muted);
-    line-height: 1.5;
+button:hover:not(:disabled) {
+    border-color: #555;
 }
 
 .status {
@@ -62,35 +20,6 @@ h1 {
 
 #game-status {
     color: var(--color-text);
-}
-
-button {
-    padding: 10px 18px;
-    margin: 5px;
-
-    font: inherit;
-    color: var(--color-text);
-
-    background: var(--color-surface);
-
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-
-    cursor: pointer;
-}
-
-button:hover:not(:disabled) {
-    background: var(--color-surface-hover);
-    border-color: #555;
-}
-
-button:active:not(:disabled) {
-    transform: translateY(1px);
-}
-
-button:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
 }
 
 .players {

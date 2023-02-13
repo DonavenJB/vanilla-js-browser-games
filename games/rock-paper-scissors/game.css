@@ -1,74 +1,27 @@
 @import url("../../shared/css/components.css");
 
-* {
-    box-sizing: border-box;
-}
-
-html,
 body {
-    margin: 0;
-    min-height: 100%;
-}
-
-body {
-    min-height: 100vh;
-
-    padding: 40px 20px;
-
     display: flex;
     justify-content: center;
-
-    font-family: Arial, sans-serif;
-
-    color: var(--color-text);
-    background: var(--color-bg);
 }
 
 .game-shell {
     width: min(700px, 100%);
-
     margin: auto;
-
     text-align: center;
 }
 
 .back-link {
-    display: block;
-
-    width: max-content;
-
-    margin: 0 auto 28px;
-
-    color: var(--color-text-muted);
-
-    text-decoration: none;
-
+    margin-bottom: 28px;
     transition: color 0.12s ease;
 }
 
-.back-link:hover {
-    color: var(--color-text);
-}
-
 .back-link:focus-visible {
-    outline: 2px solid var(--color-text);
     outline-offset: 4px;
 }
 
-h1 {
-    margin: 0 0 10px;
-
-    font-size: 2rem;
-}
-
 .instructions {
-    max-width: 520px;
-
-    margin: 0 auto 26px;
-
-    color: var(--color-text-muted);
-
-    line-height: 1.5;
+    margin-bottom: 26px;
 }
 
 .game-status {
