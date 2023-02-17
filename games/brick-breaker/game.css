@@ -140,38 +140,12 @@
 
 #game-control {
     min-width: 110px;
-
-    padding: 10px 18px;
-
-    font: inherit;
     font-weight: bold;
-
-    color: var(--color-text);
-    background: var(--color-surface);
-
-    border: 1px solid var(--color-border-strong);
-    border-radius: 6px;
-
-    cursor: pointer;
-
-    transition:
-        background-color 0.12s ease,
-        border-color 0.12s ease,
-        transform 0.08s ease;
-}
-
-#game-control:hover:not(:disabled) {
-    background: var(--color-surface-hover);
-    border-color: var(--color-border-hover);
+    transition: background-color 0.12s ease, border-color 0.12s ease, transform 0.08s ease;
 }
 
 #game-control:active:not(:disabled) {
     transform: translateY(1px);
-}
-
-#game-control:focus-visible {
-    outline: 2px solid var(--color-text);
-    outline-offset: 3px;
 }
 
 #game-control:disabled {
@@ -219,11 +193,6 @@
 
 #new-game:active {
     transform: translateY(1px);
-}
-
-#new-game:focus-visible {
-    outline: 2px solid var(--color-text);
-    outline-offset: 3px;
 }
 
 /* Game feedback */
@@ -334,11 +303,6 @@ body.game-lost .grid {
 
 .paddle-controls button:active {
     transform: translateY(1px);
-}
-
-.paddle-controls button:focus-visible {
-    outline: 2px solid var(--color-text);
-    outline-offset: 3px;
 }
 
 .instructions {

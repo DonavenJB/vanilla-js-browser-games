@@ -123,16 +123,6 @@
     transform: translateY(1px);
 }
 
-#start-pause-button:focus-visible {
-    outline: 2px solid var(--color-text);
-    outline-offset: 3px;
-}
-
-#start-pause-button:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-}
-
 /* Successful whack feedback */
 .square.hit {
     background-color: #243326;
@@ -194,11 +184,6 @@ body.game-over .game-message {
 
 #new-game-button:active {
     transform: translateY(1px);
-}
-
-#new-game-button:focus-visible {
-    outline: 2px solid var(--color-text);
-    outline-offset: 3px;
 }
 
 /* =========================================================

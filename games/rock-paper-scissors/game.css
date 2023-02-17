@@ -119,11 +119,6 @@ body {
     transform: translateY(2px);
 }
 
-.choices button:focus-visible {
-    outline: 2px solid var(--color-text);
-    outline-offset: 3px;
-}
-
 #rock:hover {
     border-color: #999;
 }
@@ -255,11 +250,6 @@ body {
 
 #reset-session:active {
     transform: translateY(1px);
-}
-
-#reset-session:focus-visible {
-    outline: 2px solid var(--color-text);
-    outline-offset: 3px;
 }
 
 @media (max-width: 520px) {

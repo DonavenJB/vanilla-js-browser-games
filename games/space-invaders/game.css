@@ -99,31 +99,10 @@
 
 #start-pause-button {
     margin: 0 0 20px;
-    padding: 10px 18px;
-
-    font: inherit;
-    color: var(--color-text);
-
-    background: var(--color-surface);
-
-    border: 1px solid var(--color-border-strong);
-    border-radius: 6px;
-
-    cursor: pointer;
-}
-
-#start-pause-button:hover:not(:disabled) {
-    background: var(--color-surface-hover);
-    border-color: var(--color-border-hover);
 }
 
 #start-pause-button:active:not(:disabled) {
     transform: translateY(1px);
-}
-
-#start-pause-button:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
 }
 
 /* Game feedback */
@@ -320,13 +299,4 @@ body.game-won #game-message {
 
 body.game-lost #game-message {
     color: var(--color-danger);
-}
-
-/* Keyboard accessibility */
-.back-link:focus-visible,
-#start-pause-button:focus-visible,
-#new-game-button:focus-visible,
-.direction-controls button:focus-visible {
-    outline: 2px solid var(--color-text);
-    outline-offset: 3px;
 }

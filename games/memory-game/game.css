@@ -85,24 +85,8 @@ h3 {
     }
 }
 
-/* Game controls */
 #new-game-button {
     margin: 0 0 20px;
-    padding: 10px 18px;
-
-    font: inherit;
-    color: var(--color-text);
-    background: var(--color-surface);
-
-    border: 1px solid var(--color-border-strong);
-    border-radius: 6px;
-
-    cursor: pointer;
-}
-
-#new-game-button:hover {
-    background: var(--color-surface-hover);
-    border-color: var(--color-border-hover);
 }
 
 #new-game-button:active {
@@ -148,8 +132,6 @@ h3 {
     pointer-events: none;
 }
 
-.back-link:focus-visible,
-#new-game-button:focus-visible,
 #grid img:focus-visible {
     outline: 2px solid var(--color-text);
     outline-offset: 3px;
