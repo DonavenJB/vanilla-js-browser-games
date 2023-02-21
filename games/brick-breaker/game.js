@@ -1,3 +1,5 @@
+import { GameState } from '../../shared/js/game-state.js'
+import { createTimerRegistry } from '../../shared/js/timers.js'
 const grid =
   document.querySelector('.grid')
 
@@ -48,12 +50,18 @@ let ballCurrentPosition =
 let xDirection = -ballSpeed
 let yDirection = ballSpeed
 
-let timerId = null
+const timers = createTimerRegistry()
+
 let score = 0
+let gameState = GameState.READY
 
-let gameRunning = false
-let gameOver = false
+function isRunning() {
+  return gameState === GameState.RUNNING
+}
 
+function isFinished() {
+  return gameState === GameState.FINISHED
+}
 class Block {
   constructor(xAxis, yAxis) {
     this.bottomLeft = [
@@ -179,7 +187,7 @@ drawUser()
 drawBall()
 
 function movePaddle(direction) {
-  if (!gameRunning) {
+  if (!isRunning()) {
     return
   }
 
@@ -212,7 +220,7 @@ function handleKeyboard(event) {
     event.key === 'ArrowLeft' ||
     event.key === 'ArrowRight'
   ) {
-    if (!gameRunning) {
+    if (!isRunning()) {
       return
     }
 
@@ -254,10 +262,7 @@ document.addEventListener(
 )
 
 function moveBall() {
-  if (
-    !gameRunning ||
-    gameOver
-  ) {
+  if (!isRunning()) {
     return
   }
 
@@ -276,24 +281,13 @@ function updateGameStatus(status) {
     status
 }
 
-function stopGameTimer() {
-  if (timerId !== null) {
-    clearInterval(timerId)
-    timerId = null
-  }
-
-  gameRunning = false
-}
-
 function pauseGame() {
-  if (
-    !gameRunning ||
-    gameOver
-  ) {
+  if (!isRunning()) {
     return
   }
 
-  stopGameTimer()
+  timers.clearAll()
+  gameState = GameState.PAUSED
 
   gameControl.textContent =
     'Resume'
@@ -304,13 +298,12 @@ function pauseGame() {
 }
 
 function finishGame(status) {
-  if (gameOver) {
+  if (isFinished()) {
     return
   }
 
-  stopGameTimer()
-
-  gameOver = true
+  timers.clearAll()
+  gameState = GameState.FINISHED
 
   updateGameStatus(status)
 
@@ -333,25 +326,21 @@ function finishGame(status) {
 }
 
 function toggleGame() {
-  if (gameOver) {
+  if (isFinished()) {
     return
   }
 
-  if (gameRunning) {
+  if (isRunning()) {
     pauseGame()
     return
   }
 
-  if (timerId !== null) {
-    return
-  }
-
-  timerId = setInterval(
+  timers.interval(
     moveBall,
     frameInterval
   )
 
-  gameRunning = true
+  gameState = GameState.RUNNING
 
   gameControl.textContent =
     'Pause'
@@ -362,10 +351,10 @@ function toggleGame() {
 }
 
 function resetGame() {
-  stopGameTimer()
+  timers.clearAll()
 
   score = 0
-  gameOver = false
+  gameState = GameState.READY
 
   document.body.classList.remove(
     'game-won',
@@ -389,7 +378,6 @@ function resetGame() {
     [...ballStart]
 
   removeBlocks()
-
   createBlocks()
   drawBlocks()
 
@@ -405,7 +393,6 @@ function resetGame() {
   drawUser()
   drawBall()
 }
-
 gameControl.addEventListener(
   'click',
   toggleGame
@@ -524,7 +511,7 @@ function bounceOffBlock(block) {
 }
 
 function checkForCollisions() {
-  if (gameOver) {
+  if (isFinished()) {
     return
   }
 
@@ -570,7 +557,7 @@ function checkForCollisions() {
     break
   }
 
-  if (gameOver) {
+  if (isFinished()) {
     return
   }
 
