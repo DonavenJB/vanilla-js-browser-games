@@ -1,3 +1,4 @@
+import { GameState } from '../../shared/js/game-state.js'
 const grid = document.querySelector('.grid')
 
 const resultsDisplay =
@@ -57,8 +58,15 @@ let currentInvaderSpeed =
 let aliensRemoved = new Set()
 let results = 0
 
-let gameOver = false
-let isRunning = false
+let gameState = GameState.READY
+
+function isRunning() {
+  return gameState === GameState.RUNNING
+}
+
+function isFinished() {
+  return gameState === GameState.FINISHED
+}
 
 let canShoot = true
 let shootCooldownId = null
@@ -79,8 +87,8 @@ const squares = Array.from(
 function updateControlButtons() {
   directionButtons.forEach(button => {
     button.disabled =
-      !isRunning ||
-      gameOver
+      !isRunning() ||
+      isFinished()
   })
 }
 
@@ -183,8 +191,8 @@ function updateInvaderSpeed() {
     nextSpeed
 
   if (
-    isRunning &&
-    !gameOver
+    isRunning() &&
+    !isFinished()
   ) {
     restartInvaderMovement()
   }
@@ -193,11 +201,11 @@ function updateInvaderSpeed() {
 }
 
 function startGame() {
-  if (gameOver || isRunning) {
+  if (isFinished() || isRunning()) {
     return
   }
 
-  isRunning = true
+  gameState = GameState.RUNNING
 
   invadersId = setInterval(
     moveInvaders,
@@ -222,14 +230,14 @@ function startGame() {
 }
 
 function pauseGame() {
-  if (!isRunning || gameOver) {
+  if (!isRunning() || isFinished()) {
     return
   }
 
   clearInterval(invadersId)
   invadersId = null
 
-  isRunning = false
+  gameState = GameState.PAUSED
 
   gameStatusDisplay.textContent =
     'Paused'
@@ -244,12 +252,11 @@ function pauseGame() {
 }
 
 function endGame(message) {
-  if (gameOver) {
+  if (isFinished()) {
     return
   }
 
-  gameOver = true
-  isRunning = false
+  gameState = GameState.FINISHED
 
   clearInterval(invadersId)
   invadersId = null
@@ -316,8 +323,7 @@ function resetGame() {
   aliensRemoved = new Set()
   results = 0
 
-  gameOver = false
-  isRunning = false
+  gameState = GameState.READY
 
   resultsDisplay.textContent = '0'
 
@@ -345,8 +351,8 @@ function resetGame() {
 
 function moveShooter(e) {
   if (
-    gameOver ||
-    !isRunning ||
+    isFinished() ||
+    !isRunning() ||
     (
       e.key !== 'ArrowLeft' &&
       e.key !== 'ArrowRight'
@@ -387,7 +393,7 @@ function moveShooter(e) {
 }
 
 function moveInvaders() {
-  if (gameOver || !isRunning) {
+  if (isFinished() || !isRunning()) {
     return
   }
 
@@ -504,8 +510,8 @@ function shoot(e) {
   ]
 
   if (
-    gameOver ||
-    !isRunning ||
+    isFinished() ||
+    !isRunning() ||
     !fireKeys.includes(e.key) ||
     !canShoot
   ) {
@@ -541,8 +547,8 @@ function shoot(e) {
 
   function moveLaser() {
     if (
-      gameOver ||
-      !isRunning
+      isFinished() ||
+      !isRunning()
     ) {
       return
     }
@@ -633,11 +639,11 @@ function shoot(e) {
 startPauseButton.addEventListener(
   'click',
   () => {
-    if (gameOver) {
+    if (isFinished()) {
       return
     }
 
-    if (isRunning) {
+    if (isRunning()) {
       pauseGame()
     } else {
       startGame()
@@ -662,7 +668,7 @@ function runGameInput(key) {
 
 directionButtons.forEach(button => {
   button.addEventListener('click', () => {
-    if (!isRunning || gameOver) {
+    if (!isRunning() || isFinished()) {
       return
     }
 
@@ -686,8 +692,8 @@ window.addEventListener(
   'blur',
   () => {
     if (
-      isRunning &&
-      !gameOver
+      isRunning() &&
+      !isFinished()
     ) {
       pauseGame()
     }
