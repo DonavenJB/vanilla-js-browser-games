@@ -1,4 +1,5 @@
 import { GameState } from '../../shared/js/game-state.js'
+import { createTimerRegistry } from '../../shared/js/timers.js'
 const grid = document.querySelector('.grid')
 
 const resultsDisplay =
@@ -49,7 +50,7 @@ let alienInvaders =
   [...initialAlienInvaders]
 
 let direction = 1
-let invadersId = null
+const invaderTimers = createTimerRegistry()
 let goingRight = true
 
 let currentInvaderSpeed =
@@ -168,9 +169,9 @@ function calculateInvaderSpeed() {
 }
 
 function restartInvaderMovement() {
-  clearInterval(invadersId)
+  invaderTimers.clearAll()
 
-  invadersId = setInterval(
+  invaderTimers.interval(
     moveInvaders,
     currentInvaderSpeed
   )
@@ -207,7 +208,7 @@ function startGame() {
 
   gameState = GameState.RUNNING
 
-  invadersId = setInterval(
+  invaderTimers.interval(
     moveInvaders,
     currentInvaderSpeed
   )
@@ -234,8 +235,7 @@ function pauseGame() {
     return
   }
 
-  clearInterval(invadersId)
-  invadersId = null
+  invaderTimers.clearAll()
 
   gameState = GameState.PAUSED
 
@@ -258,8 +258,7 @@ function endGame(message) {
 
   gameState = GameState.FINISHED
 
-  clearInterval(invadersId)
-  invadersId = null
+  invaderTimers.clearAll()
 
   clearActiveLasers()
   resetShootCooldown()
@@ -301,8 +300,7 @@ function resetGame() {
     'game-lost'
   )
 
-  clearInterval(invadersId)
-  invadersId = null
+  invaderTimers.clearAll()
 
   clearActiveLasers()
   resetShootCooldown()
