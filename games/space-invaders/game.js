@@ -72,7 +72,7 @@ function isFinished() {
 let canShoot = true
 let shootCooldownId = null
 
-const activeLaserIds = new Set()
+const laserTimers = createTimerRegistry()
 
 for (let i = 0; i < boardSize; i++) {
   const square =
@@ -132,11 +132,7 @@ function resetShootCooldown() {
 }
 
 function clearActiveLasers() {
-  activeLaserIds.forEach(laserId => {
-    clearInterval(laserId)
-  })
-
-  activeLaserIds.clear()
+  laserTimers.clearAll()
 
   squares.forEach(square => {
     square.classList.remove('laser')
@@ -529,13 +525,11 @@ function shoot(e) {
     currentShooterIndex
 
   const laserId =
-    setInterval(moveLaser, 100)
+    laserTimers.interval(moveLaser, 100)
 
-  activeLaserIds.add(laserId)
 
   function stopLaser() {
-    clearInterval(laserId)
-    activeLaserIds.delete(laserId)
+    laserTimers.clearInterval(laserId)
 
     if (squares[currentLaserIndex]) {
       squares[currentLaserIndex]
