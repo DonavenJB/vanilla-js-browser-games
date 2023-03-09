@@ -70,7 +70,7 @@ function isFinished() {
 }
 
 let canShoot = true
-let shootCooldownId = null
+const cooldownTimers = createTimerRegistry()
 
 const laserTimers = createTimerRegistry()
 
@@ -123,11 +123,7 @@ function remove() {
 }
 
 function resetShootCooldown() {
-  if (shootCooldownId) {
-    clearTimeout(shootCooldownId)
-    shootCooldownId = null
-  }
-
+  cooldownTimers.clearAll()
   canShoot = true
 }
 
@@ -516,9 +512,8 @@ function shoot(e) {
 
   canShoot = false
 
-  shootCooldownId = setTimeout(() => {
+  cooldownTimers.timeout(() => {
     canShoot = true
-    shootCooldownId = null
   }, 250)
 
   let currentLaserIndex =
