@@ -3,6 +3,10 @@ import {
 } from '../../shared/js/random.js'
 
 import {
+  createTimerRegistry
+} from '../../shared/js/timers.js'
+
+import {
   CARD_BACK,
   MATCHED_CARD,
   createDeck
@@ -35,7 +39,7 @@ let cardsWon = []
 let boardLocked = false
 let attempts = 0
 let bestAttempts = null
-let matchTimerId = null
+const matchTimers = createTimerRegistry()
 
 function createBoard() {
   deck.forEach((cardData, index) => {
@@ -130,8 +134,6 @@ function setMatchedCard(
 }
 
 function checkMatch() {
-  matchTimerId = null
-
   const cards =
     document.querySelectorAll(
       '#grid img'
@@ -258,19 +260,15 @@ function flipCard() {
   if (cardsChosen.length === 2) {
     boardLocked = true
 
-    matchTimerId =
-      setTimeout(
-        checkMatch,
-        650
-      )
+    matchTimers.timeout(
+      checkMatch,
+      650
+    )
   }
 }
 
 function newGame() {
-  if (matchTimerId) {
-    clearTimeout(matchTimerId)
-    matchTimerId = null
-  }
+  matchTimers.clearAll()
 
   document.body.classList.remove(
     'game-complete'
