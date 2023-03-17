@@ -1,5 +1,12 @@
 import { GameState } from '../../shared/js/game-state.js'
 import { createTimerRegistry } from '../../shared/js/timers.js'
+
+import {
+  getActiveInvaders,
+  getInvaderMovement,
+  hasInvaderHitShooter,
+  hasInvaderReachedBottom
+} from './rules.js'
 const grid = document.querySelector('.grid')
 
 const resultsDisplay =
@@ -388,11 +395,9 @@ function moveInvaders() {
   }
 
   const activeInvaders =
-    alienInvaders.filter(
-      (position, alienIndex) =>
-        !aliensRemoved.has(
-          alienIndex
-        )
+    getActiveInvaders(
+      alienInvaders,
+      aliensRemoved
     )
 
   if (activeInvaders.length === 0) {
@@ -400,83 +405,50 @@ function moveInvaders() {
     return
   }
 
-  const leftEdge =
-    activeInvaders.some(
-      position =>
-        position % width === 0
-    )
-
-  const rightEdge =
-    activeInvaders.some(
-      position =>
-        position % width ===
-        width - 1
-    )
-
   remove()
 
-  if (rightEdge && goingRight) {
-    for (
-      let i = 0;
-      i < alienInvaders.length;
-      i++
-    ) {
-      alienInvaders[i] +=
-        width + 1
-    }
+  const movement =
+    getInvaderMovement(
+      activeInvaders,
+      width,
+      direction,
+      goingRight
+    )
 
-    direction = -1
-    goingRight = false
-  } else if (
-    leftEdge &&
-    !goingRight
-  ) {
-    for (
-      let i = 0;
-      i < alienInvaders.length;
-      i++
-    ) {
-      alienInvaders[i] +=
-        width - 1
-    }
-
-    direction = 1
-    goingRight = true
-  }
+  direction = movement.direction
+  goingRight = movement.goingRight
 
   for (
     let i = 0;
     i < alienInvaders.length;
     i++
   ) {
-    alienInvaders[i] += direction
+    alienInvaders[i] +=
+      movement.offset
   }
 
   const updatedActiveInvaders =
-    alienInvaders.filter(
-      (position, alienIndex) =>
-        !aliensRemoved.has(
-          alienIndex
-        )
+    getActiveInvaders(
+      alienInvaders,
+      aliensRemoved
     )
 
-  const invadersReachedBottom =
-    updatedActiveInvaders.some(
-      position =>
-        position >= squares.length
+  if (
+    hasInvaderReachedBottom(
+      updatedActiveInvaders,
+      squares.length
     )
-
-  if (invadersReachedBottom) {
+  ) {
     endGame('GAME OVER')
     return
   }
 
-  const shooterWasHit =
-    updatedActiveInvaders.includes(
+  if (
+    hasInvaderHitShooter(
+      updatedActiveInvaders,
       currentShooterIndex
     )
-
-  if (shooterWasHit) {
+  ) {
     draw()
     endGame('GAME OVER')
     return
