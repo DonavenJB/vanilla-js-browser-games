@@ -1,5 +1,12 @@
 import { GameState } from '../../shared/js/game-state.js'
 import { createTimerRegistry } from '../../shared/js/timers.js'
+
+import {
+  getBlockBounce,
+  getBoardBounce,
+  getPaddleBounce,
+  isColliding
+} from './rules.js'
 const grid =
   document.querySelector('.grid')
 
@@ -435,81 +442,6 @@ updateGameStatus(
   'Ready'
 )
 
-function isColliding(
-  objectLeft,
-  objectBottom,
-  objectWidth,
-  objectHeight
-) {
-  const ballLeft =
-    ballCurrentPosition[0]
-
-  const ballRight =
-    ballCurrentPosition[0] +
-    ballDiameter
-
-  const ballBottom =
-    ballCurrentPosition[1]
-
-  const ballTop =
-    ballCurrentPosition[1] +
-    ballDiameter
-
-  const objectRight =
-    objectLeft + objectWidth
-
-  const objectTop =
-    objectBottom +
-    objectHeight
-
-  return (
-    ballRight >= objectLeft &&
-    ballLeft <= objectRight &&
-    ballTop >= objectBottom &&
-    ballBottom <= objectTop
-  )
-}
-
-function bounceOffBlock(block) {
-  const ballCenterX =
-    ballCurrentPosition[0] +
-    ballDiameter / 2
-
-  const ballCenterY =
-    ballCurrentPosition[1] +
-    ballDiameter / 2
-
-  const blockCenterX =
-    block.bottomLeft[0] +
-    blockWidth / 2
-
-  const blockCenterY =
-    block.bottomLeft[1] +
-    blockHeight / 2
-
-  const overlapX =
-    ballDiameter / 2 +
-    blockWidth / 2 -
-    Math.abs(
-      ballCenterX -
-      blockCenterX
-    )
-
-  const overlapY =
-    ballDiameter / 2 +
-    blockHeight / 2 -
-    Math.abs(
-      ballCenterY -
-      blockCenterY
-    )
-
-  if (overlapX < overlapY) {
-    xDirection *= -1
-  } else {
-    yDirection *= -1
-  }
-}
-
 function checkForCollisions() {
   if (isFinished()) {
     return
@@ -525,8 +457,9 @@ function checkForCollisions() {
 
     if (
       !isColliding(
-        block.bottomLeft[0],
-        block.bottomLeft[1],
+        ballCurrentPosition,
+        ballDiameter,
+        block.bottomLeft,
         blockWidth,
         blockHeight
       )
@@ -534,7 +467,22 @@ function checkForCollisions() {
       continue
     }
 
-    bounceOffBlock(block)
+    const blockBounce =
+      getBlockBounce(
+        ballCurrentPosition,
+        ballDiameter,
+        block.bottomLeft,
+        blockWidth,
+        blockHeight,
+        xDirection,
+        yDirection
+      )
+
+    xDirection =
+      blockBounce.xDirection
+
+    yDirection =
+      blockBounce.yDirection
 
     const allBlocks =
       document.querySelectorAll(
@@ -542,7 +490,6 @@ function checkForCollisions() {
       )
 
     allBlocks[i].remove()
-
     blocks.splice(i, 1)
 
     score++
@@ -561,76 +508,45 @@ function checkForCollisions() {
     return
   }
 
-  if (
-    ballCurrentPosition[0] <= 0
-  ) {
-    ballCurrentPosition[0] = 0
-
-    xDirection =
-      Math.abs(xDirection)
-  }
-
-  if (
-    ballCurrentPosition[0] >=
-    boardWidth - ballDiameter
-  ) {
-    ballCurrentPosition[0] =
-      boardWidth - ballDiameter
-
-    xDirection =
-      -Math.abs(xDirection)
-  }
-
-  if (
-    ballCurrentPosition[1] >=
-    boardHeight - ballDiameter
-  ) {
-    ballCurrentPosition[1] =
-      boardHeight - ballDiameter
-
-    yDirection =
-      -Math.abs(yDirection)
-  }
-
-  if (
-    yDirection < 0 &&
-    isColliding(
-      currentPosition[0],
-      currentPosition[1],
-      blockWidth,
-      blockHeight
+  const boardBounce =
+    getBoardBounce(
+      ballCurrentPosition,
+      ballDiameter,
+      boardWidth,
+      boardHeight,
+      xDirection,
+      yDirection
     )
-  ) {
-    ballCurrentPosition[1] =
-      currentPosition[1] +
-      blockHeight
+
+  ballCurrentPosition =
+    boardBounce.position
+
+  xDirection =
+    boardBounce.xDirection
+
+  yDirection =
+    boardBounce.yDirection
+
+  const paddleBounce =
+    getPaddleBounce(
+      ballCurrentPosition,
+      ballDiameter,
+      currentPosition,
+      blockWidth,
+      blockHeight,
+      xDirection,
+      yDirection
+    )
+
+  if (paddleBounce) {
+    ballCurrentPosition =
+      paddleBounce.position
+
+    xDirection =
+      paddleBounce.xDirection
 
     yDirection =
-      Math.abs(yDirection)
-
-    const paddleCenter =
-      currentPosition[0] +
-      blockWidth / 2
-
-    const ballCenter =
-      ballCurrentPosition[0] +
-      ballDiameter / 2
-
-    if (
-      ballCenter <
-      paddleCenter - 10
-    ) {
-      xDirection =
-        -Math.abs(xDirection)
-    }
-
-    if (
-      ballCenter >
-      paddleCenter + 10
-    ) {
-      xDirection =
-        Math.abs(xDirection)
-    }
+      paddleBounce.yDirection
   }
 
   if (
