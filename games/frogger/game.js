@@ -6,6 +6,15 @@ import {
   createTimerRegistry
 } from '../../shared/js/timers.js'
 
+import {
+  getFrogOutcome,
+  getLogRideOffset,
+  getLogRideTarget,
+  getNextCycleClass,
+  getNextFrogIndex,
+  isMovementKey
+} from './rules.js'
+
 const timeLeftDisplay =
   document.querySelector('#time-left')
 
@@ -118,16 +127,9 @@ function setGameState(state) {
 }
 
 function moveFrogByKey(key) {
-  const arrowKeys = [
-    'ArrowLeft',
-    'ArrowRight',
-    'ArrowUp',
-    'ArrowDown'
-  ]
-
   if (
     !isRunning() ||
-    !arrowKeys.includes(key)
+    !isMovementKey(key)
   ) {
     return
   }
@@ -135,57 +137,21 @@ function moveFrogByKey(key) {
   squares[currentIndex]
     .classList.remove('frog')
 
-  switch (key) {
-    case 'ArrowLeft':
-      if (
-        currentIndex % width !== 0
-      ) {
-        currentIndex -= 1
-      }
-      break
-
-    case 'ArrowRight':
-      if (
-        currentIndex % width <
-        width - 1
-      ) {
-        currentIndex += 1
-      }
-      break
-
-    case 'ArrowUp':
-      if (
-        currentIndex - width >= 0
-      ) {
-        currentIndex -= width
-      }
-      break
-
-    case 'ArrowDown':
-      if (
-        currentIndex + width <
-        width * width
-      ) {
-        currentIndex += width
-      }
-      break
-  }
+  currentIndex =
+    getNextFrogIndex(
+      currentIndex,
+      key,
+      width,
+      squares.length
+    )
 
   squares[currentIndex]
     .classList.add('frog')
 }
-
 function handleFrogKey(event) {
-  const arrowKeys = [
-    'ArrowLeft',
-    'ArrowRight',
-    'ArrowUp',
-    'ArrowDown'
-  ]
-
   if (
     !isRunning() ||
-    !arrowKeys.includes(event.key)
+    !isMovementKey(event.key)
   ) {
     return
   }
@@ -193,55 +159,50 @@ function handleFrogKey(event) {
   event.preventDefault()
   moveFrogByKey(event.key)
 }
-
 function advanceCycle(
   element,
   cycle,
   direction
 ) {
-  const currentIndex =
-    cycle.findIndex(className =>
+  const currentClass =
+    cycle.find(className =>
       element.classList.contains(
         className
       )
     )
 
-  if (currentIndex < 0) {
+  if (!currentClass) {
     return
   }
 
-  const nextIndex =
-    (
-      currentIndex +
-      direction +
-      cycle.length
-    ) % cycle.length
+  const nextClass =
+    getNextCycleClass(
+      currentClass,
+      cycle,
+      direction
+    )
 
   element.classList.replace(
-    cycle[currentIndex],
-    cycle[nextIndex]
+    currentClass,
+    nextClass
   )
 }
-
 function rideLog(offset) {
-  const oldIndex = currentIndex
+  const oldIndex =
+    currentIndex
+
   const nextIndex =
-    currentIndex + offset
-
-  const oldRow =
-    Math.floor(oldIndex / width)
-
-  const nextRow =
-    Math.floor(nextIndex / width)
+    getLogRideTarget(
+      currentIndex,
+      offset,
+      width,
+      squares.length
+    )
 
   squares[oldIndex]
     .classList.remove('frog')
 
-  if (
-    nextIndex < 0 ||
-    nextIndex >= squares.length ||
-    oldRow !== nextRow
-  ) {
+  if (nextIndex === null) {
     finishGame(
       'You lose!',
       false
@@ -250,38 +211,21 @@ function rideLog(offset) {
     return
   }
 
-  currentIndex = nextIndex
+  currentIndex =
+    nextIndex
 
   squares[currentIndex]
     .classList.add('frog')
 }
-
 function autoMoveElements() {
-  const currentRow =
-    Math.floor(
-      currentIndex / width
-    )
-
-  const ridingLeftLog =
-    currentRow === 2 &&
-    (
-      squares[currentIndex]
-        .classList.contains('l1') ||
-      squares[currentIndex]
-        .classList.contains('l2') ||
-      squares[currentIndex]
-        .classList.contains('l3')
-    )
-
-  const ridingRightLog =
-    currentRow === 3 &&
-    (
-      squares[currentIndex]
-        .classList.contains('l1') ||
-      squares[currentIndex]
-        .classList.contains('l2') ||
-      squares[currentIndex]
-        .classList.contains('l3')
+  const rideOffset =
+    getLogRideOffset(
+      currentIndex,
+      width,
+      Array.from(
+        squares[currentIndex]
+          .classList
+      )
     )
 
   currentTime--
@@ -320,56 +264,37 @@ function autoMoveElements() {
     )
   })
 
-  if (ridingLeftLog) {
-    rideLog(-1)
-  } else if (ridingRightLog) {
-    rideLog(1)
+  if (rideOffset !== 0) {
+    rideLog(rideOffset)
   }
 }
+function checkOutcomes() {
+  const outcome =
+    getFrogOutcome(
+      Array.from(
+        squares[currentIndex]
+          .classList
+      ),
+      currentTime
+    )
 
-function lose() {
-  if (
-    squares[currentIndex]
-      .classList.contains('c1') ||
-    squares[currentIndex]
-      .classList.contains('l4') ||
-    squares[currentIndex]
-      .classList.contains('l5') ||
-    currentTime <= 0
-  ) {
+  if (outcome === 'loss') {
     finishGame(
       'You lose!',
       false,
       true
     )
-  }
-}
 
-function win() {
-  if (
-    squares[currentIndex]
-      .classList.contains(
-        'ending-block'
-      )
-  ) {
+    return
+  }
+
+  if (outcome === 'win') {
     finishGame(
       'You Win!',
       true
     )
   }
 }
-
-function checkOutcomes() {
-  lose()
-
-  if (
-    gameState !==
-    GameState.FINISHED
-  ) {
-    win()
-  }
-}
-
 function restoreBoard() {
   initialSquareClasses.forEach(
     (className, index) => {
