@@ -1,3 +1,7 @@
+import {
+  getRoundOutcome,
+  getSessionOutcome
+} from './rules.js'
 let deckId = ''
 let remainingCards = 0
 
@@ -176,14 +180,12 @@ function drawCards() {
 
             const player1 = data.cards[0]
             const player2 = data.cards[1]
-
-            const val1 =
-                cardValue(player1.value)
-
-            const val2 =
-                cardValue(player2.value)
-
-            player1Card.src = player1.image
+            const roundOutcome =
+                getRoundOutcome(
+                    player1.value,
+                    player2.value
+                )
+player1Card.src = player1.image
             player2Card.src = player2.image
 
             player1Card.alt =
@@ -198,7 +200,7 @@ function drawCards() {
             clearRoundState()
             drawButton.textContent = 'Draw Cards'
 
-            if (val1 > val2) {
+            if (roundOutcome === 'player1') {
                 player1Wins++
 
                 document.body.classList.add(
@@ -207,7 +209,7 @@ function drawCards() {
 
                 resultDisplay.textContent =
                     'Player 1 wins the round!'
-            } else if (val1 < val2) {
+            } else if (roundOutcome === 'player2') {
                 player2Wins++
 
                 document.body.classList.add(
@@ -236,10 +238,16 @@ function drawCards() {
                 drawButton.textContent =
                     'Deck Complete'
 
-                if (player1Wins > player2Wins) {
+                const sessionOutcome =
+                        getSessionOutcome(
+                            player1Wins,
+                            player2Wins
+                        )
+
+                    if (sessionOutcome === 'player1') {
                     statusDisplay.textContent =
                         `Session complete: Player 1 wins ${player1Wins}-${player2Wins}.`
-                } else if (player2Wins > player1Wins) {
+                } else if (sessionOutcome === 'player2') {
                     statusDisplay.textContent =
                         `Session complete: Player 2 wins ${player2Wins}-${player1Wins}.`
                 } else {
@@ -277,17 +285,6 @@ function newGame() {
     }
 
     createDeck(true)
-}
-
-function cardValue(value) {
-    const faceValues = {
-        ACE: 14,
-        KING: 13,
-        QUEEN: 12,
-        JACK: 11
-    }
-
-    return faceValues[value.toUpperCase()] || Number(value)
 }
 
 drawButton.addEventListener(
