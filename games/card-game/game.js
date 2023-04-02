@@ -185,7 +185,7 @@ function drawCards() {
                     player1.value,
                     player2.value
                 )
-player1Card.src = player1.image
+            player1Card.src = player1.image
             player2Card.src = player2.image
 
             player1Card.alt =
@@ -237,14 +237,13 @@ player1Card.src = player1.image
             if (remainingCards < 2) {
                 drawButton.textContent =
                     'Deck Complete'
-
                 const sessionOutcome =
-                        getSessionOutcome(
-                            player1Wins,
-                            player2Wins
-                        )
+                    getSessionOutcome(
+                        player1Wins,
+                        player2Wins
+                    )
 
-                    if (sessionOutcome === 'player1') {
+                if (sessionOutcome === 'player1') {
                     statusDisplay.textContent =
                         `Session complete: Player 1 wins ${player1Wins}-${player2Wins}.`
                 } else if (sessionOutcome === 'player2') {
