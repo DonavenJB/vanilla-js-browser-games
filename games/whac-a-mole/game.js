@@ -6,6 +6,12 @@ import {
   createTimerRegistry
 } from '../../shared/js/timers.js'
 
+import {
+  getHitResult,
+  getNextTime,
+  getRandomTargetIndex
+} from './rules.js'
+
 const squares =
   document.querySelectorAll('.square')
 
@@ -118,32 +124,41 @@ function randomSquare() {
     square.classList.remove('mole')
   })
 
+  const targetIndex =
+    getRandomTargetIndex(
+      squares.length,
+      Math.random()
+    )
+
   const target =
-    squares[
-      Math.floor(
-        Math.random() *
-        squares.length
-      )
-    ]
+    squares[targetIndex]
 
   target.classList.add('mole')
   hitPosition = target.id
 }
-
 function registerHit(square) {
-  if (
-    !isRunning() ||
-    square.id !== hitPosition
-  ) {
+  const hitResult =
+    getHitResult(
+      isRunning(),
+      square.id,
+      hitPosition,
+      result,
+      bestScore
+    )
+
+  if (!hitResult) {
     return
   }
 
-  result++
+  result =
+    hitResult.score
+
   scoreDisplay.textContent =
     result
 
-  if (result > bestScore) {
-    bestScore = result
+  if (hitResult.isNewBest) {
+    bestScore =
+      hitResult.bestScore
 
     bestScoreDisplay.textContent =
       bestScore
@@ -172,7 +187,6 @@ function registerHit(square) {
     hitFeedbackDuration
   )
 }
-
 squares.forEach((square, index) => {
   square.setAttribute(
     'role',
@@ -332,11 +346,10 @@ function countDown() {
     return
   }
 
-  currentTime--
-
-  if (currentTime <= 0) {
-    currentTime = 0
-  }
+  currentTime =
+    getNextTime(
+      currentTime
+    )
 
   timeLeftDisplay.textContent =
     currentTime
@@ -345,7 +358,6 @@ function countDown() {
     endGame()
   }
 }
-
 startPauseButton.addEventListener(
   'click',
   () => {
