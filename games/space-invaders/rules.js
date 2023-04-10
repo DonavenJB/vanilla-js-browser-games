@@ -68,3 +68,59 @@ export function hasInvaderHitShooter(
     shooterIndex
   )
 }
+
+const FIRE_KEYS = Object.freeze([
+  'ArrowUp',
+  ' ',
+  'Spacebar'
+])
+
+export function isFireKey(key) {
+  return FIRE_KEYS.includes(key)
+}
+
+export function getNextLaserIndex(
+  currentLaserIndex,
+  width
+) {
+  const nextLaserIndex =
+    currentLaserIndex - width
+
+  return (
+    nextLaserIndex >= 0
+      ? nextLaserIndex
+      : null
+  )
+}
+
+export function getAlienHitIndex(
+  invaders,
+  removedIndexes,
+  laserIndex
+) {
+  const alienIndex =
+    invaders.indexOf(
+      laserIndex
+    )
+
+  if (
+    alienIndex === -1 ||
+    removedIndexes.has(
+      alienIndex
+    )
+  ) {
+    return null
+  }
+
+  return alienIndex
+}
+
+export function hasDestroyedAllInvaders(
+  removedCount,
+  totalCount
+) {
+  return (
+    removedCount ===
+    totalCount
+  )
+}

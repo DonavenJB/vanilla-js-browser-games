@@ -3,9 +3,13 @@ import { createTimerRegistry } from '../../shared/js/timers.js'
 
 import {
   getActiveInvaders,
+  getAlienHitIndex,
   getInvaderMovement,
+  getNextLaserIndex,
+  hasDestroyedAllInvaders,
   hasInvaderHitShooter,
-  hasInvaderReachedBottom
+  hasInvaderReachedBottom,
+  isFireKey
 } from './rules.js'
 const grid = document.querySelector('.grid')
 
@@ -465,16 +469,11 @@ function moveInvaders() {
 }
 
 function shoot(e) {
-  const fireKeys = [
-    'ArrowUp',
-    ' ',
-    'Spacebar'
-  ]
 
   if (
     isFinished() ||
     !isRunning() ||
-    !fireKeys.includes(e.key) ||
+    !isFireKey(e.key) ||
     !canShoot
   ) {
     return
@@ -516,9 +515,12 @@ function shoot(e) {
       .classList.remove('laser')
 
     const nextLaserIndex =
-      currentLaserIndex - width
+      getNextLaserIndex(
+        currentLaserIndex,
+        width
+      )
 
-    if (nextLaserIndex < 0) {
+    if (nextLaserIndex === null) {
       stopLaser()
       return
     }
@@ -553,16 +555,13 @@ function shoot(e) {
       stopLaser()
 
       const alienRemoved =
-        alienInvaders.indexOf(
+        getAlienHitIndex(
+          alienInvaders,
+          aliensRemoved,
           currentLaserIndex
         )
 
-      if (
-        alienRemoved !== -1 &&
-        !aliensRemoved.has(
-          alienRemoved
-        )
-      ) {
+      if (alienRemoved !== null) {
         aliensRemoved.add(
           alienRemoved
         )
@@ -586,8 +585,10 @@ function shoot(e) {
       }
 
       if (
-        aliensRemoved.size ===
-        alienInvaders.length
+        hasDestroyedAllInvaders(
+          aliensRemoved.size,
+          alienInvaders.length
+        )
       ) {
         endGame('YOU WIN')
       }
